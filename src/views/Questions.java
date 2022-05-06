@@ -9,25 +9,24 @@ public class Questions {
     
     abdo edit
  
+ */
+  int y = 7;
  
  
  
  
  
- 
- 
- 
- 
- 
-	 */
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
+ 
+ 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
