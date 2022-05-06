@@ -42,7 +42,4 @@ public class PriorityQueue {
    public int size() {
       return nItems;
    }
-int lala_hosain = 0;
-int lala_loai = 0;
-int hoho = 4;
 }
