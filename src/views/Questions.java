@@ -7,7 +7,7 @@ public class Questions {
     
     1- why override clone method ?
     
- 
+    abdo edit
  
  
  
