@@ -16,7 +16,7 @@ import model.abilities.HealingAbility;
 import model.effects.Disarm;
 import model.effects.Effect;
 import model.world.Champion;
-//comment
+
 public class Game {
  private Player firstPlayer;
  private Player secondPlayer;
@@ -28,7 +28,6 @@ public class Game {
  private PriorityQueue turnOrder;
  private static final int BOARDHEIGHT=5;
  private static final int BOARDWIDTH=5;
- private static final int loai = 6;
  public Game(Player first, Player second)
  {
 	 this.firstPlayer=first;
