@@ -9,7 +9,7 @@ public class Player {
 private String name;
 private Champion leader ;
 private ArrayList<Champion> team ;
-
+int haha = 4;
 public Player (String name)
 {
 	this.name=name;
