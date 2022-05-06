@@ -16,7 +16,6 @@ import model.abilities.HealingAbility;
 import model.effects.Disarm;
 import model.effects.Effect;
 import model.world.Champion;
-
 public class Game {
  private Player firstPlayer;
  private Player secondPlayer;
