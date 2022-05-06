@@ -1,7 +1,7 @@
 package model.effects;
 
 
-public class Effect {
+public abstract class Effect implements Cloneable {
 	private String name;
 	private int duration;
 	private EffectType type;
@@ -27,5 +27,18 @@ public class Effect {
 		return type;
 	}
 	
-///////////// end of getters	
+///////////// end of getters
+	
+	public Object clone() throws CloneNotSupportedException  {
+		return super.clone();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
