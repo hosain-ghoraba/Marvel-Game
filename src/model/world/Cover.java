@@ -3,7 +3,7 @@ package model.world;
 import java.awt.Point;
 import java.util.Random;
 
-public class Cover {
+public class Cover implements Damageable {
  private int currentHP;
  private Point location ;
 	
@@ -33,5 +33,11 @@ public class Cover {
 		return location;
 	}
 /////////////////////////// end of getters	
+
+@Override
+public Point getlocation() {
+	// TODO Auto-generated method stub
+	return location;
+}
 	
 }

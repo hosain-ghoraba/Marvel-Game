@@ -9,7 +9,7 @@ import model.effects.Effect;
 
 
 
-public class Champion implements Comparable {
+public class Champion implements Comparable,Damageable {
 	private String name;
 	private int maxHP ;
 	private	int currentHP ;
@@ -130,5 +130,11 @@ public class Champion implements Comparable {
 	if (speed < ((Champion)o).speed ) return 1;
 	return 0 ;
 	}
+
+@Override
+public Point getlocation() {
+	// TODO Auto-generated method stub
+	return location;
+}
 	
 }
