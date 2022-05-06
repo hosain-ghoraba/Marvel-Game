@@ -43,4 +43,5 @@ public class PriorityQueue {
       return nItems;
    }
 int lala_hosain = 0;
+int lala_loai = 0;
 }
