@@ -1,5 +1,6 @@
 package model.effects;
 
+import model.world.Champion;
 
 public abstract class Effect implements Cloneable {
 	private String name;
@@ -33,6 +34,9 @@ public abstract class Effect implements Cloneable {
 		return super.clone();
 	}
 	
+	public abstract void apply(Champion c) ;
+	public abstract void remove(Champion c);	 
+
 	
 	
 	
