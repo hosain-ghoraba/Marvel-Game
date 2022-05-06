@@ -28,6 +28,7 @@ public class Game {
  private PriorityQueue turnOrder;
  private static final int BOARDHEIGHT=5;
  private static final int BOARDWIDTH=5;
+ private static final int loai = 6;
  public Game(Player first, Player second)
  {
 	 this.firstPlayer=first;
