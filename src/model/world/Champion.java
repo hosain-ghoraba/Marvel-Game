@@ -131,10 +131,6 @@ public class Champion implements Comparable,Damageable {
 	return 0 ;
 	}
 
-@Override
-public Point getlocation() {
-	// TODO Auto-generated method stub
-	return location;
-}
+
 	
 }

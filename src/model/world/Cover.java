@@ -34,10 +34,6 @@ public class Cover implements Damageable {
 	}
 /////////////////////////// end of getters	
 
-@Override
-public Point getlocation() {
-	// TODO Auto-generated method stub
-	return location;
-}
+
 	
 }
