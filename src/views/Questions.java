@@ -11,6 +11,7 @@ public class Questions {
  
  */
   int y = 7;
+  int z =6;
  
  
  
