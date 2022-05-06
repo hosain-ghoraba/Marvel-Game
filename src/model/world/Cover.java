@@ -13,7 +13,7 @@ public class Cover implements Damageable {
 	 Random rand = new Random();
 	 this.currentHP  =rand.nextInt(900) +100 ;
  }
- 
+//aa
 //////////// setters
  
  public void setCurrentHP(int currentHP){  
