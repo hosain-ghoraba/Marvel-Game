@@ -130,8 +130,22 @@ public class Champion implements Comparable,Damageable,Cloneable {
 	if (speed < ((Champion)o).speed ) return 1;
 	return 0 ;
 	}
-    
-	
+    // some static method for different usages, relevant and irrelevant to champion class
+	public static Effect removeLastInstance(ArrayList<Effect> l,String className) { // not used in project yet
+		for(int i = l.size()-1 ; i >= 0 ; i--)
+		{
+			Effect out = l.get(i);
+			if(out.getName().equals(className))
+			{
+				Effect result = l.remove(i);
+			    return result;
+			}
+			i--;
+		}
+		return null; // will never happen, just because it is obligatory to return something outside 
+		             // the for loop block
+		
+	}
 	public static ArrayList<Ability> deepCopyAbilitiesArrayList(ArrayList<Ability> l) throws CloneNotSupportedException  {
 		ArrayList<Ability> result = new ArrayList<Ability>();		
 		

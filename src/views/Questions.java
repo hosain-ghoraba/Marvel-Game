@@ -16,10 +16,13 @@ public class Questions {
         
     7- should reomve method work as the following : first, remove the first instance  
        of the removed effect from the appliedEffects ArrayList, then use that taken out effect by invoking 
-       the remove method on it by reversing the logic? if this was how it works, it means that whenever 
+       the remove method on it by reversing the logic(and what to do about typecasting or rounding)? if this was how it works, it means that whenever 
        I want to remove say "Disarm" effect from a champion, I can make a new Instance of "Disarm" and 
        invoke the method on it? ( that new instance's only job is to find something to invoke the method 
        remove on).
+       
+    8- how to make generic getFirstInstace , or generic deepclone? ( do something based on the unknown    
+    object type in ArrayList),typecast an object to the unknown object type for example
     */
 	
 	
