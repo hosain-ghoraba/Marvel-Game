@@ -16,7 +16,10 @@ public class Questions {
         
     7- should reomve method work as the following : first, remove the first instance  
        of the removed effect from the appliedEffects ArrayList, then use that taken out effect by invoking 
-       the remove method on it by reversing the logic?
+       the remove method on it by reversing the logic? if this was how it works, it means that whenever 
+       I want to remove say "Disarm" effect from a champion, I can make a new Instance of "Disarm" and 
+       invoke the method on it? ( that new instance's only job is to find something to invoke the method 
+       remove on).
     */
 	
 	
