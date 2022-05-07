@@ -16,6 +16,9 @@ public class Embrace extends Effect {
 		beforeApply = (Champion) c.clone();
 	    c.setSpeed((int)(c.getSpeed() * 1.2));// should I do this or round?
 	    c.setAttackDamage((int)(c.getAttackDamage() * 1.2));// should I do this or round?
+	
+	    Effect e = new Embrace(); // what is the duration ?
+		c.getAppliedEffects().add(e);	
 	}
 	// no need to override remove method here
 	

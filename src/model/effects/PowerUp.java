@@ -34,6 +34,9 @@ public class PowerUp extends Effect {
 			}
 		}
 		
+		Effect e = new PowerUp(); // what is the duration ?
+		c.getAppliedEffects().add(e);
+		
 	}
 	
 		
