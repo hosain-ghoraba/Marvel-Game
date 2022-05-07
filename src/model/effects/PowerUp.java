@@ -14,8 +14,7 @@ public class PowerUp extends Effect {
 	}
 
 	@Override
-	public void apply(Champion c) throws CloneNotSupportedException {
-		beforeApply = (Champion) c.clone();
+	public void apply(Champion c)  {
 		for(int i = 0 ; i < c.getAbilities().size() ; i++)
 		{
 			Ability current = (Ability) c.getAbilities().get(i);
@@ -36,6 +35,11 @@ public class PowerUp extends Effect {
 		
 		Effect e = new PowerUp(); // what is the duration ?
 		c.getAppliedEffects().add(e);
+		
+	}
+
+	@Override
+	public void remove(Champion c) {
 		
 	}
 	

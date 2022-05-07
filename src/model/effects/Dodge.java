@@ -10,9 +10,8 @@ public class Dodge extends Effect {
 		super("Dodge", duration, EffectType.BUFF);
 		
 	}
-	
+	@Override
 	public void apply(Champion c) throws CloneNotSupportedException {
-		beforeApply = (Champion)c.clone();
 		// 50% chance to dodge : done in attake method 
 		// increase speed by 5 % : 
 		c.setSpeed((int) (c.getSpeed() * 1.05)); // should I do this(typecast to int) or should I round to the closeset integer?
@@ -20,6 +19,9 @@ public class Dodge extends Effect {
 		c.getAppliedEffects().add(e);
 	
 	}
-	
-    // no need to override remove here
+
+	@Override
+	public void remove(Champion c) {
+		
+	}
 }

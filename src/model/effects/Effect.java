@@ -3,9 +3,7 @@ package model.effects;
 import model.world.Champion;
 
 public abstract class Effect implements Cloneable {
-	
-	// new instance variable : to be used in remove method
-	Champion beforeApply ; 
+	 
 	
 	private String name;
 	private int duration;
@@ -38,10 +36,10 @@ public abstract class Effect implements Cloneable {
 		return super.clone();
 	}
 	
-	public abstract void apply(Champion c) throws CloneNotSupportedException;	
-	public void remove(Champion c) throws CloneNotSupportedException{
-		c = (Champion)beforeApply.clone();
-	}
+	public abstract void apply(Champion c); 	
+	public abstract void remove(Champion c); 
+		
+	
 
 	
 	

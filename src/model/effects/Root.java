@@ -9,16 +9,21 @@ public class Root extends Effect {
 	}
 
 	@Override
-	public void apply(Champion c) throws CloneNotSupportedException {
+	public void apply(Champion c)  {
 		
 		
-		Effect e = Root; // what is the duration ?
+		Effect e = new Root(); // what is the duration ?
 		c.getAppliedEffects().add(e);
 		
 		// nothing more to be done actually, 
 		// just throw exception in move method if tried to move while rooted
 	
 	}
-	// no need to override remove method here
+
+	@Override
+	public void remove(Champion c) {
+		
+	}
+	
 
 }
