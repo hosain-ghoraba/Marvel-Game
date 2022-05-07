@@ -14,7 +14,9 @@ public class Questions {
     6 = can a champion carry multiple instances of the same Ability? ( this can happen if the champion was               
         carrying multiple disarm effects
         
-    7- I am stuck at remove method    
+    7- should reomve method work as the following : first, remove the first instance  
+       of the removed effect from the appliedEffects ArrayList, then use that taken out effect by invoking 
+       the remove method on it by reversing the logic?
     */
 	
 	
