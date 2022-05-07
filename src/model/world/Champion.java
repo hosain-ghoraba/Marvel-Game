@@ -131,9 +131,43 @@ public class Champion implements Comparable,Damageable,Cloneable {
 	return 0 ;
 	}
     
+	
+	public static ArrayList<Ability> deepCopyAbilitiesArrayList(ArrayList<Ability> l) throws CloneNotSupportedException  {
+		ArrayList<Ability> result = new ArrayList<Ability>();		
+		
+		for(int i = 0 ; i < l.size() ; i++)
+		{
+			Ability out = l.get(i);
+			Ability copy = (Ability)out.clone();
+			result.add(copy);
+		}
+		return result;
+		
+	}
+	public static ArrayList<Effect> deepCopyappliedEffectsArrayList(ArrayList<Effect> l) throws CloneNotSupportedException {
+		ArrayList<Effect> result = new ArrayList<Effect>();		
+		
+		for(int i = 0 ; i < l.size() ; i++)
+		{
+			Effect out = l.get(i);
+			Effect copy = (Effect)out.clone();
+			result.add(copy);
+		}
+		return result;
+		
+	}
 	// overriden to PUBLIC to be seen in all sub classes of Effect !
 	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
+		
+		Champion result = (Champion) super.clone();
+		
+		result.abilities = deepCopyAbilitiesArrayList(result.abilities);
+		result.appliedEffects = deepCopyappliedEffectsArrayList(result.appliedEffects);
+		result.location = new Point(location.x,location.y);
+		
+		return result;
+		
+		
 	}
 
 	

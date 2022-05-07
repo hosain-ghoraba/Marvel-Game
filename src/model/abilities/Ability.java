@@ -1,6 +1,6 @@
 package model.abilities;
 
-public class Ability {
+public class Ability implements Cloneable {
 	
 private	String name;	
 private	int manaCost;
@@ -54,7 +54,9 @@ public AreaOfEffect getCastArea() {
 }
 ///////// end of getters
 
-
+public Object clone() throws CloneNotSupportedException {
+	return super.clone();
+}
 
 
 

@@ -50,6 +50,6 @@ public class PowerUp extends Effect {
 		
 		
 		
-	}
+	
     // no need to override remove method here
 }
