@@ -1,10 +1,23 @@
 package model.effects;
 
+import model.world.Champion;
+
 public class Embrace extends Effect {
 
 	public Embrace(int duration) {
 		super("Embrace", duration,EffectType.BUFF );
 		
 	}
+
+	@Override
+	public void apply(Champion c) throws CloneNotSupportedException {	
+		c.setCurrentHP((int)(c.getCurrentHP() + 0.2 * c.getMaxHP())); // should I do this? or round to the closest integer?
+		c.setMana((int)(c.getMana() * 1.2));// should I do this or round?
+		beforeApply = (Champion) c.clone();
+	    c.setSpeed((int)(c.getSpeed() * 1.2));// should I do this or round?
+	    c.setAttackDamage((int)(c.getAttackDamage() * 1.2));// should I do this or round?
+	}
+	// no need to override remove method here
+	
 
 }

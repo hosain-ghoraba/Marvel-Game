@@ -9,7 +9,7 @@ import model.effects.Effect;
 
 
 
-public class Champion implements Comparable,Damageable {
+public class Champion implements Comparable,Damageable,Cloneable {
 	private String name;
 	private int maxHP ;
 	private	int currentHP ;
@@ -130,7 +130,11 @@ public class Champion implements Comparable,Damageable {
 	if (speed < ((Champion)o).speed ) return 1;
 	return 0 ;
 	}
-
+    
+	// overriden to PUBLIC to be seen in all sub classes of Effect !
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
 
 	
 }
