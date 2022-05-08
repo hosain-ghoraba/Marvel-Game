@@ -32,6 +32,7 @@ public abstract class Effect implements Cloneable {
 	
 ///////////// end of getters
 	
+    // overriden from Protected in Object class to PUBLIC to be seen in all sub classes of Effect !
 	public Object clone() throws CloneNotSupportedException  {
 		return super.clone();
 	}

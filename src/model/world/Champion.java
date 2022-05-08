@@ -6,7 +6,9 @@ import java.util.ArrayList;
 
 import model.abilities.Ability;
 import model.effects.Effect;
-
+import model.effects.Root;
+import model.effects.Stun;
+import engine.SomeStaticMethods;
 
 
 public class Champion implements Comparable,Damageable,Cloneable {
@@ -71,8 +73,35 @@ public class Champion implements Comparable,Damageable,Cloneable {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	public void setCondition(Condition condition) {
-		this.condition = condition;
+	public void setCondition(Condition condition) { // Darwish !! : Very Important: the order of removing the effect from appliedEffects and setting the condition = ACTIVE is Fatal when using this method in remove method in stun class ( Darwish, Care PLS !) 
+		if(condition == Condition.KNOCKEDOUT ||this.condition == Condition.KNOCKEDOUT )
+		    {
+			this.condition = Condition.KNOCKEDOUT;
+			return;
+		    }		
+        if(condition == Condition.INACTIVE)
+		    {			
+			this.condition = Condition.INACTIVE;
+			return;
+		    }
+		if(condition == Condition.ROOTED)
+            if(! SomeStaticMethods.doesEffectExist(appliedEffects,"Stun"))
+	            {
+	            this.condition = Condition.ROOTED;
+	            return;
+	            }
+		if(condition == Condition.ACTIVE)// will only happen in remove method in (Root) and (Stun) classes 
+			{
+			if(SomeStaticMethods.doesEffectExist(appliedEffects,"Stun"))			
+					return;				
+			if (SomeStaticMethods.doesEffectExist(appliedEffects,"Root"))
+				{
+					this.condition = Condition.ROOTED;
+					return;
+				}
+			this.condition = Condition.ACTIVE;
+					 
+	        }		    
 	}
 	public void setLocation(Point location) {
 		this.location = location;
@@ -130,70 +159,10 @@ public class Champion implements Comparable,Damageable,Cloneable {
 	if (speed < ((Champion)o).speed ) return 1;
 	return 0 ;
 	}
-	
-    //  some static methods for different usages, relevant and irrelevant to champion class
 
-    public static Ability removeLastAbilityWithInputName(ArrayList<Ability> l, String AbilityName) {	
-	for(int i = l.size()-1 ; i >= 0 ; i--) {
-		  Ability current = l.get(i);
-		  if(current.getName().equals(AbilityName))
-			  return l.remove(i);
-		  i--;
-			  
-	  }
-	  return null; // will never happen, just because it is obligatory to return something outside 
-                   // the for loop block
-    }
-	public static Effect removeLastEffectWithInputName(ArrayList<Effect> l,String EffectName) { // not used in project yet
-		for(int i = l.size()-1 ; i >= 0 ; i--)
-		{
-			Effect current = l.get(i);
-			if(current.getName().equals(EffectName))							 
-			    return  l.remove(i);			
-			i--;
-		}
-		return null; // will never happen, just because it is obligatory to return something outside 
-		             // the for loop block
-		
-	}
-	public static ArrayList<Ability> deepCopyAbilitiesArrayList(ArrayList<Ability> l) throws CloneNotSupportedException  {
-		ArrayList<Ability> result = new ArrayList<Ability>();		
-		
-		for(int i = 0 ; i < l.size() ; i++)
-		{
-			Ability out = l.get(i);
-			Ability copy = (Ability)out.clone();
-			result.add(copy);
-		}
-		return result;
-		
-	}
-	public static ArrayList<Effect> deepCopyappliedEffectsArrayList(ArrayList<Effect> l) throws CloneNotSupportedException {
-		ArrayList<Effect> result = new ArrayList<Effect>();		
-		
-		for(int i = 0 ; i < l.size() ; i++)
-		{
-			Effect out = l.get(i);
-			Effect copy = (Effect)out.clone();
-			result.add(copy);
-		}
-		return result;
-		
-	}
-	// overriden to PUBLIC to be seen in all sub classes of Effect !
+   
 	
-	public Object clone() throws CloneNotSupportedException {
-		
-		Champion result = (Champion) super.clone();
-		
-		result.abilities = deepCopyAbilitiesArrayList(result.abilities);
-		result.appliedEffects = deepCopyappliedEffectsArrayList(result.appliedEffects);
-		result.location = new Point(location.x,location.y);
-		
-		return result;
-		
-		
-	}
+
 
 	
 }

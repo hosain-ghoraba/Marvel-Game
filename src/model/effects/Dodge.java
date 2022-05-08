@@ -11,17 +11,15 @@ public class Dodge extends Effect {
 		
 	}
 	@Override
-	public void apply(Champion c) throws CloneNotSupportedException {
+	public void apply(Champion c)  {
+		c.getAppliedEffects().add(this);
 		//  50% chance to dodge : done in attake method 
-		//    increase speed by 5 % : 
-		c.setSpeed((int) (c.getSpeed() * 1.05)); // should I do this(typecast to int) or should I round to the closeset integer?
-		Effect e = new Dodge(); // what is the duration ?
-		c.getAppliedEffects().add(e);
-	
+		c.setSpeed((int) (c.getSpeed() * 1.05)); 
 	}
 
 	@Override
 	public void remove(Champion c) {
-		
+		c.getAppliedEffects().remove(this);
+		c.setSpeed((int) (c.getSpeed() * 0.95));
 	}
 }
