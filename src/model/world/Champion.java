@@ -135,11 +135,8 @@ public class Champion implements Comparable,Damageable,Cloneable {
 		for(int i = l.size()-1 ; i >= 0 ; i--)
 		{
 			Effect out = l.get(i);
-			if(out.getName().equals(className))
-			{
-				Effect result = l.remove(i);
-			    return result;
-			}
+			if(out.getName().equals(className))							 
+			    return  l.remove(i);			
 			i--;
 		}
 		return null; // will never happen, just because it is obligatory to return something outside 
