@@ -131,7 +131,7 @@ public class Champion implements Comparable,Damageable,Cloneable {
 	return 0 ;
 	}
 	
-    // some static methods for different usages, relevant and irrelevant to champion class
+    //  some static methods for different usages, relevant and irrelevant to champion class
 	public static Effect removeLastInstance(ArrayList<Effect> l,String className) { // not used in project yet
 		for(int i = l.size()-1 ; i >= 0 ; i--)
 		{
