@@ -73,6 +73,7 @@ public class Champion implements Comparable,Damageable,Cloneable {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
+	// modified in M2 (Hosain)
 	public void setCondition(Condition condition) { // Darwish !! : Very Important: the order of removing the effect from appliedEffects and setting the condition = ACTIVE is Fatal when using this method in remove method in stun class ( Darwish, Care PLS !) 
 		if(condition == Condition.KNOCKEDOUT ||this.condition == Condition.KNOCKEDOUT )
 		    {
