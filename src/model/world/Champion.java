@@ -130,7 +130,8 @@ public class Champion implements Comparable,Damageable,Cloneable {
 	if (speed < ((Champion)o).speed ) return 1;
 	return 0 ;
 	}
-    // some static method for different usages, relevant and irrelevant to champion class
+	
+    // some static methods for different usages, relevant and irrelevant to champion class
 	public static Effect removeLastInstance(ArrayList<Effect> l,String className) { // not used in project yet
 		for(int i = l.size()-1 ; i >= 0 ; i--)
 		{
@@ -168,6 +169,7 @@ public class Champion implements Comparable,Damageable,Cloneable {
 		
 	}
 	// overriden to PUBLIC to be seen in all sub classes of Effect !
+	
 	public Object clone() throws CloneNotSupportedException {
 		
 		Champion result = (Champion) super.clone();
