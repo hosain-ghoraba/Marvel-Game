@@ -1,5 +1,7 @@
 package model.effects;
 
+import java.util.ArrayList;
+
 import model.abilities.*;
 import model.world.Champion;
 
@@ -23,6 +25,8 @@ public class Disarm extends Effect  {
 		
 	}
    public void remove(Champion c) {
-	   
+	  Champion.removeLastEffectWithInputName(c.getAppliedEffects(), "Disarm");
+	  Champion.removeLastAbilityWithInputName(c.getAbilities(), "Punch");
+	  			    
    }
 }

@@ -132,11 +132,23 @@ public class Champion implements Comparable,Damageable,Cloneable {
 	}
 	
     //  some static methods for different usages, relevant and irrelevant to champion class
-	public static Effect removeLastInstance(ArrayList<Effect> l,String className) { // not used in project yet
+
+    public static Ability removeLastAbilityWithInputName(ArrayList<Ability> l, String AbilityName) {	
+	for(int i = l.size()-1 ; i >= 0 ; i--) {
+		  Ability current = l.get(i);
+		  if(current.getName().equals(AbilityName))
+			  return l.remove(i);
+		  i--;
+			  
+	  }
+	  return null; // will never happen, just because it is obligatory to return something outside 
+                   // the for loop block
+    }
+	public static Effect removeLastEffectWithInputName(ArrayList<Effect> l,String EffectName) { // not used in project yet
 		for(int i = l.size()-1 ; i >= 0 ; i--)
 		{
-			Effect out = l.get(i);
-			if(out.getName().equals(className))							 
+			Effect current = l.get(i);
+			if(current.getName().equals(EffectName))							 
 			    return  l.remove(i);			
 			i--;
 		}
