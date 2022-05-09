@@ -9,7 +9,7 @@ import model.effects.Effect;
 
 
 
-public class Champion implements Comparable,Damageable {
+public abstract class Champion implements Comparable,Damageable {
 	private String name;
 	private int maxHP ;
 	private	int currentHP ;
@@ -122,15 +122,44 @@ public class Champion implements Comparable,Damageable {
 	}
 ////////////////////////////////////////////////////////// end of getters
 
+	/////// abstract method 
+	
+	public abstract void useLeaderAbility(ArrayList<Champion> targets);
+	
+	
+	
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		
-	if (speed > ((Champion)o).speed ) return -1;
-	if (speed < ((Champion)o).speed ) return 1;
-	return 0 ;
+		Champion x =(Champion)o;
+	if (speed > x.speed ) return -1;
+	else if (speed < x.speed ) return 1;
+	else 
+	{
+		if (name.length()< x.name.length())
+		{
+		for (int i=0;i<name.length();i++)
+		{
+			if (name.charAt(i)<x.name.charAt(i)) return -1;
+			else if (name.charAt(i)>x.name.charAt(i)) return 1;
+			
+		}
+		return -1;
+		}
+		else 
+		{
+			for (int i=0;i<x.name.length();i++)
+			{
+				if (name.charAt(i)<x.name.charAt(i)) return -1;
+				else if (name.charAt(i)>x.name.charAt(i)) return 1;
+				
+			}
+			return 1;		
+		}	
 	}
+	    
+    }
 
 
 	
-}
+	}
+
