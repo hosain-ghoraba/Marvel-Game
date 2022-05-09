@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import model.world.Damageable;
 
 public abstract class Ability {
+
 	
 private	String name;	
 private	int manaCost;
@@ -60,7 +61,9 @@ public AreaOfEffect getCastArea() {
 }
 ///////// end of getters
 
-
+public Object clone() throws CloneNotSupportedException {
+	return super.clone();
+}
 
 
 

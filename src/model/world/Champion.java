@@ -6,10 +6,12 @@ import java.util.ArrayList;
 
 import model.abilities.Ability;
 import model.effects.Effect;
+import model.effects.Root;
+import model.effects.Stun;
+import engine.SomeStaticMethods;
 
 
-
-public abstract class Champion implements Comparable,Damageable {
+public abstract class Champion implements Comparable,Damageable,Cloneable {
 	private String name;
 	private int maxHP ;
 	private	int currentHP ;
@@ -71,8 +73,36 @@ public abstract class Champion implements Comparable,Damageable {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	public void setCondition(Condition condition) {
-		this.condition = condition;
+	 // modified in M2 (Hosain)
+	public void setCondition(Condition condition) { // Darwish !! : Very Important: the order of removing the effect from appliedEffects and setting the condition = ACTIVE is Fatal when using this method in remove method in stun class ( Darwish, Care PLS !) 
+		if(condition == Condition.KNOCKEDOUT ||this.condition == Condition.KNOCKEDOUT )
+		    {
+			this.condition = Condition.KNOCKEDOUT;
+			return;
+		    }		
+        if(condition == Condition.INACTIVE)
+		    {			
+			this.condition = Condition.INACTIVE;
+			return;
+		    }
+		if(condition == Condition.ROOTED)
+            if(! SomeStaticMethods.doesEffectExist(appliedEffects,"Stun"))
+	            {
+	            this.condition = Condition.ROOTED;
+	            return;
+	            }
+		if(condition == Condition.ACTIVE)// will only happen in remove method in (Root) and (Stun) classes 
+			{
+			if(SomeStaticMethods.doesEffectExist(appliedEffects,"Stun"))			
+					return;				
+			if (SomeStaticMethods.doesEffectExist(appliedEffects,"Root"))
+				{
+					this.condition = Condition.ROOTED;
+					return;
+				}
+			this.condition = Condition.ACTIVE;
+					 
+	        }		    
 	}
 	public void setLocation(Point location) {
 		this.location = location;
@@ -121,18 +151,18 @@ public abstract class Champion implements Comparable,Damageable {
 		return location;
 	}
 ////////////////////////////////////////////////////////// end of getters
-
 	/////// abstract method 
+	//yousry edited.
 	
 	public abstract void useLeaderAbility(ArrayList<Champion> targets);
 	
-	
-	
+// yousry edit.
 	@Override
 	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
 		Champion x =(Champion)o;
-	if (speed > x.speed ) return -1;
-	else if (speed < x.speed ) return 1;
+	if (speed > ((Champion)o).speed ) return -1;
+	if (speed < ((Champion)o).speed ) return 1;
 	else 
 	{
 		if (name.length()< x.name.length())
@@ -156,10 +186,12 @@ public abstract class Champion implements Comparable,Damageable {
 			return 1;		
 		}	
 	}
-	    
-    }
+	}
+
+   
+	
 
 
 	
-	}
+}
 
