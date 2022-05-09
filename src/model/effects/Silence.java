@@ -12,8 +12,8 @@ public class Silence extends Effect {
 	@Override
 	public void apply(Champion c) {
 	
-		// Target cannot use abilities
-		c.getAppliedEffects().add(this);
+	// Target cannot use abilities : throw exception in castAbility Method 
+	c.getAppliedEffects().add(this);
 	c.setMaxActionPointsPerTurn(c.getMaxActionPointsPerTurn()+2);
 	c.setCurrentActionPoints(c.getCurrentActionPoints()+2);
 	}

@@ -14,9 +14,9 @@ public class Shock extends Effect {
 		// TODO Auto-generated method stub
 		c.getAppliedEffects().add(this);
 		c.setSpeed((int)(c.getSpeed()*0.9));
-c.setAttackDamage((int)(c.getAttackRange()*0.9));
-c.setCurrentActionPoints(c.getCurrentActionPoints()-1);
-	c.setMaxActionPointsPerTurn(c.getMaxActionPointsPerTurn()-1);
+        c.setAttackDamage((int)(c.getAttackDamage()*0.9));
+        c.setMaxActionPointsPerTurn(c.getMaxActionPointsPerTurn()-1);
+        c.setCurrentActionPoints(c.getCurrentActionPoints()-1);
 	}
 
 	@Override
@@ -24,9 +24,9 @@ c.setCurrentActionPoints(c.getCurrentActionPoints()-1);
 		// TODO Auto-generated method stub
 		c.getAppliedEffects().remove(this);
 		c.setSpeed((int)(c.getSpeed()/0.9));
-		c.setAttackDamage((int)(c.getAttackRange()/0.9));	
-		c.setCurrentActionPoints(c.getCurrentActionPoints()+1);
+		c.setAttackDamage((int)(c.getAttackDamage()/0.9));	
 		c.setMaxActionPointsPerTurn(c.getMaxActionPointsPerTurn()+1);
+		c.setCurrentActionPoints(c.getCurrentActionPoints()+1);
 	}
 
 }
