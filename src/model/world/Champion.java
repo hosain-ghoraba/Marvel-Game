@@ -161,7 +161,7 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 	public abstract void useLeaderAbility(ArrayList<Champion> targets);
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub 
 		Champion x =(Champion)o;
 	if (speed > ((Champion)o).speed ) return -1;
 	if (speed < ((Champion)o).speed ) return 1;
