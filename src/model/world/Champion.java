@@ -8,10 +8,13 @@ import model.abilities.Ability;
 import model.effects.Effect;
 import model.effects.Root;
 import model.effects.Stun;
+import engine.Game;
+import engine.Player;
 import engine.SomeStaticMethods;
 
 
 public abstract class Champion implements Comparable,Damageable,Cloneable {
+		
 	private String name;
 	private int maxHP ;
 	private	int currentHP ;

@@ -16,7 +16,6 @@ import model.abilities.DamagingAbility;
 import model.abilities.HealingAbility;
 import model.effects.Disarm;
 import model.effects.Effect;
-import model.world.Champion;
 public class Game {
  private Player firstPlayer;
  private Player secondPlayer;
@@ -195,6 +194,7 @@ private void placeCovers() {
 	    	 {
 	    	  Hero H = new Hero (arr[1],Integer.parseInt(arr[2]),Integer.parseInt(arr[3]),Integer.parseInt(arr[4]),Integer.parseInt(arr[5])
 	    				 ,Integer.parseInt(arr[6]),Integer.parseInt(arr[7]));
+	    	  
 	    	  H.getAbilities().add(a1);
 	    	  H.getAbilities().add(a2);
 	    	  H.getAbilities().add(a3);	   	  
@@ -235,16 +235,10 @@ private void placeCovers() {
 	 
 	 // new methods in M2
 	  
-	  public void eliminateChampion(Champion c){ 
-		  // 1- remove the Champion from the board
-		        this.getBoard()[c.getLocation().x][c.getLocation().y] = null;
-		  // 2- set the Champion condition to KNOCKEDOUT
-		        c.setCondition(Condition.KNOCKEDOUT);
-		  // 3- remove the Champion from the PlayerTeam, and if Team became Empty,
-		  //     then gave over! (dont know how to over a game yet)  
+	 
 		  
      	
-     }
+     
 
 
 

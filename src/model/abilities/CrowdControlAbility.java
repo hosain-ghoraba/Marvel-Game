@@ -25,19 +25,11 @@ public Effect getEffect() {
 
 
 //Override the abstract method
-//not completed
+//not completed(ahmad)..( I think it is completed ya ahmad (hosain) )...all targets all vaild as stated in M2, so they must be only champions, no covers at all
+
 public void execute(ArrayList<Damageable> targets) {
-	for (int i=0;i<targets.size();i++)
-	{
-		
-		Damageable x=targets.get(i);
-		if (x instanceof Champion)
-		{
-	    effect.apply((Champion)x);
-		}
-	}
-	
-	
+	for (int i=0 ; i<targets.size() ; i++)	
+         effect.apply( (Champion) (targets.get(i))  );		
 }
 
 

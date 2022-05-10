@@ -25,7 +25,7 @@ public Ability(String name,int cost, int baseCoolDown, int castRange, AreaOfEffe
 	this.castArea = area;
 }
 
-public abstract void execute(ArrayList<Damageable> targets);
+
 ////// setters
 
 public void setCurrentCooldown(int currentCooldown) {
@@ -60,6 +60,11 @@ public AreaOfEffect getCastArea() {
 	return castArea;
 }
 ///////// end of getters
+
+
+/// new in M2
+
+public abstract void execute(ArrayList<Damageable> targets);
 
 public Object clone() throws CloneNotSupportedException {
 	return super.clone();
