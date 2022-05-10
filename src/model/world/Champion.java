@@ -169,7 +169,7 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
      return x.name.compareTo(name); // dont know if should multiply the result by -1...he didn't clear this point, he only said : compare the champions names if their speeds are identical. we will know anyway in public tests     	
 	}
 
-	
+	  
 
 }
 
