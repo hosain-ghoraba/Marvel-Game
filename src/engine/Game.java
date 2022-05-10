@@ -1,13 +1,14 @@
 package engine;
 import model.world.*;
+
 import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-import model.effects.*;
 
+import model.effects.*;
 import model.abilities.Ability;
 import model.abilities.AreaOfEffect;
 import model.abilities.CrowdControlAbility;
@@ -219,9 +220,35 @@ private void placeCovers() {
 	    	 }    
 	         x = br.readLine();	        	    	       	      		 
 	     }
+		  
+		  
+		
 
 	
 }
+
+	 
+	 
+	 
+	 
+	 
+	 
+	 // new methods in M2
+	  
+	  public void eliminateChampion(Champion c){ 
+		  // 1- remove the Champion from the board
+		        this.getBoard()[c.getLocation().x][c.getLocation().y] = null;
+		  // 2- set the Champion condition to KNOCKEDOUT
+		        c.setCondition(Condition.KNOCKEDOUT);
+		  // 3- remove the Champion from the PlayerTeam, and if Team became Empty,
+		  //     then gave over! (dont know how to over a game yet)
+		  
+     	
+     }
+
+
+
+
 }
 
 
