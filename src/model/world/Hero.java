@@ -7,6 +7,7 @@ import model.effects.Effect;
 import model.effects.EffectType;
 import model.effects.Embrace;
 
+
 public class Hero extends Champion {
 
 	

@@ -16,6 +16,7 @@ public void useLeaderAbility(ArrayList<Champion> targets) {
 		{
 			targets.get(i).setCondition(Condition.KNOCKEDOUT);
 		    // should also eliminate the Champ,so call eliminiteChamp from game(done know how! we don't have game reference)!			
+
 		}
 	}
 	

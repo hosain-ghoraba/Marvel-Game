@@ -1,6 +1,11 @@
 package model.abilities;
 
-public class Ability implements Cloneable {
+import java.util.ArrayList;
+
+import model.world.Damageable;
+
+public abstract class Ability {
+
 	
 private	String name;	
 private	int manaCost;
@@ -19,6 +24,8 @@ public Ability(String name,int cost, int baseCoolDown, int castRange, AreaOfEffe
 	this.requiredActionPoints = required;
 	this.castArea = area;
 }
+
+public abstract void execute(ArrayList<Damageable> targets);
 ////// setters
 
 public void setCurrentCooldown(int currentCooldown) {

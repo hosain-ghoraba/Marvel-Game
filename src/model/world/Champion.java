@@ -151,6 +151,7 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 		return location;
 	}
 ////////////////////////////////////////////////////////// end of getters
+<<<<<<< HEAD
 	
 	/////// abstract method 
 	//yousry edited.
@@ -169,5 +170,6 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 	}
 
 	
+
 }
 
