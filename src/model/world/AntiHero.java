@@ -11,7 +11,7 @@ public class AntiHero extends Champion {
 		 super(name,maxHP,  mana,maxActions, speed, attackRange,attackDamage);
 	 }
 
-	@Override
+	
 	public void useLeaderAbility(ArrayList<Champion> targets) {
 		for (int i=0 ; i<targets.size() ; i++)		
 			 new Stun(2).apply(targets.get(i));					

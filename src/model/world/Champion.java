@@ -8,13 +8,10 @@ import model.abilities.Ability;
 import model.effects.Effect;
 import model.effects.Root;
 import model.effects.Stun;
-import engine.Game;
-import engine.Player;
 import engine.SomeStaticMethods;
 
 
-public abstract class Champion implements Comparable,Damageable,Cloneable {
-		
+public class Champion implements Comparable,Damageable,Cloneable {
 	private String name;
 	private int maxHP ;
 	private	int currentHP ;
@@ -147,6 +144,7 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 	public ArrayList<Effect> getAppliedEffects() {
 		return appliedEffects;
 	}
+	
 	public Condition getCondition() {
 		return condition;
 	}
@@ -154,22 +152,19 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 		return location;
 	}
 ////////////////////////////////////////////////////////// end of getters
-	
-	/////// abstract method 
-	//yousry edited.
-	
-	public abstract void useLeaderAbility(ArrayList<Champion> targets);
+
 	@Override
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
-		Champion x =(Champion)o;
+		
 	if (speed > ((Champion)o).speed ) return -1;
 	if (speed < ((Champion)o).speed ) return 1;
-	else 	
-     return x.name.compareTo(name); // dont know if should multiply the result by -1...he didn't clear this point, he only said : compare the champions names if their speeds are identical. we will know anyway in public tests     	
+	return 0 ;
 	}
 
+   
 	
 
-}
 
+	
+}

@@ -15,7 +15,7 @@ public class Hero extends Champion {
 	 super(name,maxHP,  mana,maxActions, speed, attackRange,attackDamage);
  }
 
-@Override
+
 public void useLeaderAbility(ArrayList<Champion> targets) {
 	for (int i=0;i<targets.size();i++)
 	{
