@@ -151,14 +151,11 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 		return location;
 	}
 ////////////////////////////////////////////////////////// end of getters
-<<<<<<< HEAD
 	
 	/////// abstract method 
 	//yousry edited.
 	
 	public abstract void useLeaderAbility(ArrayList<Champion> targets);
-	
-// yousry edit.
 	@Override
 	public int compareTo(Object o) {
 		// TODO Auto-generated method stub
