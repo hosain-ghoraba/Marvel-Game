@@ -241,7 +241,7 @@ private void placeCovers() {
 		  // 2- set the Champion condition to KNOCKEDOUT
 		        c.setCondition(Condition.KNOCKEDOUT);
 		  // 3- remove the Champion from the PlayerTeam, and if Team became Empty,
-		  //     then gave over! (dont know how to over a game yet)
+		  //     then gave over! (dont know how to over a game yet)  
 		  
      	
      }
