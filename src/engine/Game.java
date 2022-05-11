@@ -362,6 +362,7 @@ private void placeCovers() {
 	 public void move(Direction d)
 	 {
 		 
+		 Champion c = getCurrentChampion() ; 
 		 
 		 
 		 
@@ -398,13 +399,35 @@ private void placeCovers() {
 		 
 		 
 	 }
+	 public boolean boardlocationisevalid(int x , int y) {
+		 if(x>5 || y>5) {
+			 return false ; 
+		 }
+		 
+		 if(board[x][y]!=null) return false ;
+	
+		 return true ;
+	 }
+	 
+	 
+	 
 	 
 	 public void attack(Direction d)
 	 {	 
 		 
+		Champion c = getCurrentChampion() ;
+		int x =c.getLocation().x ;
+		int y = c.getLocation().y ; 
+		
+		if(d.equals(Direction.RIGHT)) {
+	if(x<5) {
 		 
-		 
-		 
+		
+	}		
+	
+			
+			
+		}
 		 
 		 
 		 
