@@ -370,9 +370,9 @@ private void placeCovers() {
 			int y = c.getLocation().y ; 
 			
 			if(d.equals(Direction.RIGHT)) {
-		if(x<5) {
+		if(x<4) {
 			 if(boardlocationisevalid(x+1, y)) {
-				 
+				 board[x][y] = null ; 
 				 c.setLocation(new Point(x+1,y));
 		         return ;	}
 			 
@@ -385,7 +385,8 @@ private void placeCovers() {
 			if(d.equals(Direction.LEFT)){
 				 if(x>0) {
 					 if(boardlocationisevalid(x-1, y)) {
-						 
+						 board[x][y] = null ; 
+
 						 c.setLocation(new Point(x-1,y));
 				         return ; }}
 				 
@@ -395,7 +396,8 @@ private void placeCovers() {
 			 if(d.equals(Direction.UP)) {
 				if(y<5) {
 	 if(boardlocationisevalid(x, y+1)) {
-						 
+		 board[x][y] = null ; 
+
 						 c.setLocation(new Point(x,y+1));
 				         return ; }	
 					
@@ -412,7 +414,8 @@ private void placeCovers() {
 			 if(d.equals(Direction.DOWN)) {
 					if(y>0) {
 		 if(boardlocationisevalid(x, y-1)) {
-							 
+			 board[x][y] = null ; 
+
 							 c.setLocation(new Point(x,y-1));
 					         return ; }	
 						
