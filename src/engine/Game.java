@@ -1,4 +1,5 @@
 package engine;
+import exceptions.*;
 import model.world.*;
 
 import java.awt.Point;
@@ -325,6 +326,16 @@ private void placeCovers() {
 	 
 	 }
 	  
+<<<<<<< HEAD
+	 public Champion getCurrentChampion() {
+		if(turnOrder.isEmpty()) {
+		return null; //need to be modified
+		}
+		 
+		 return (Champion)turnOrder.remove() ;
+		 
+	 }	 
+=======
 	  
 	  
 	  */
@@ -332,7 +343,25 @@ private void placeCovers() {
 	 
 		  
      	
+<<<<<<< HEAD
   
+======= ///jjjjjjjjjjjjjjj
+     
+	 public Player checkGameOver() {
+		 if(firstPlayer.getTeam()==null) {
+			 return secondPlayer ;
+			 
+		 }
+		 if(secondPlayer.getTeam()==null) {
+			 return firstPlayer ;
+			 
+		 }
+		return null ; 
+		 
+		 
+	 }
+
+>>>>>>> branch 'master' of git@github.com:hosain-ghoraba/Game.git
 
 
 }
