@@ -1,4 +1,5 @@
 package engine;
+import exceptions.*;
 import model.world.*;
 
 import java.awt.Point;
@@ -235,11 +236,30 @@ private void placeCovers() {
 	 
 	 // new methods in M2
 	  
-	 
+	 public Champion getCurrentChampion() {
+		if(turnOrder.isEmpty()) {
+		return null; //need to be modified
+		}
+		 
+		 return (Champion)turnOrder.remove() ;
+		 
+	 }	 
 		  
      	
      
-
+	 public Player checkGameOver() {
+		 if(firstPlayer.getTeam()==null) {
+			 return secondPlayer ;
+			 
+		 }
+		 if(secondPlayer.getTeam()==null) {
+			 return firstPlayer ;
+			 
+		 }
+		return null ; 
+		 
+		 
+	 }
 
 
 
