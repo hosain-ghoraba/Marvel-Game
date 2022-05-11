@@ -341,12 +341,7 @@ private void placeCovers() {
 	  */
 	 
 	 
-		  
-     	
-<<<<<<< HEAD
-  
-======= ///jjjjjjjjjjjjjjj
-     
+		    
 	 public Player checkGameOver() {
 		 if(firstPlayer.getTeam()==null) {
 			 return secondPlayer ;
@@ -356,12 +351,9 @@ private void placeCovers() {
 			 return firstPlayer ;
 			 
 		 }
-		return null ; 
-		 
-		 
+		return null ; 	 
 	 }
 
->>>>>>> branch 'master' of git@github.com:hosain-ghoraba/Game.git
 
 
 }
