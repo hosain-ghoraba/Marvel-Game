@@ -1,5 +1,6 @@
 package engine;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 import model.abilities.Ability;
@@ -37,4 +38,17 @@ public class SomeStaticMethods {
 	       		  }
             	
             }
+	        // Code to calculate Manhattan distance(from geeks to geeks)
+
+	        static int calcDistance(Damageable d1, Damageable d2) {
+	        	
+	        	Point P1 = d1.getLocation();
+	        	Point P2 = d2.getLocation();
+	        	int x1 = P1.x;
+	        	int y1 = P1.y;
+	        	int x2 = P2.x;
+	        	int y2 = P2.y;
+	        	return Math.abs(x2 - x1) + Math.abs(y2 - y1);
+	        	         
+	        }
 }

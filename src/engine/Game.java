@@ -232,9 +232,59 @@ private void placeCovers() {
 	 
 	 
 	 
-	 
 	 // new methods in M2
 	  
+	 // draft
+	 /*
+	 public void move(Direction d) 
+	 
+		 	1 : check KNOCKEDOUT
+	
+			2- check applied Effects preventing from moving
+			
+			2- check actionPoints
+			
+			3-checkEmptyCellAvilable
+			
+			if all succeds: do the following :
+			
+			1- change the location of the Champ
+			2- board[old champ location] = null
+			3- board[new champ location] = champ
+				 
+		 
+	 
+	 public void attack(Direction d){
+	 
+	 apply some of disarm and dodge logic here :
+			
+			1- check KNOCKEDOUT for hitting and hitted champions (just in case)
+			2-check appliedEffects preventing from attaking
+			3-check resources
+			4- get fist Damageable in range
+			     * if null: only deduct resources
+			     * if Not Null:  
+			              if cover : dealDamage,then deduct resources,then call checkIfDeadAndActAccordingally on cover        			             
+			              
+			              if champ : check blocking   effects
+			                         if exists,  deduct resources from the caster, and remove that blocking effect
+			                         if doesn't, deal damage(care for the 50 % extra damage between champion types) conditions,then deduct resources,the call checkIfDeadAndActAccordingally on attacked champ
+			 
+			
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 }
+	  
+	  
+	  
+	  */
+	 
 	 
 		  
      	
