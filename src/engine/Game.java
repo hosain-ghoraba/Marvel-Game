@@ -333,7 +333,7 @@ private void placeCovers() {
 		return null; //need to be modified
 		}
 		 
-		 return (Champion)turnOrder.remove() ;
+		 return (Champion)turnOrder.peekMin() ;
 		 
 	 }	 
 
