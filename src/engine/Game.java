@@ -233,9 +233,100 @@ private void placeCovers() {
 	 
 	 
 	 
-	 
 	 // new methods in M2
+	 
+	 public Player getCurrentPlayer() {
+		 Champion c = (Champion) turnOrder.peekMin();
+		 ArrayList<Champion> Team1 = firstPlayer.getTeam();
+		 ArrayList<Champion> Team2 = secondPlayer.getTeam();
+		 
+		 for(int i = 0 ; i < Team1.size() ; i++)
+			 if(Team1.get(i) == c)
+				 return firstPlayer;
+		 for(int i = 0 ; i < Team2.size() ; i++)
+			 if(Team2.get(i) == c)
+				 return secondPlayer;
+		 return null; // will never happen 
+	 }
+     public Player getWaitingPlayer() {
+    	 if(this.getCurrentPlayer() == firstPlayer)
+    		 return secondPlayer;
+    	 return firstPlayer;
+     }
+	 public void checkIfDeadAndActAccordingly(Damageable d) { // gaveOver not checked yet(if will ever check it here in this method, not in a GameAction methods
+   	  if(d.getCurrentHP() != 0)// IMPORTANT : will need also to check if condition = KNOCKOUT if removed the line " c.setCurrentHP(0) " from VILLIAN useLeaderAbility
+   		  return;	
+      if(d instanceof Cover)
+  			  board[((Cover)d).getLocation().x][((Cover)d).getLocation().y] = null;
+  	  else 
+  		  {
+  			  Champion c = (Champion) d;
+  			  board[c.getLocation().x][c.getLocation().y] = null;
+  			  c.setCondition(Condition.KNOCKEDOUT);// don't know if it adds something new, but just in case! 
+  			  ArrayList<Champion> attackedTeam = this.getWaitingPlayer().getTeam();
+  			  attackedTeam.remove(c);
+  		      
+  			  // if Team of c became Empty,then end the game ( how to end the game ?)..(maybe by throwing an exception, and catcher of it will display : gameover!)
+  		      if(attackedTeam.isEmpty()) // ( how to end the game ?), will ask gameRoom 
+  		      {		    	  
+  		    	  System.out.println("gameOver! winning player is :" + this.getCurrentPlayer().getName() );
+  		      }
+  		    	  
+  		   
+  		      
+  		  }
+   	
+   }
+	 
+	 
+	 // draft
+	 /*
+	 public void move(Direction d) 
+	 
+		 	1 : check KNOCKEDOUT
+	
+			2- check applied Effects preventing from moving
+			
+			2- check actionPoints
+			
+			3-checkEmptyCellAvilable
+			
+			if all succeds: do the following :
+			
+			1- change the location of the Champ
+			2- board[old champ location] = null
+			3- board[new champ location] = champ
+				 
+		 
+	 
+	 public void attack(Direction d){
+	 
+	 apply some of disarm and dodge logic here :
+			
+			1- check KNOCKEDOUT for hitting and hitted champions (just in case)
+			2-check appliedEffects preventing from attaking
+			3-check resources
+			4- get fist Damageable in range
+			     * if null: only deduct resources
+			     * if Not Null:  
+			              if cover : dealDamage,then deduct resources,then call checkIfDeadAndActAccordingally on cover        			             
+			              
+			              if champ : check blocking   effects
+			                         if exists,  deduct resources from the caster, and remove that blocking effect
+			                         if doesn't, deal damage(care for the 50 % extra damage between champion types) conditions,then deduct resources,the call checkIfDeadAndActAccordingally on attacked champ
+			 
+			
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 }
 	  
+<<<<<<< HEAD
 	 public Champion getCurrentChampion() {
 		if(turnOrder.isEmpty()) {
 		return null; //need to be modified
@@ -244,6 +335,13 @@ private void placeCovers() {
 		 return (Champion)turnOrder.remove() ;
 		 
 	 }	 
+=======
+	  
+	  
+	  */
+	 
+	 
+>>>>>>> branch 'master' of git@github.com:hosain-ghoraba/Game.git
 		  
      	
      
