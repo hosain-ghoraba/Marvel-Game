@@ -361,12 +361,70 @@ private void placeCovers() {
 		 
 		 
 	 }
-	 public void move(Direction d)
+	 public void move(Direction d) throws UnallowedMovementException
 	 {
 		 
-		 Champion c = getCurrentChampion() ; 
 		 
-		 
+		 Champion c = getCurrentChampion() ;
+			int x =c.getLocation().x ;
+			int y = c.getLocation().y ; 
+			
+			if(d.equals(Direction.RIGHT)) {
+		if(x<5) {
+			 if(boardlocationisevalid(x+1, y)) {
+				 
+				 c.setLocation(new Point(x+1,y));
+		         return ;	}
+			 
+		}
+		throw new UnallowedMovementException() ;}	 
+			 
+			
+			
+			
+			if(d.equals(Direction.LEFT)){
+				 if(x>0) {
+					 if(boardlocationisevalid(x-1, y)) {
+						 
+						 c.setLocation(new Point(x-1,y));
+				         return ; }}
+				 
+				 throw new UnallowedMovementException() ;
+			}
+			 
+			 if(d.equals(Direction.UP)) {
+				if(y<5) {
+	 if(boardlocationisevalid(x, y+1)) {
+						 
+						 c.setLocation(new Point(x,y+1));
+				         return ; }	
+					
+				} 
+				 
+				 
+				 
+				 
+				 
+				 throw new UnallowedMovementException() ;
+
+			 }
+			 
+			 if(d.equals(Direction.DOWN)) {
+					if(y>0) {
+		 if(boardlocationisevalid(x, y-1)) {
+							 
+							 c.setLocation(new Point(x,y-1));
+					         return ; }	
+						
+					} 
+					 
+					 
+					 
+					 
+					 
+					 throw new UnallowedMovementException() ;
+
+				 }	
 		 
 		 
 		 
@@ -417,66 +475,7 @@ private void placeCovers() {
 	 public void attack(Direction d) throws UnallowedMovementException 
 	 {	 
 		 
-		Champion c = getCurrentChampion() ;
-		int x =c.getLocation().x ;
-		int y = c.getLocation().y ; 
 		
-		if(d.equals(Direction.RIGHT)) {
-	if(x<5) {
-		 if(boardlocationisevalid(x+1, y)) {
-			 
-			 c.setLocation(new Point(x+1,y));
-	         return ;	}
-		 
-	}
-	throw new UnallowedMovementException() ;}	 
-		 
-		
-		
-		
-		if(d.equals(Direction.LEFT)){
-			 if(x>0) {
-				 if(boardlocationisevalid(x-1, y)) {
-					 
-					 c.setLocation(new Point(x-1,y));
-			         return ; }}
-			 
-			 throw new UnallowedMovementException() ;
-		}
-		 
-		 if(d.equals(Direction.UP)) {
-			if(y<5) {
- if(boardlocationisevalid(x, y+1)) {
-					 
-					 c.setLocation(new Point(x,y+1));
-			         return ; }	
-				
-			} 
-			 
-			 
-			 
-			 
-			 
-			 throw new UnallowedMovementException() ;
-
-		 }
-		 
-		 if(d.equals(Direction.DOWN)) {
-				if(y>0) {
-	 if(boardlocationisevalid(x, y-1)) {
-						 
-						 c.setLocation(new Point(x,y-1));
-				         return ; }	
-					
-				} 
-				 
-				 
-				 
-				 
-				 
-				 throw new UnallowedMovementException() ;
-
-			 }	
 		 
 		 
 		 
