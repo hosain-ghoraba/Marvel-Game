@@ -341,7 +341,6 @@ private void placeCovers() {
 	  */
 	 
 	 
->>>>>>> branch 'master' of git@github.com:hosain-ghoraba/Game.git
 		  
      	
      
