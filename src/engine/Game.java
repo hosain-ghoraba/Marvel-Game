@@ -1,3 +1,5 @@
+
+
 package engine;
 import exceptions.*;
 import model.world.*;
@@ -316,17 +318,16 @@ private void placeCovers() {
 			                         if doesn't, deal damage(care for the 50 % extra damage between champion types) conditions,then deduct resources,the call checkIfDeadAndActAccordingally on attacked champ
 			 
 			
+	 */
 	 
 	 
 	 
 	 
-		   
 	 
 	 
 	 
-	 }
-	  */
-
+	 
+	  
 	 public Champion getCurrentChampion() {
 		if(turnOrder.isEmpty()) {
 		return null; //need to be modified
@@ -338,10 +339,13 @@ private void placeCovers() {
 
 	  
 	  
-
+	  
 	 
 	 
-		    
+		  
+     	
+  
+     
 	 public Player checkGameOver() {
 		 if(firstPlayer.getTeam()==null) {
 			 return secondPlayer ;
@@ -351,14 +355,14 @@ private void placeCovers() {
 			 return firstPlayer ;
 			 
 		 }
-		return null ; 	 
+		return null ; 
+		 
+		 
 	 }
 
 
 
 }
 
-
-
-
-
+///kfjfrjfgjg
+//alo
