@@ -22,24 +22,8 @@ public class SomeStaticMethods {
 				return false;
 			}
            
-	        public static void checkIfDeadAndActAccordingly(Damageable d) {
-	        	  if(d.getCurrentHP() != 0)
-	        		  return;	
-	       		  if(d instanceof Cover)
-	       			  board[((Cover)d).getLocation().x][((Cover)d).getLocation().y] = null;// will think how to slove this compilation error
-	       		  else 
-	       		  {
-	       			  Champion c = (Champion)d;
-	       			  board[c.getLocation().x][c.getLocation().y] = null;// will think how to slove this compilation error
-	       		      c.setCondition(Condition.KNOCKEDOUT);
-	       		  //  remove the Champion from the PlayerTeam, and if Team became Empty,
-	       		  //     then gave over! (dont know how to over a game yet) 
-	       		  // checkGameOver and act accordingaly method    
-	       		  }
-            	
-            }
-	        // Code to calculate Manhattan distance(from geeks to geeks)
 
+	        // Code to calculate Manhattan distance(from geeks to geeks)
 	        static int calcDistance(Damageable d1, Damageable d2) {
 	        	
 	        	Point P1 = d1.getLocation();

@@ -28,15 +28,11 @@ public int getDamageAmount() {
 
 // Override abstract method
 
-// no done yet...must check if champion or coverd died after dealing damage
 public void execute(ArrayList<Damageable> targets) {
 	for (int i=0;i<targets.size();i++)
 	{
 		Damageable x = targets.get(i);
-	    x.setCurrentHP(x.getCurrentHP()-damageAmount);
-	    // must check if champion or coverd died after dealing damage
-	    SomeStaticMethods.checkIfDeadAndActAccordingly(x);
-	    
+	    x.setCurrentHP(x.getCurrentHP()-damageAmount);	    
 	}
 	
 }

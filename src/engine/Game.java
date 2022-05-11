@@ -233,7 +233,51 @@ private void placeCovers() {
 	 
 	 
 	 // new methods in M2
-	  
+	 
+	 public Player getCurrentPlayer() {
+		 Champion c = (Champion) turnOrder.peekMin();
+		 ArrayList<Champion> Team1 = firstPlayer.getTeam();
+		 ArrayList<Champion> Team2 = secondPlayer.getTeam();
+		 
+		 for(int i = 0 ; i < Team1.size() ; i++)
+			 if(Team1.get(i) == c)
+				 return firstPlayer;
+		 for(int i = 0 ; i < Team2.size() ; i++)
+			 if(Team2.get(i) == c)
+				 return secondPlayer;
+		 return null; // will never happen 
+	 }
+     public Player getWaitingPlayer() {
+    	 if(this.getCurrentPlayer() == firstPlayer)
+    		 return secondPlayer;
+    	 return firstPlayer;
+     }
+	 public void checkIfDeadAndActAccordingly(Damageable d) { // gaveOver not checked yet(if will ever check it here in this method, not in a GameAction methods
+   	  if(d.getCurrentHP() != 0)// IMPORTANT : will need also to check if condition = KNOCKOUT if removed the line " c.setCurrentHP(0) " from VILLIAN useLeaderAbility
+   		  return;	
+      if(d instanceof Cover)
+  			  board[((Cover)d).getLocation().x][((Cover)d).getLocation().y] = null;
+  	  else 
+  		  {
+  			  Champion c = (Champion) d;
+  			  board[c.getLocation().x][c.getLocation().y] = null;
+  			  c.setCondition(Condition.KNOCKEDOUT);// don't know if it adds something new, but just in case! 
+  			  ArrayList<Champion> attackedTeam = this.getWaitingPlayer().getTeam();
+  			  attackedTeam.remove(c);
+  		      
+  			  // if Team of c became Empty,then end the game ( how to end the game ?)..(maybe by throwing an exception, and catcher of it will display : gameover!)
+  		      if(attackedTeam.isEmpty()) // ( how to end the game ?), will ask gameRoom 
+  		      {		    	  
+  		    	  System.out.println("gameOver! winning player is :" + this.getCurrentPlayer().getName() );
+  		      }
+  		    	  
+  		   
+  		      
+  		  }
+   	
+   }
+	 
+	 
 	 // draft
 	 /*
 	 public void move(Direction d) 
