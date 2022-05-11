@@ -321,15 +321,6 @@ private void placeCovers() {
 			 
 			
 	 */
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	  
 	 public Champion getCurrentChampion() {
 		if(turnOrder.isEmpty()) {
 		return null; //need to be modified
@@ -337,34 +328,18 @@ private void placeCovers() {
 		 
 		 return (Champion)turnOrder.peekMin() ;
 		 
-	 }	 
-
-	  
-	  
-	  
+	 }	   
 	 
-	 
-		  
-     	
-  
-     
 	 public Player checkGameOver() {
-		 if(firstPlayer.getTeam().isEmpty()) {
-			 return secondPlayer ;
-			 
-		 }
-		 if(secondPlayer.getTeam().isEmpty()) {
-			 return firstPlayer ;
-			 
-		 }
-		return null ; 
-		 
-		 
+		 if(firstPlayer.getTeam().isEmpty()) 
+			 return secondPlayer;			 		 
+		 if(secondPlayer.getTeam().isEmpty()) 
+			 return firstPlayer ;			 	 
+		 return null ; 		 		 
 	 }
-	 public void move(Direction d) throws UnallowedMovementException
+	 
+     public void move(Direction d) throws UnallowedMovementException
 	 {
-		 
-		 
 		 Champion c = getCurrentChampion() ;
 			int x =c.getLocation().x ;
 			int y = c.getLocation().y ; 
@@ -462,7 +437,8 @@ private void placeCovers() {
 		 
 		 
 	 }
-	 public boolean boardlocationisevalid(int x , int y) {
+	 
+     public boolean boardlocationisevalid(int x , int y) {
 		 if(x>5 || y>5) {
 			 return false ; 
 		 }
@@ -471,9 +447,6 @@ private void placeCovers() {
 	
 		 return true ;
 	 }
-	 
-	 
-	 
 	 
 	 public void attack(Direction d) throws UnallowedMovementException 
 	 {	 
