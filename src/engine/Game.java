@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.xml.stream.Location;
+
 import model.effects.*;
 import model.abilities.Ability;
 import model.abilities.AreaOfEffect;
@@ -412,7 +414,7 @@ private void placeCovers() {
 	 
 	 
 	 
-	 public void attack(Direction d)
+	 public void attack(Direction d) throws UnallowedMovementException 
 	 {	 
 		 
 		Champion c = getCurrentChampion() ;
@@ -421,19 +423,60 @@ private void placeCovers() {
 		
 		if(d.equals(Direction.RIGHT)) {
 	if(x<5) {
+		 if(boardlocationisevalid(x+1, y)) {
+			 
+			 c.setLocation(new Point(x+1,y));
+	         return ;	}
+		 
+	}
+	throw new UnallowedMovementException() ;}	 
 		 
 		
-	}		
-	
-			
-			
+		
+		
+		if(d.equals(Direction.LEFT)){
+			 if(x>0) {
+				 if(boardlocationisevalid(x-1, y)) {
+					 
+					 c.setLocation(new Point(x-1,y));
+			         return ; }}
+			 
+			 throw new UnallowedMovementException() ;
 		}
 		 
+		 if(d.equals(Direction.UP)) {
+			if(y<5) {
+ if(boardlocationisevalid(x, y+1)) {
+					 
+					 c.setLocation(new Point(x,y+1));
+			         return ; }	
+				
+			} 
+			 
+			 
+			 
+			 
+			 
+			 throw new UnallowedMovementException() ;
+
+		 }
 		 
-		 
-		 
-		 
-			
+		 if(d.equals(Direction.DOWN)) {
+				if(y>0) {
+	 if(boardlocationisevalid(x, y-1)) {
+						 
+						 c.setLocation(new Point(x,y-1));
+				         return ; }	
+					
+				} 
+				 
+				 
+				 
+				 
+				 
+				 throw new UnallowedMovementException() ;
+
+			 }	
 		 
 		 
 		 
