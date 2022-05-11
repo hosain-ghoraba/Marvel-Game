@@ -320,13 +320,13 @@ private void placeCovers() {
 	 
 	 
 	 
-	 
+		   
 	 
 	 
 	 
 	 }
-	  
-<<<<<<< HEAD
+	  */
+
 	 public Champion getCurrentChampion() {
 		if(turnOrder.isEmpty()) {
 		return null; //need to be modified
@@ -335,10 +335,10 @@ private void placeCovers() {
 		 return (Champion)turnOrder.remove() ;
 		 
 	 }	 
-=======
+
 	  
 	  
-	  */
+
 	 
 	 
 		    
