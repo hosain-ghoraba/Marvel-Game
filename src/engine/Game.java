@@ -349,11 +349,11 @@ private void placeCovers() {
   
      
 	 public Player checkGameOver() {
-		 if(firstPlayer.getTeam()==null) {
+		 if(firstPlayer.getTeam().isEmpty()) {
 			 return secondPlayer ;
 			 
 		 }
-		 if(secondPlayer.getTeam()==null) {
+		 if(secondPlayer.getTeam().isEmpty()) {
 			 return firstPlayer ;
 			 
 		 }
