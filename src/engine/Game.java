@@ -316,6 +316,7 @@ private void placeCovers() {
 			                         if doesn't, deal damage(care for the 50 % extra damage between champion types) conditions,then deduct resources,the call checkIfDeadAndActAccordingally on attacked champ
 			 
 			
+	 */
 	 
 	 
 	 
@@ -324,9 +325,7 @@ private void placeCovers() {
 	 
 	 
 	 
-	 }
 	  
-<<<<<<< HEAD
 	 public Champion getCurrentChampion() {
 		if(turnOrder.isEmpty()) {
 		return null; //need to be modified
@@ -335,17 +334,15 @@ private void placeCovers() {
 		 return (Champion)turnOrder.remove() ;
 		 
 	 }	 
-=======
+
 	  
 	  
-	  */
+	  
 	 
 	 
 		  
      	
-<<<<<<< HEAD
   
-======= ///jjjjjjjjjjjjjjj
      
 	 public Player checkGameOver() {
 		 if(firstPlayer.getTeam()==null) {
@@ -361,12 +358,11 @@ private void placeCovers() {
 		 
 	 }
 
->>>>>>> branch 'master' of git@github.com:hosain-ghoraba/Game.git
 
 
 }
 
-
+///kfjfrjfgjg
 
 
 
