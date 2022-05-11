@@ -332,9 +332,7 @@ private void placeCovers() {
 	 
 		  
      	
-     
-
-
+  
 
 
 }
