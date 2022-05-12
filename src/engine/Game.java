@@ -290,12 +290,41 @@ private void placeCovers() {
   		  }
    	
    }
-	 public Damageable getFirstDamageableInRange(int direction, int range) {
+	 public Damageable getFirstDamageableInRange(Direction direction, int range) {
 		 
-		 Champion c = getCurrentChampion();
-		 return null;
+		 int x_movement = 0;
+		 int y_movement = 0;	
+		 
+		 switch(direction) 
+		 {
+		 case UP : y_movement = 1; break ;
+		 case DOWN : y_movement = -1; break ;
+		 case RIGHT : x_movement = 1; break ;
+		 case LEFT : x_movement = -1; break ;		 
+		 }
+		 
+		 int x_start = getCurrentChampion().getLocation().x;
+		 int y_start = getCurrentChampion().getLocation().y;
+		 
+		 for(int i = 0 ; i < range ; i++)
+		 {		 
+			 int x_current = x_start + x_movement;
+			 int y_current = y_start + y_movement;
+			 
+			 boolean outOfBoard = x_current > 4 || y_current > 4 || x_current < 0 || y_current < 0;
+			 if(outOfBoard)
+				 return null;
+			 Object CurrentLocation = board[x_current][y_current];
+			 if( CurrentLocation != null)
+				 return (Damageable)(CurrentLocation);
+			 x_start = x_current;
+			 y_start = y_current;
+		 }
+		 return null; // will happen in case the for loop terminated, ( in case all cells in range were checked, and they were all null)
+
 		 
 	 }
+	 
 	 // required Methods in M2
 	 
 	 public Champion getCurrentChampion() {

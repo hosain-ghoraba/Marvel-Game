@@ -35,4 +35,8 @@ public class SomeStaticMethods {
 	        	return Math.abs(x2 - x1) + Math.abs(y2 - y1);
 	        	         
 	        }
+	        public static void main(String[] args) {
+				Object[][] x = new Object [5][5];
+				System.out.println(x[3][4]);
+			}
 }
