@@ -290,7 +290,12 @@ private void placeCovers() {
   		  }
    	
    }
-	 
+	 public Damageable getFirstDamageableInRange(int direction, int range) {
+		 
+		 Champion c = getCurrentChampion();
+		 return null;
+		 
+	 }
 	 // required Methods in M2
 	 
 	 public Champion getCurrentChampion() {
@@ -308,11 +313,11 @@ private void placeCovers() {
 			 return firstPlayer ;			 	 
 		 return null ; 		 		 
 	 }
-     public void move(Direction d) throws ChampionDisarmedException , NotEnoughResourcesException , UnallowedMovementException
+     public void move(Direction d) throws NotEnoughResourcesException , UnallowedMovementException
 	 {	 
 		 Champion c = getCurrentChampion() ;	 
 		 if(c.getCondition() == Condition.ROOTED) 
-			 throw new ChampionDisarmedException();
+			 throw new UnallowedMovementException();
 	     if(c.getCurrentActionPoints() < 1)
 	    	 throw new NotEnoughResourcesException();
 	     
@@ -337,7 +342,26 @@ private void placeCovers() {
 		 c.setLocation(new Point(new_x,new_y));
 		 c.setCurrentActionPoints(c.getCurrentActionPoints() - 1);	 
 	 }
-	 public void attack(Direction d) {
+	 public void attack(Direction d) throws NotEnoughResourcesException {
+		 /*
+			3-check resources // done
+			4- get fist Damageable in range
+			     * if null: only deduct resources
+			     * if Not Null:  
+			              if cover : dealDamage,then deduct resources,then call checkIfDeadAndActAccordingally on cover        			             
+			              
+			              if champ : check blocking   effects
+			                         if exists,  deduct resources from the caster, and remove that blocking effect
+			                         if doesn't, deal damage(care for the 50 % extra damage between champion types) conditions,then deduct resources,the call checkIfDeadAndActAccordingally on attacked champ
+			 
+			
+	 */
+		 Champion c = getCurrentChampion();
+		 if(c.getCurrentActionPoints() < 2)
+			 throw new NotEnoughResourcesException();
+         
+		 
+		 
 	 }
 	 
 	 public void castAbility(Ability a)
