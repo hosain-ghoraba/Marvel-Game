@@ -239,6 +239,8 @@ private void placeCovers() {
 	 
 	 // new methods in M2
 	 
+	 // helper methods ( not required in M2)
+	 
 	 public Player getCurrentPlayer() {
 		 Champion c = (Champion) turnOrder.peekMin();
 		 ArrayList<Champion> Team1 = firstPlayer.getTeam();
@@ -256,6 +258,13 @@ private void placeCovers() {
     	 if(this.getCurrentPlayer() == firstPlayer)
     		 return secondPlayer;
     	 return firstPlayer;
+     }
+     public boolean boardLocationIsvalid(int x , int y) {
+    	 if(x < 0 || y < 0 || x > 4 || y > 4) 
+    		 return false ; 		 		 
+    	 if(board[x][y] != null) 
+    		 return false ;	
+    	 return true ;
      }
 	 public void checkIfDeadAndActAccordingly(Damageable d) { // gaveOver not checked yet(if will ever check it here in this method, not in a GameAction methods
    	  if(d.getCurrentHP() != 0)// IMPORTANT : will need also to check if condition = KNOCKOUT if removed the line " c.setCurrentHP(0) " from VILLIAN useLeaderAbility
@@ -282,45 +291,8 @@ private void placeCovers() {
    	
    }
 	 
+	 // required Methods in M2
 	 
-	 // draft
-	 /*
-	 public void move(Direction d) 
-	 
-		 	1 : check KNOCKEDOUT
-	
-			2- check applied Effects preventing from moving
-			
-			2- check actionPoints
-			
-			3-checkEmptyCellAvilable
-			
-			if all succeds: do the following :
-			
-			1- change the location of the Champ
-			2- board[old champ location] = null
-			3- board[new champ location] = champ
-				 
-		 
-	 
-	 public void attack(Direction d){
-	 
-	 apply some of disarm and dodge logic here :
-			
-			1- check KNOCKEDOUT for hitting and hitted champions (just in case)
-			2-check appliedEffects preventing from attaking
-			3-check resources
-			4- get fist Damageable in range
-			     * if null: only deduct resources
-			     * if Not Null:  
-			              if cover : dealDamage,then deduct resources,then call checkIfDeadAndActAccordingally on cover        			             
-			              
-			              if champ : check blocking   effects
-			                         if exists,  deduct resources from the caster, and remove that blocking effect
-			                         if doesn't, deal damage(care for the 50 % extra damage between champion types) conditions,then deduct resources,the call checkIfDeadAndActAccordingally on attacked champ
-			 
-			
-	 */
 	 public Champion getCurrentChampion() {
 		if(turnOrder.isEmpty()) {
 		return null; //need to be modified
@@ -329,7 +301,6 @@ private void placeCovers() {
 		 return (Champion)turnOrder.peekMin() ;
 		 
 	 }	   
-	 
 	 public Player checkGameOver() {
 		 if(firstPlayer.getTeam().isEmpty()) 
 			 return secondPlayer;			 		 
@@ -337,146 +308,37 @@ private void placeCovers() {
 			 return firstPlayer ;			 	 
 		 return null ; 		 		 
 	 }
-	 
-     public void move(Direction d) throws UnallowedMovementException
-	 {
-		 Champion c = getCurrentChampion() ;
-			int x =c.getLocation().x ;
-			int y = c.getLocation().y ; 
-			
-			if(d.equals(Direction.RIGHT)) {
-		if(x<4) {
-			 if(boardlocationisevalid(x+1, y)) {
-				 board[x][y] = null ; 
-				 c.setLocation(new Point(x+1,y));
-		         return ;	}
-			 
-		}
-		throw new UnallowedMovementException() ;}	 
-			 
-			
-			
-			
-			if(d.equals(Direction.LEFT)){
-				 if(x>0) {
-					 if(boardlocationisevalid(x-1, y)) {
-						 board[x][y] = null ; 
-
-						 c.setLocation(new Point(x-1,y));
-				         return ; }}
-				 
-				 throw new UnallowedMovementException() ;
-			}
-			 
-			 if(d.equals(Direction.UP)) {
-				if(y<5) {
-	 if(boardlocationisevalid(x, y+1)) {
-		 board[x][y] = null ; 
-
-						 c.setLocation(new Point(x,y+1));
-				         return ; }	
-					
-				} 
-				 
-				 
-				 
-				 
-				 
-				 throw new UnallowedMovementException() ;
-
-			 }
-			 
-			 if(d.equals(Direction.DOWN)) {
-					if(y>0) {
-		 if(boardlocationisevalid(x, y-1)) {
-			 board[x][y] = null ; 
-
-							 c.setLocation(new Point(x,y-1));
-					         return ; }	
-						
-					} 
-					 
-					 
-					 
-					 
-					 
-					 throw new UnallowedMovementException() ;
-
-				 }	
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-	
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-	 }
-	 
-     public boolean boardlocationisevalid(int x , int y) {
-		 if(x>5 || y>5) {
-			 return false ; 
-		 }
-		 
-		 if(board[x][y]!=null) return false ;
-	
-		 return true ;
-	 }
-	 
-	 public void attack(Direction d) throws UnallowedMovementException 
+     public void move(Direction d) throws ChampionDisarmedException , NotEnoughResourcesException , UnallowedMovementException
 	 {	 
+		 Champion c = getCurrentChampion() ;	 
+		 if(c.getCondition() == Condition.ROOTED) 
+			 throw new ChampionDisarmedException();
+	     if(c.getCurrentActionPoints() < 1)
+	    	 throw new NotEnoughResourcesException("you dont have enough action points to move");
+	     
+	     int old_x = c.getLocation().x;
+	     int old_y = c.getLocation().y;
+		 int new_x = old_x ;
+		 int new_y = old_y ; 
 		 
-		
+		 if(d.equals(Direction.UP)) 		
+			 new_y ++;		 
+		 if(d.equals(Direction.DOWN)) 
+		     new_y --;		 
+		 if(d.equals(Direction.RIGHT)) 
+		     new_x ++;	
+		 if(d.equals(Direction.LEFT)) 
+             new_x --;
+		 	 
+		 if( ! boardLocationIsvalid(new_x, new_y) )
+		     throw new UnallowedMovementException();
 		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
+		 board[old_x][old_y] = null;
+		 board[new_x][new_y] = c ;  
+		 c.setLocation(new Point(new_x,new_y));
+		 c.setCurrentActionPoints(c.getCurrentActionPoints() - 1);	 
+	 }
+	 public void attack(Direction d) {
 	 }
 	 
 	 public void castAbility(Ability a)
@@ -634,45 +496,9 @@ private void placeCovers() {
 		 
 		 
 	 }
-	 
-	 
+	  
 	 public void endTurn()
-	 {	 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-			
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
+	 {	 		 
 	 }
 	 
 	 private void prepareChampionTurns()
@@ -714,8 +540,4 @@ private void placeCovers() {
 		 
 	 }
 
-
 }
-
-///kfjfrjfgjg
-//kk
