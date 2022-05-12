@@ -314,21 +314,20 @@ private void placeCovers() {
 		 if(c.getCondition() == Condition.ROOTED) 
 			 throw new ChampionDisarmedException();
 	     if(c.getCurrentActionPoints() < 1)
-	    	 throw new NotEnoughResourcesException("you dont have enough action points to move");
+	    	 throw new NotEnoughResourcesException();
 	     
 	     int old_x = c.getLocation().x;
 	     int old_y = c.getLocation().y;
 		 int new_x = old_x ;
 		 int new_y = old_y ; 
 		 
-		 if(d.equals(Direction.UP)) 		
-			 new_y ++;		 
-		 if(d.equals(Direction.DOWN)) 
-		     new_y --;		 
-		 if(d.equals(Direction.RIGHT)) 
-		     new_x ++;	
-		 if(d.equals(Direction.LEFT)) 
-             new_x --;
+		 switch(d) 
+		 {
+		 case UP : new_y ++ ; break;
+		 case DOWN : new_y -- ; break;
+		 case RIGHT : new_x ++ ; break;
+		 case LEFT : new_x -- ; break;		 
+		 }
 		 	 
 		 if( ! boardLocationIsvalid(new_x, new_y) )
 		     throw new UnallowedMovementException();
