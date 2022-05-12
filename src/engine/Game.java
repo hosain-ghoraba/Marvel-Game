@@ -317,8 +317,8 @@ private void placeCovers() {
 			 Object CurrentLocation = board[x_current][y_current];
 			 if( CurrentLocation != null)
 				 return (Damageable)(CurrentLocation);
-			 x_start = x_current;
-			 y_start = y_current;
+			 x_start = x_current; // done so that the x_current be updated in the start of the loop
+			 y_start = y_current; // done so that the y_current be updated in the start of the loop
 		 }
 		 return null; // will happen in case the for loop terminated, ( in case all cells in range were checked, and they were all null)
 
@@ -393,7 +393,7 @@ private void placeCovers() {
 		 
 	 }
 	 
-	 public void castAbility(Ability a)
+	 public void castAbility(Ability a) // use getFirstDamageableInRange 
 	 {	 
 		 
 		 
