@@ -290,6 +290,40 @@ private void placeCovers() {
   		  }
    	
    }
+	 public Damageable getFirstDamageableInRange(Direction direction, int range) {
+		 
+		 int x_movement = 0;
+		 int y_movement = 0;	
+		 
+		 switch(direction) 
+		 {
+		 case UP : y_movement = 1; break ;
+		 case DOWN : y_movement = -1; break ;
+		 case RIGHT : x_movement = 1; break ;
+		 case LEFT : x_movement = -1; break ;		 
+		 }
+		 
+		 int x_start = getCurrentChampion().getLocation().x;
+		 int y_start = getCurrentChampion().getLocation().y;
+		 
+		 for(int i = 0 ; i < range ; i++)
+		 {		 
+			 int x_current = x_start + x_movement;
+			 int y_current = y_start + y_movement;
+			 
+			 boolean outOfBoard = x_current > 4 || y_current > 4 || x_current < 0 || y_current < 0;
+			 if(outOfBoard)
+				 return null;
+			 Object CurrentLocation = board[x_current][y_current];
+			 if( CurrentLocation != null)
+				 return (Damageable)(CurrentLocation);
+			 x_start = x_current; // done so that the x_current be updated in the start of the loop
+			 y_start = y_current; // done so that the y_current be updated in the start of the loop
+		 }
+		 return null; // will happen in case the for loop terminated, ( in case all cells in range were checked, and they were all null)
+
+		 
+	 }
 	 
 	 // required Methods in M2
 	 
@@ -308,11 +342,11 @@ private void placeCovers() {
 			 return firstPlayer ;			 	 
 		 return null ; 		 		 
 	 }
-     public void move(Direction d) throws ChampionDisarmedException , NotEnoughResourcesException , UnallowedMovementException
+     public void move(Direction d) throws NotEnoughResourcesException , UnallowedMovementException
 	 {	 
 		 Champion c = getCurrentChampion() ;	 
 		 if(c.getCondition() == Condition.ROOTED) 
-			 throw new ChampionDisarmedException();
+			 throw new UnallowedMovementException();
 	     if(c.getCurrentActionPoints() < 1)
 	    	 throw new NotEnoughResourcesException();
 	     
@@ -337,10 +371,29 @@ private void placeCovers() {
 		 c.setLocation(new Point(new_x,new_y));
 		 c.setCurrentActionPoints(c.getCurrentActionPoints() - 1);	 
 	 }
-	 public void attack(Direction d) {
+	 public void attack(Direction d) throws NotEnoughResourcesException {
+		 /*
+			3-check resources // done
+			4- get fist Damageable in range
+			     * if null: only deduct resources
+			     * if Not Null:  
+			              if cover : dealDamage,then deduct resources,then call checkIfDeadAndActAccordingally on cover        			             
+			              
+			              if champ : check blocking   effects
+			                         if exists,  deduct resources from the caster, and remove that blocking effect
+			                         if doesn't, deal damage(care for the 50 % extra damage between champion types) conditions,then deduct resources,the call checkIfDeadAndActAccordingally on attacked champ
+			 
+			
+	 */
+		 Champion c = getCurrentChampion();
+		 if(c.getCurrentActionPoints() < 2)
+			 throw new NotEnoughResourcesException();
+         
+		 
+		 
 	 }
 	 
-	 public void castAbility(Ability a)
+	 public void castAbility(Ability a) // use getFirstDamageableInRange 
 	 {	 
 		 
 		 
