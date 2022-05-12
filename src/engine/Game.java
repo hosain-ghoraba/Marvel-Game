@@ -379,9 +379,45 @@ private void placeCovers() {
 		 
 	 }
 	 
-	 public void castAbility(Ability a, Direction d)
-	 {	 
+	 public void checkAbilityResources (Champion c , Ability a) throws NotEnoughResourcesException 
+	 {
+		 if (c.getCurrentActionPoints()<a.getRequiredActionPoints())
+		 {
+			 throw new NotEnoughResourcesException ();
+		 }
+		 if (c.getMana()<a.getManaCost())
+		 {
+			 throw new NotEnoughResourcesException ();
+		 }
 		 
+		
+	 }
+	
+	 public void apply_ability_cost (Champion c,Ability a)
+	 {
+		 c.setCurrentActionPoints(c.getCurrentActionPoints()-a.getRequiredActionPoints());
+		 c.setMana(c.getMana()-a.getManaCost());
+		 
+	 }
+	 public void castAbility(Ability a, Direction d) throws NotEnoughResourcesException, AbilityUseException
+	 {	 
+		 checkAbilityResources(this.getCurrentChampion(), a);
+		  
+		 if (d==Direction.RIGHT)
+		 {
+			 int cast_location = (this.getCurrentChampion().getLocation().x) +1 ;
+			 
+			 if (cast_location>4 )
+			 {
+				 throw new AbilityUseException();
+			 }
+			 if (boardLocationIsvalid(cast_location, this.getCurrentChampion().getLocation().y))
+			 {
+				apply_ability_cost(this.getCurrentChampion(), a);
+				this.getCurrentChampion().getAbilities().remove(a);
+				
+			 }
+		 }
 		 
 		 
 		 
@@ -418,9 +454,9 @@ private void placeCovers() {
 		 
 	 }
 	 
-	 public void castAbility(Ability a, int x, int y)
+	 public void castAbility(Ability a, int x, int y) throws NotEnoughResourcesException
 	 {	 
-		 
+		 checkAbilityResources(this.getCurrentChampion(), a);
 		 
 		 
 		 
