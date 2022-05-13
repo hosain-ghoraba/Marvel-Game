@@ -372,7 +372,7 @@ private void placeCovers() {
 		return null; // i think it will never happen, because the endTurn method will handle this case
 	 }
 	 public Player checkGameOver() {
-         		 
+         		  
 		 boolean all_Team1_is_dead = true;
 		 for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++)
 		 {			 
