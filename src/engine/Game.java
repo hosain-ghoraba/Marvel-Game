@@ -372,11 +372,30 @@ private void placeCovers() {
 		return null; // i think it will never happen, because the endTurn method will handle this case
 	 }
 	 public Player checkGameOver() {
-		 if(firstPlayer.getTeam().isEmpty()) 
-			 return secondPlayer;			 		 
-		 if(secondPlayer.getTeam().isEmpty()) 
-			 return firstPlayer ;			 	 
-		 return null ; 		 		 
+         		 
+		 boolean all_Team1_is_dead = true;
+		 for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++)
+		 {			 
+			 Condition cond = firstPlayer.getTeam().get(i).getCondition();
+			 if(cond != Condition.KNOCKEDOUT)
+				 all_Team1_is_dead = false;			 
+		 }
+		 if(all_Team1_is_dead)
+			 return secondPlayer;
+		 
+		 boolean all_Team2_is_dead = true;
+		 for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++)
+		 {			 
+			 Condition cond = secondPlayer.getTeam().get(i).getCondition();
+			 if(cond != Condition.KNOCKEDOUT)
+				 all_Team2_is_dead = false;			 
+		 }
+		 if(all_Team2_is_dead)
+			 return firstPlayer;
+		 
+		 return null;
+		 
+      		 
 	 }
      public void move(Direction d) throws NotEnoughResourcesException , UnallowedMovementException
 	 {	 
@@ -659,15 +678,12 @@ for(int i=0 ;i<x.getAppliedEffects().size();i++) {// decrease the duration by 1 
 		
 	    for(int i =0 ; i<firstPlayer.getTeam().size();i++)    
 			 if(!firstPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
-			          turnOrder.insert(firstPlayer.getTeam().get(i));
-			 else 
-				 firstPlayer.getTeam().remove(i);	//not sure		 
+			          turnOrder.insert(firstPlayer.getTeam().get(i));	 
 	    
 	    for(int i =0 ; i<secondPlayer.getTeam().size();i++) 	    
 			 if(!secondPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
 			          turnOrder.insert(secondPlayer.getTeam().get(i));		
-			 else 
-				 secondPlayer.getTeam().remove(i); //not sure
+
 	 }
 
 }
