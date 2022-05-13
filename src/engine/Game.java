@@ -461,14 +461,10 @@ private void placeCovers() {
 		 
 	 }
 	 
-	 public void castAbility(Ability a)
+	 public void castAbility(Ability a) 
 	 {	 
-		 
-		 
-		 
-		 
-		 
-		 
+		  
+	 	 
 		 
 		 
 		 
@@ -501,9 +497,8 @@ private void placeCovers() {
 	 }
 	 
 	 public void castAbility(Ability a, Direction d)
-	 {	 
-		 
-		 
+	 { 
+		  
 		 
 		 
 		 

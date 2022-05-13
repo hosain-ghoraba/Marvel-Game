@@ -19,7 +19,7 @@ public class PowerUp extends Effect {
 		
 		for(int i = 0 ; i < c.getAbilities().size() ; i++)
 		{
-			Ability current = (Ability) c.getAbilities().get(i);
+			Ability current =  c.getAbilities().get(i);
 			if(current instanceof DamagingAbility)
 			{
 			  int damage = ((DamagingAbility) current).getDamageAmount();
