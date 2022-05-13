@@ -450,7 +450,7 @@ private void placeCovers() {
 	 
 	 public void castAbility(Ability a) // use getFirstDamageableInRange 
 	 {	 
-		 
+		  
 		 
 		 
 		 
