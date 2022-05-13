@@ -331,6 +331,8 @@ private void placeCovers() {
 		if(turnOrder.isEmpty()) {
 		return null; //need to be modified
 		}
+		
+			 
 		 
 		 return (Champion)turnOrder.peekMin() ;
 		 
@@ -586,16 +588,71 @@ private void placeCovers() {
 	 }
 	  
 	 public void endTurn()
-	 {	 		 
+	 {	 	
+		 turnOrder.remove() ;
+ 		
+		 
+		 if(turnOrder.isEmpty()) {
+			 prepareChampionTurns();
+			 
+		}
+		 
+		//while loop to skip inactive and knocked out champions 
+while(((Champion)turnOrder.peekMin()).getCondition().equals(Condition.KNOCKEDOUT) || ((Champion)turnOrder.peekMin()).getCondition().equals(Condition.INACTIVE))
+	turnOrder.remove() ;
+		 
+Champion x =getCurrentChampion() ;
+x.setCurrentActionPoints(x.getMaxActionPointsPerTurn());
+
+for(int i = 0 ; i< x.getAbilities().size();i++) {
+	x.getAbilities().get(i).setCurrentCooldown(x.getAbilities().get(i).getCurrentCooldown()-1);
+	
+}
+for(int i=0 ;i<x.getAppliedEffects().size();i++) {
+	x.getAppliedEffects().get(i).setDuration(x.getAppliedEffects().get(i).getDuration()-1);
+	
+	
+}
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
 	 }
 	 
 	 private void prepareChampionTurns()
 	 {	 
+		if(firstPlayer.getTeam().isEmpty() || secondPlayer.getTeam().isEmpty()) {
+			
+			checkGameOver() ;
+			return ; 
+			
+		}
 		 
 		 
+	 for(int i =0 ; i<firstPlayer.getTeam().size();i++) {
+			 if(!firstPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
+			          turnOrder.insert(firstPlayer.getTeam().get(i));
+			 else 
+				 firstPlayer.getTeam().remove(i);
+			 
+		 }
 		 
-		 
-		 
+	 
+	 for(int i =0 ; i<secondPlayer.getTeam().size();i++) {
+			 if(!secondPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
+			          turnOrder.insert(secondPlayer.getTeam().get(i));
+		
+			 else 
+				 secondPlayer.getTeam().remove(i);
+			 
+			 
+		 } 
+	 
 		 
 		 
 		 

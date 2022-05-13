@@ -16,6 +16,10 @@ public abstract class Effect implements Cloneable {
 	}
 ///////// setters	
 	public void setDuration(int duration) {
+		if(duration<0) {
+			this.duration=0;
+			return ;
+		}
 		this.duration = duration;
 	}
 	
