@@ -360,11 +360,11 @@ private void placeCovers() {
 	 
  	 public Champion getCurrentChampion() {
 	
-		while(! turnOrder.isEmpty() ) // gets the first non INCATIVE champion in the queue
+		while(! turnOrder.isEmpty() ) // gets the first non INCATIVE champion in the queue // it is already done in  end turn (darwish)
 		{
 			Champion currentChamp = (Champion) turnOrder.peekMin();
 			Condition cond = currentChamp.getCondition();
-	        if(cond == Condition.KNOCKEDOUT || cond == Condition.INACTIVE)
+	        if(cond == Condition.KNOCKEDOUT || cond == Condition.INACTIVE)   
 	        	turnOrder.remove();
 	        else
 	        	return currentChamp;	 
@@ -615,20 +615,21 @@ private void placeCovers() {
 		 if(turnOrder.isEmpty()) {
 			 prepareChampionTurns();
 			 // shouldn't be a return statement here ? (hosain)
-		}
+		//no , to prepare the first champion in the new turn 
+		 }
 		 
 		//while loop to skip inactive and knocked out champions 
 while(((Champion)turnOrder.peekMin()).getCondition().equals(Condition.KNOCKEDOUT) || ((Champion)turnOrder.peekMin()).getCondition().equals(Condition.INACTIVE))
 	turnOrder.remove() ;
 		 
 Champion x =getCurrentChampion() ;
-x.setCurrentActionPoints(x.getMaxActionPointsPerTurn());
+x.setCurrentActionPoints(x.getMaxActionPointsPerTurn()); //maxmize current action points for the new turn
 
-for(int i = 0 ; i< x.getAbilities().size();i++) {
+for(int i = 0 ; i< x.getAbilities().size();i++) {// decrease the cooldown by 1 .see ms1 definition of current cool down
 	x.getAbilities().get(i).setCurrentCooldown(x.getAbilities().get(i).getCurrentCooldown()-1);
 	
 }
-for(int i=0 ;i<x.getAppliedEffects().size();i++) {
+for(int i=0 ;i<x.getAppliedEffects().size();i++) {// decrease the duration by 1 .see ms1 definition of current duration
 	x.getAppliedEffects().get(i).setDuration(x.getAppliedEffects().get(i).getDuration()-1);
 	
 	
@@ -649,21 +650,24 @@ for(int i=0 ;i<x.getAppliedEffects().size();i++) {
 		if(firstPlayer.getTeam().isEmpty() || secondPlayer.getTeam().isEmpty()) // i think this check 
 		// is not here, it is in checkIfDead (hosain)
 		{			
-			checkGameOver() ; // don't know how this should be done ( hosain)
+			checkGameOver() ; // don't know how this should be done ( hosain) 
 			return ; 			
 		}
+		
+		if(checkGameOver()==null) return ; ///i think this could work
+		
 		
 	    for(int i =0 ; i<firstPlayer.getTeam().size();i++)    
 			 if(!firstPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
 			          turnOrder.insert(firstPlayer.getTeam().get(i));
 			 else 
-				 firstPlayer.getTeam().remove(i);			 
+				 firstPlayer.getTeam().remove(i);	//not sure		 
 	    
 	    for(int i =0 ; i<secondPlayer.getTeam().size();i++) 	    
 			 if(!secondPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
 			          turnOrder.insert(secondPlayer.getTeam().get(i));		
 			 else 
-				 secondPlayer.getTeam().remove(i);
+				 secondPlayer.getTeam().remove(i); //not sure
 	 }
 
 }
