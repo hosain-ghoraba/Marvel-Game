@@ -64,7 +64,7 @@ public AreaOfEffect getCastArea() {
 
 /// new in M2
 
-public abstract void execute(ArrayList<Damageable> targets);
+public abstract void execute(ArrayList<Damageable> targets) throws CloneNotSupportedException;
 
 public Object clone() throws CloneNotSupportedException {
 	return super.clone();
