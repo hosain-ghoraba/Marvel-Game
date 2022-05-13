@@ -312,15 +312,15 @@ private void placeCovers() {
    }
 	 public Damageable getFirstDamageableInRange(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
 	 {
-		 int x_movement = 0;
-		 int y_movement = 0;	
+		 int vertical_movement = 0;
+		 int horizontal_movement = 0;	
 		 
 		 switch(direction) 
 		 {
-		 case UP : y_movement = 1; break ;
-		 case DOWN : y_movement = -1; break ;
-		 case RIGHT : x_movement = 1; break ;
-		 case LEFT : x_movement = -1; break ;		 
+		 case UP : vertical_movement = 1; break ;
+		 case DOWN : vertical_movement = -1; break ;
+		 case RIGHT : horizontal_movement = 1; break ;
+		 case LEFT : horizontal_movement = -1; break ;		 
 		 }
 		 
 		 int x_start = getCurrentChampion().getLocation().x;
@@ -328,8 +328,8 @@ private void placeCovers() {
 		 
 		 for(int i = 0 ; i < range ; i++)
 		 {		 
-			 int x_current = x_start + x_movement;
-			 int y_current = y_start + y_movement;
+			 int x_current = x_start + vertical_movement;
+			 int y_current = y_start + horizontal_movement;
 			 
 			 boolean outOfBoard = x_current > 4 || y_current > 4 || x_current < 0 || y_current < 0;
 			 if(outOfBoard)
@@ -393,10 +393,10 @@ private void placeCovers() {
 		 
 		 switch(d) 
 		 {
-		 case UP : new_y ++ ; break;
-		 case DOWN : new_y -- ; break;
-		 case RIGHT : new_x ++ ; break;
-		 case LEFT : new_x -- ; break;		 
+		 case UP : new_x ++ ; break;
+		 case DOWN : new_x -- ; break;
+		 case RIGHT : new_y ++ ; break;
+		 case LEFT : new_y -- ; break;		 
 		 }
 		 	 
 		 if( ! boardLocationIsvalidAndEmpty(new_x, new_y) )
