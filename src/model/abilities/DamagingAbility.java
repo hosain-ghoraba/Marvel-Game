@@ -2,7 +2,6 @@ package model.abilities;
 
 import java.util.ArrayList;
 
-import engine.SomeStaticMethods;
 import model.world.Champion;
 import model.world.Damageable;
 

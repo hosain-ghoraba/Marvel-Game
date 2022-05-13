@@ -10,7 +10,7 @@ import model.effects.Root;
 import model.effects.Stun;
 import engine.Game;
 import engine.Player;
-import engine.SomeStaticMethods;
+
 
 
 public abstract class Champion implements Comparable,Damageable,Cloneable {
@@ -89,16 +89,16 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 			return;
 		    }
 		if(condition == Condition.ROOTED)
-            if(! SomeStaticMethods.doesEffectExist(appliedEffects,"Stun"))
+            if(! Game.doesEffectExist(appliedEffects,"Stun"))
 	            {
 	            this.condition = Condition.ROOTED;
 	            return;
 	            }
 		if(condition == Condition.ACTIVE)// will only happen in remove method in (Root) and (Stun) classes 
 			{
-			if(SomeStaticMethods.doesEffectExist(appliedEffects,"Stun"))			
+			if(Game.doesEffectExist(appliedEffects,"Stun"))			
 					return;				
-			if (SomeStaticMethods.doesEffectExist(appliedEffects,"Root"))
+			if (Game.doesEffectExist(appliedEffects,"Root"))
 				{
 					this.condition = Condition.ROOTED;
 					return;
@@ -166,7 +166,7 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 	if (speed > ((Champion)o).speed ) return -1;
 	if (speed < ((Champion)o).speed ) return 1;
 	else 	
-     return x.name.compareTo(name) ; // dont know if should multiply the result by -1...he didn't clear this point, he only said : compare the champions names if their speeds are identical. we will know anyway in public tests     	
+     return -1 * x.name.compareTo(name) ; // dont know if should multiply the result by -1...he didn't clear this point, he only said : compare the champions names if their speeds are identical. we will know anyway in public tests     	
 	}
 
 	  

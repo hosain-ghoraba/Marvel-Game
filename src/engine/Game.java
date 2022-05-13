@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.xml.stream.Location;
+
 import model.effects.*;
 import model.abilities.Ability;
 import model.abilities.AreaOfEffect;
@@ -237,6 +239,28 @@ private void placeCovers() {
 	 
 	 // new methods in M2
 	 
+	 // collection of  helper methods used here and outside(in other classes) ( not required in M2)
+     public static boolean doesEffectExist(ArrayList<Effect> list,String EffectName) {
+			for(int i = 0 ; i < list.size() ; i++)
+			{
+				if(list.get(i).getName().equals(EffectName))
+					return true;
+			    i++;
+			}
+			return false;
+		}
+     public static int calcDistance(Damageable d1, Damageable d2)// used when casting ability
+     {
+     	
+     	Point P1 = d1.getLocation();
+     	Point P2 = d2.getLocation();
+     	int x1 = P1.x;
+     	int y1 = P1.y;
+     	int x2 = P2.x;
+     	int y2 = P2.y;
+     	return Math.abs(x2 - x1) + Math.abs(y2 - y1);
+     	         
+     }
 	 public Player getCurrentPlayer() {
 		 Champion c = (Champion) turnOrder.peekMin();
 		 ArrayList<Champion> Team1 = firstPlayer.getTeam();
@@ -255,6 +279,13 @@ private void placeCovers() {
     		 return secondPlayer;
     	 return firstPlayer;
      }
+     public boolean boardLocationIsvalidAndEmpty(int x , int y) {
+    	 if(x < 0 || y < 0 || x > 4 || y > 4) 
+    		 return false ; 		 		 
+    	 if(board[x][y] != null) 
+    		 return false ;	
+    	 return true ;
+     }
 	 public void checkIfDeadAndActAccordingly(Damageable d) { // gaveOver not checked yet(if will ever check it here in this method, not in a GameAction methods
    	  if(d.getCurrentHP() != 0)// IMPORTANT : will need also to check if condition = KNOCKOUT if removed the line " c.setCurrentHP(0) " from VILLIAN useLeaderAbility
    		  return;	
@@ -267,7 +298,7 @@ private void placeCovers() {
   			  c.setCondition(Condition.KNOCKEDOUT);// don't know if it adds something new, but just in case! 
   			  ArrayList<Champion> attackedTeam = this.getWaitingPlayer().getTeam();
   			  attackedTeam.remove(c);
-  		      
+		      
   			  // if Team of c became Empty,then end the game ( how to end the game ?)..(maybe by throwing an exception, and catcher of it will display : gameover!)
   		      if(attackedTeam.isEmpty()) // ( how to end the game ?), will ask gameRoom 
   		      {		    	  
@@ -279,106 +310,151 @@ private void placeCovers() {
   		  }
    	
    }
-	 
-	 
-	 // draft
-	 /*
-	 public void move(Direction d) 
-	 
-		 	1 : check KNOCKEDOUT
-	
-			2- check applied Effects preventing from moving
-			
-			2- check actionPoints
-			
-			3-checkEmptyCellAvilable
-			
-			if all succeds: do the following :
-			
-			1- change the location of the Champ
-			2- board[old champ location] = null
-			3- board[new champ location] = champ
-				 
+	 public Damageable getFirstDamageableInRange(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
+	 {
+		 int vertical_movement = 0;
+		 int horizontal_movement = 0;	
 		 
-	 
-	 public void attack(Direction d){
-	 
-	 apply some of disarm and dodge logic here :
-			
-			1- check KNOCKEDOUT for hitting and hitted champions (just in case)
-			2-check appliedEffects preventing from attaking
-			3-check resources
-			4- get fist Damageable in range
-			     * if null: only deduct resources
-			     * if Not Null:  
-			              if cover : dealDamage,then deduct resources,then call checkIfDeadAndActAccordingally on cover        			             
-			              
-			              if champ : check blocking   effects
-			                         if exists,  deduct resources from the caster, and remove that blocking effect
-			                         if doesn't, deal damage(care for the 50 % extra damage between champion types) conditions,then deduct resources,the call checkIfDeadAndActAccordingally on attacked champ
+		 switch(direction) 
+		 {
+		 case UP : vertical_movement = 1; break ;
+		 case DOWN : vertical_movement = -1; break ;
+		 case RIGHT : horizontal_movement = 1; break ;
+		 case LEFT : horizontal_movement = -1; break ;		 
+		 }
+		 
+		 int x_start = getCurrentChampion().getLocation().x;
+		 int y_start = getCurrentChampion().getLocation().y;
+		 
+		 for(int i = 0 ; i < range ; i++)
+		 {		 
+			 int x_current = x_start + vertical_movement;
+			 int y_current = y_start + horizontal_movement;
 			 
-			
-	 */
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	  
-	 public Champion getCurrentChampion() {
-		if(turnOrder.isEmpty()) {
-		return null; //need to be modified
-		}
-		 
-		 return (Champion)turnOrder.peekMin() ;
-		 
-	 }	 
+			 boolean outOfBoard = x_current > 4 || y_current > 4 || x_current < 0 || y_current < 0;
+			 if(outOfBoard)
+				 return null;
+			 Object CurrentLocation = board[x_current][y_current];
+			 if( CurrentLocation != null)
+				 return (Damageable)(CurrentLocation);
+			 x_start = x_current; // done so that the x_current be updated in the start of the loop
+			 y_start = y_current; // done so that the y_current be updated in the start of the loop
+		 }
+		 return null; // will happen in case the for loop terminated, ( in case all cells in range were checked, and they were all null)
 
-	  
-	  
-	  
-	 
-	 
-		  
-     	
-  
-     
-	 public Player checkGameOver() {
-		 if(firstPlayer.getTeam()==null) {
-			 return secondPlayer ;
-			 
-		 }
-		 if(secondPlayer.getTeam()==null) {
-			 return firstPlayer ;
-			 
-		 }
-		return null ; 
-		 
 		 
 	 }
-	 public void move(Direction d)
+	 public void landNormalAttake(Champion attaker, Damageable target) // used in attake method 
+	 {
+		 int DamageAmount = attaker.getAttackDamage();
+		 if(target instanceof Champion  )
+			 if (attaker.getClass() != target.getClass())
+				 DamageAmount *= 1.5;				 
+		 target.setCurrentHP(target.getCurrentHP() - DamageAmount);
+		 checkIfDeadAndActAccordingly(target);
+		 attaker.setCurrentActionPoints(attaker.getCurrentActionPoints() - 2);
+		 
+	 }
+	 	 
+	 // required Methods in M2
+	 
+ 	 public Champion getCurrentChampion() {
+	
+		while(! turnOrder.isEmpty() ) // gets the first non INCATIVE champion in the queue // it is already done in  end turn (darwish)
+		{
+			Champion currentChamp = (Champion) turnOrder.peekMin();
+			Condition cond = currentChamp.getCondition();
+	        if(cond == Condition.KNOCKEDOUT || cond == Condition.INACTIVE)   
+	        	turnOrder.remove();
+	        else
+	        	return currentChamp;	 
+	   }		
+		return null; // i think it will never happen, because the endTurn method will handle this case
+	 }
+	 public Player checkGameOver() {
+		 if(firstPlayer.getTeam().isEmpty()) 
+			 return secondPlayer;			 		 
+		 if(secondPlayer.getTeam().isEmpty()) 
+			 return firstPlayer ;			 	 
+		 return null ; 		 		 
+	 }
+     public void move(Direction d) throws NotEnoughResourcesException , UnallowedMovementException
+	 {	 
+		 Champion c = getCurrentChampion() ;	 
+		 if(c.getCondition() == Condition.ROOTED) 
+			 throw new UnallowedMovementException();
+	     if(c.getCurrentActionPoints() < 1)
+	    	 throw new NotEnoughResourcesException();
+	     
+	     int old_x = c.getLocation().x;
+	     int old_y = c.getLocation().y;
+		 int new_x = old_x ;
+		 int new_y = old_y ; 
+		 
+		 switch(d) 
+		 {
+		 case UP : new_x ++ ; break;
+		 case DOWN : new_x -- ; break;
+		 case RIGHT : new_y ++ ; break;
+		 case LEFT : new_y -- ; break;		 
+		 }
+		 	 
+		 if( ! boardLocationIsvalidAndEmpty(new_x, new_y) )
+		     throw new UnallowedMovementException();
+		 
+		 board[old_x][old_y] = null;
+		 board[new_x][new_y] = c ;  
+		 c.setLocation(new Point(new_x,new_y));
+		 c.setCurrentActionPoints(c.getCurrentActionPoints() - 1);	 
+	 }
+	 public void attack(Direction direction) throws NotEnoughResourcesException, ChampionDisarmedException {
+		 Champion attaker =  getCurrentChampion();
+		 if(doesEffectExist(attaker.getAppliedEffects(), "Disarm"))
+			 throw new ChampionDisarmedException();
+		 if(attaker.getCurrentActionPoints() < 2)
+			 throw new NotEnoughResourcesException();
+         Damageable target = getFirstDamageableInRange(direction, attaker.getAttackRange());
+         if(target == null) 
+         {
+        	 attaker.setCurrentActionPoints(attaker.getCurrentActionPoints() - 2);
+        	 return;
+         }
+         if(target instanceof Cover)
+         {
+        	 landNormalAttake(attaker,target);
+        	 return;
+         }
+         Champion targetChampion = (Champion) target;
+         if(doesEffectExist(targetChampion.getAppliedEffects(), "Shield"))
+         {
+        	 for(int i = 0 ; i < targetChampion.getAppliedEffects().size() ; i++)
+        		 if(targetChampion.getAppliedEffects().get(i).getName() == "Shield")
+        		 {
+        			 targetChampion.getAppliedEffects().get(i).remove(targetChampion);
+        	         break;
+        		 }
+        	 attaker.setCurrentActionPoints(attaker.getCurrentActionPoints() - 2);
+        	 return;
+         }
+         if(doesEffectExist(targetChampion.getAppliedEffects(), "Dodge"))
+         {
+        	 Random rd = new Random();
+        	 boolean doDodge = rd.nextBoolean();
+        	 if( doDodge )
+        	 {
+        		 attaker.setCurrentActionPoints(attaker.getCurrentActionPoints() - 2);
+        		 return;       		 
+        	 }
+            	 
+         }
+         landNormalAttake(attaker,target);
+         		 		 
+	 }
+	 
+	 public void castAbility(Ability a) // use getFirstDamageableInRange 
 	 {
 		 
-		 Champion c = getCurrentChampion() ; 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-	
-		 
-		 
-		 
-		 
-		 
-		 
+	 
 		 
 		 
 		 
@@ -399,72 +475,53 @@ private void placeCovers() {
 		 
 		 
 	 }
-	 public boolean boardlocationisevalid(int x , int y) {
-		 if(x>5 || y>5) {
-			 return false ; 
+
+	 public void checkAbilityResources (Champion c , Ability a) throws NotEnoughResourcesException 
+	 {
+		 if (c.getCurrentActionPoints()<a.getRequiredActionPoints())
+		 {
+			 throw new NotEnoughResourcesException ();
+		 }
+		 if (c.getMana()<a.getManaCost())
+		 {
+			 throw new NotEnoughResourcesException ();
 		 }
 		 
-		 if(board[x][y]!=null) return false ;
-	
-		 return true ;
-	 }
-	 
-	 
-	 
-	 
-	 public void attack(Direction d)
-	 {	 
-		 
-		Champion c = getCurrentChampion() ;
-		int x =c.getLocation().x ;
-		int y = c.getLocation().y ; 
 		
-		if(d.equals(Direction.RIGHT)) {
-	if(x<5) {
-		 
-		
-	}		
-	
-			
-			
-		}
-		 
-		 
-		 
-		 
-		 
-			
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
+	 }
+	 public void apply_ability_cost (Champion c,Ability a)
+	 {
+		 c.setCurrentActionPoints(c.getCurrentActionPoints()-a.getRequiredActionPoints());
+		 c.setMana(c.getMana()-a.getManaCost());
 		 
 	 }
-	 
-	 public void castAbility(Ability a) 
-	 {	 
+
+	 public void castAbility1(Ability a, Direction d) throws NotEnoughResourcesException, AbilityUseException
+	 {
+		 checkAbilityResources(this.getCurrentChampion(), a);
 		  
-	 	 
+		 if (d==Direction.RIGHT)
+		 {
+			 int cast_location = (this.getCurrentChampion().getLocation().y) +1 ;
+			 
+			 if (cast_location>4 )
+			 {
+				 throw new AbilityUseException();
+			 }
+			 if (boardLocationIsvalidAndEmpty(this.getCurrentChampion().getLocation().x,cast_location ))
+			 {
+				apply_ability_cost(this.getCurrentChampion(), a);
+				this.getCurrentChampion().getAbilities().remove(a);
+				
+			 }
+		 }
+		 
+		 
+		 
+		 
+		 
+		 
+
 		 
 		 
 		 
@@ -496,86 +553,11 @@ private void placeCovers() {
 		 
 	 }
 	 
-	 public void castAbility(Ability a, Direction d)
-	 { 
+	 
 		  
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-			
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-	 }
-	 
-	 public void castAbility(Ability a, int x, int y)
+	 public void castAbility(Ability a, int x, int y) throws NotEnoughResourcesException
 	 {	 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-			
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-	 }
-	 
-	 public void useLeaderAbility()
-	 {	 
-		 
+		 checkAbilityResources(this.getCurrentChampion(), a);
 		 
 		 
 		 
@@ -612,35 +594,37 @@ private void placeCovers() {
 		 
 	 }
 	 
-	 
+	 public void useLeaderAbility() //  don't know what to loop over, team or turnOrder
+	 {	  
+	 }
+	  
 	 public void endTurn()
-	 {	 
+	 {	 	
+		 turnOrder.remove() ;
+ 		
 		 
+		 if(turnOrder.isEmpty()) {
+			 prepareChampionTurns();
+			 // shouldn't be a return statement here ? (hosain)
+		//no , to prepare the first champion in the new turn 
+		 }
 		 
+		//while loop to skip inactive and knocked out champions 
+while(((Champion)turnOrder.peekMin()).getCondition().equals(Condition.KNOCKEDOUT) || ((Champion)turnOrder.peekMin()).getCondition().equals(Condition.INACTIVE))
+	turnOrder.remove() ;
 		 
-		 
-		 
-		 
-		 
-		 
-		 
-			
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
+Champion x =getCurrentChampion() ;
+x.setCurrentActionPoints(x.getMaxActionPointsPerTurn()); //maxmize current action points for the new turn
+
+for(int i = 0 ; i< x.getAbilities().size();i++) {// decrease the cooldown by 1 .see ms1 definition of current cool down
+	x.getAbilities().get(i).setCurrentCooldown(x.getAbilities().get(i).getCurrentCooldown()-1);
+	
+}
+for(int i=0 ;i<x.getAppliedEffects().size();i++) {// decrease the duration by 1 .see ms1 definition of current duration
+	x.getAppliedEffects().get(i).setDuration(x.getAppliedEffects().get(i).getDuration()-1);
+	
+	
+}
 		 
 		 
 		 
@@ -654,45 +638,27 @@ private void placeCovers() {
 	 
 	 private void prepareChampionTurns()
 	 {	 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-			
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
+		if(firstPlayer.getTeam().isEmpty() || secondPlayer.getTeam().isEmpty()) // i think this check 
+		// is not here, it is in checkIfDead (hosain)
+		{			
+			checkGameOver() ; // don't know how this should be done ( hosain) 
+			return ; 			
+		}
+		
+		if(checkGameOver()==null) return ; ///i think this could work
+		
+		
+	    for(int i =0 ; i<firstPlayer.getTeam().size();i++)    
+			 if(!firstPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
+			          turnOrder.insert(firstPlayer.getTeam().get(i));
+			 else 
+				 firstPlayer.getTeam().remove(i);	//not sure		 
+	    
+	    for(int i =0 ; i<secondPlayer.getTeam().size();i++) 	    
+			 if(!secondPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
+			          turnOrder.insert(secondPlayer.getTeam().get(i));		
+			 else 
+				 secondPlayer.getTeam().remove(i); //not sure
 	 }
 
-
 }
-
-///kfjfrjfgjg
-//kk

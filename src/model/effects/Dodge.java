@@ -20,6 +20,6 @@ public class Dodge extends Effect {
 	@Override
 	public void remove(Champion c) {
 		c.getAppliedEffects().remove(this);
-		c.setSpeed((int) (c.getSpeed() * 0.95));
+		c.setSpeed((int) (c.getSpeed() / 1.05));
 	}
 }
