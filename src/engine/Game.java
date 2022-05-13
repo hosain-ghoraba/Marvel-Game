@@ -1,9 +1,6 @@
 
 
 package engine;
-import exceptions.*;
-import model.world.*;
-
 import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,16 +8,36 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.xml.stream.Location;
-
-import model.effects.*;
+import exceptions.AbilityUseException;
+import exceptions.ChampionDisarmedException;
+import exceptions.InvalidTargetException;
+import exceptions.NotEnoughResourcesException;
+import exceptions.UnallowedMovementException;
 import model.abilities.Ability;
 import model.abilities.AreaOfEffect;
 import model.abilities.CrowdControlAbility;
 import model.abilities.DamagingAbility;
 import model.abilities.HealingAbility;
 import model.effects.Disarm;
+import model.effects.Dodge;
 import model.effects.Effect;
+import model.effects.EffectType;
+import model.effects.Embrace;
+import model.effects.PowerUp;
+import model.effects.Root;
+import model.effects.Shield;
+import model.effects.Shock;
+import model.effects.Silence;
+import model.effects.SpeedUp;
+import model.effects.Stun;
+import model.world.AntiHero;
+import model.world.Champion;
+import model.world.Condition;
+import model.world.Cover;
+import model.world.Damageable;
+import model.world.Direction;
+import model.world.Hero;
+import model.world.Villain;
 public class Game {
  private Player firstPlayer;
  private Player secondPlayer;
@@ -553,7 +570,17 @@ private void placeCovers() {
 	// helper method used in castAbility (Ability, Direction) 
 	 public boolean CheckFriendly_or_opponent (Champion c)
 	 {
-
+      /* there is predefined method in arrayList called : contains(Object o), I think it is easier(hosain),
+       * I think the below code works
+      
+	  Champion current  = this.getCurrentChampion();	 
+	  boolean both_in_team1 = firstPlayer.getTeam().contains(c) && firstPlayer.getTeam().contains(current);
+	  boolean both_in_team2 = secondPlayer.getTeam().contains(c) && secondPlayer.getTeam().contains(current);
+	  if(both_in_team1 || both_in_team2)
+		  return true;
+	  return false;
+	  
+	  */
 		 for (int i=0 ;i<firstPlayer.getTeam().size();i++)
 		 {
 			 if (this.getCurrentChampion().equals(firstPlayer.getTeam().get(i)))
