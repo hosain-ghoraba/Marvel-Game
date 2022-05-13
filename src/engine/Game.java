@@ -249,7 +249,8 @@ private void placeCovers() {
 			}
 			return false;
 		}
-     public static int calcDistance(Damageable d1, Damageable d2) {
+     public static int calcDistance(Damageable d1, Damageable d2)// used when casting ability
+     {
      	
      	Point P1 = d1.getLocation();
      	Point P2 = d2.getLocation();
@@ -297,7 +298,7 @@ private void placeCovers() {
   			  c.setCondition(Condition.KNOCKEDOUT);// don't know if it adds something new, but just in case! 
   			  ArrayList<Champion> attackedTeam = this.getWaitingPlayer().getTeam();
   			  attackedTeam.remove(c);
-  		      
+		      
   			  // if Team of c became Empty,then end the game ( how to end the game ?)..(maybe by throwing an exception, and catcher of it will display : gameover!)
   		      if(attackedTeam.isEmpty()) // ( how to end the game ?), will ask gameRoom 
   		      {		    	  
@@ -309,8 +310,8 @@ private void placeCovers() {
   		  }
    	
    }
-	 public Damageable getFirstDamageableInRange(Direction direction, int range) {
-		 
+	 public Damageable getFirstDamageableInRange(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
+	 {
 		 int x_movement = 0;
 		 int y_movement = 0;	
 		 
@@ -343,9 +344,11 @@ private void placeCovers() {
 
 		 
 	 }
-	 public void landNormalAttake(Champion attaker, Damageable target) {
+	 public void landNormalAttake(Champion attaker, Damageable target) // used in attake method 
+	 {
 		 int DamageAmount = attaker.getAttackDamage();
-		 if(target instanceof Champion && attaker.getClass() != target.getClass())
+		 if(target instanceof Champion  )
+			 if (attaker.getClass() != target.getClass())
 				 DamageAmount *= 1.5;				 
 		 target.setCurrentHP(target.getCurrentHP() - DamageAmount);
 		 checkIfDeadAndActAccordingly(target);
@@ -486,7 +489,7 @@ private void placeCovers() {
 		 
 		 
 	 }
-	 
+
 	 public void checkAbilityResources (Champion c , Ability a) throws NotEnoughResourcesException 
 	 {
 		 if (c.getCurrentActionPoints()<a.getRequiredActionPoints())
@@ -500,7 +503,6 @@ private void placeCovers() {
 		 
 		
 	 }
-	
 	 public void apply_ability_cost (Champion c,Ability a)
 	 {
 		 c.setCurrentActionPoints(c.getCurrentActionPoints()-a.getRequiredActionPoints());
@@ -601,43 +603,8 @@ private void placeCovers() {
 		 
 	 }
 	 
-	 public void useLeaderAbility()
-	 {	 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-			
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 //aloo
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
+	 public void useLeaderAbility() //  don't know what to loop over, team or turnOrder
+	 {	  
 	 }
 	  
 	 public void endTurn()
@@ -647,7 +614,7 @@ private void placeCovers() {
 		 
 		 if(turnOrder.isEmpty()) {
 			 prepareChampionTurns();
-			 
+			 // shouldn't be a return statement here ? (hosain)
 		}
 		 
 		//while loop to skip inactive and knocked out champions 
@@ -679,63 +646,24 @@ for(int i=0 ;i<x.getAppliedEffects().size();i++) {
 	 
 	 private void prepareChampionTurns()
 	 {	 
-		if(firstPlayer.getTeam().isEmpty() || secondPlayer.getTeam().isEmpty()) {
-			
-			checkGameOver() ;
-			return ; 
-			
+		if(firstPlayer.getTeam().isEmpty() || secondPlayer.getTeam().isEmpty()) // i think this check 
+		// is not here, it is in checkIfDead (hosain)
+		{			
+			checkGameOver() ; // don't know how this should be done ( hosain)
+			return ; 			
 		}
-		 
-		 
-	 for(int i =0 ; i<firstPlayer.getTeam().size();i++) {
+		
+	    for(int i =0 ; i<firstPlayer.getTeam().size();i++)    
 			 if(!firstPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
 			          turnOrder.insert(firstPlayer.getTeam().get(i));
 			 else 
-				 firstPlayer.getTeam().remove(i);
-			 
-		 }
-		 
-	 
-	 for(int i =0 ; i<secondPlayer.getTeam().size();i++) {
+				 firstPlayer.getTeam().remove(i);			 
+	    
+	    for(int i =0 ; i<secondPlayer.getTeam().size();i++) 	    
 			 if(!secondPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
-			          turnOrder.insert(secondPlayer.getTeam().get(i));
-		
+			          turnOrder.insert(secondPlayer.getTeam().get(i));		
 			 else 
 				 secondPlayer.getTeam().remove(i);
-			 
-			 
-		 } 
-	 
-		 
-		 
-		 
-		 
-			
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
 	 }
 
 }
