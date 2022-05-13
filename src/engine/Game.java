@@ -239,8 +239,27 @@ private void placeCovers() {
 	 
 	 // new methods in M2
 	 
-	 // helper methods ( not required in M2)
-	 
+	 // collection of  helper methods used here and outside(in other classes) ( not required in M2)
+     public static boolean doesEffectExist(ArrayList<Effect> list,String EffectName) {
+			for(int i = 0 ; i < list.size() ; i++)
+			{
+				if(list.get(i).getName().equals(EffectName))
+					return true;
+			    i++;
+			}
+			return false;
+		}
+     public static int calcDistance(Damageable d1, Damageable d2) {
+     	
+     	Point P1 = d1.getLocation();
+     	Point P2 = d2.getLocation();
+     	int x1 = P1.x;
+     	int y1 = P1.y;
+     	int x2 = P2.x;
+     	int y2 = P2.y;
+     	return Math.abs(x2 - x1) + Math.abs(y2 - y1);
+     	         
+     }
 	 public Player getCurrentPlayer() {
 		 Champion c = (Champion) turnOrder.peekMin();
 		 ArrayList<Champion> Team1 = firstPlayer.getTeam();
@@ -259,7 +278,7 @@ private void placeCovers() {
     		 return secondPlayer;
     	 return firstPlayer;
      }
-     public boolean boardLocationIsvalid(int x , int y) {
+     public boolean boardLocationIsvalidAndEmpty(int x , int y) {
     	 if(x < 0 || y < 0 || x > 4 || y > 4) 
     		 return false ; 		 		 
     	 if(board[x][y] != null) 
@@ -324,19 +343,31 @@ private void placeCovers() {
 
 		 
 	 }
-	 
+	 public void landNormalAttake(Champion attaker, Damageable target) {
+		 int DamageAmount = attaker.getAttackDamage();
+		 if(target instanceof Champion && attaker.getClass() != target.getClass())
+				 DamageAmount *= 1.5;				 
+		 target.setCurrentHP(target.getCurrentHP() - DamageAmount);
+		 checkIfDeadAndActAccordingly(target);
+		 attaker.setCurrentActionPoints(attaker.getCurrentActionPoints() - 2);
+		 
+	 }
+	 	 
 	 // required Methods in M2
 	 
-	 public Champion getCurrentChampion() {
-		if(turnOrder.isEmpty()) {
-		return null; //need to be modified
-		}
-		
-			 
-		 
-		 return (Champion)turnOrder.peekMin() ;
-		 
-	 }	   
+ 	 public Champion getCurrentChampion() {
+	
+		while(! turnOrder.isEmpty() ) // gets the first non INCATIVE champion in the queue
+		{
+			Champion currentChamp = (Champion) turnOrder.peekMin();
+			Condition cond = currentChamp.getCondition();
+	        if(cond == Condition.KNOCKEDOUT || cond == Condition.INACTIVE)
+	        	turnOrder.remove();
+	        else
+	        	return currentChamp;	 
+	   }		
+		return null; // i think it will never happen, because the endTurn method will handle this case
+	 }
 	 public Player checkGameOver() {
 		 if(firstPlayer.getTeam().isEmpty()) 
 			 return secondPlayer;			 		 
@@ -365,7 +396,7 @@ private void placeCovers() {
 		 case LEFT : new_x -- ; break;		 
 		 }
 		 	 
-		 if( ! boardLocationIsvalid(new_x, new_y) )
+		 if( ! boardLocationIsvalidAndEmpty(new_x, new_y) )
 		     throw new UnallowedMovementException();
 		 
 		 board[old_x][old_y] = null;
@@ -373,26 +404,48 @@ private void placeCovers() {
 		 c.setLocation(new Point(new_x,new_y));
 		 c.setCurrentActionPoints(c.getCurrentActionPoints() - 1);	 
 	 }
-	 public void attack(Direction d) throws NotEnoughResourcesException {
-		 /*
-			3-check resources // done
-			4- get fist Damageable in range
-			     * if null: only deduct resources
-			     * if Not Null:  
-			              if cover : dealDamage,then deduct resources,then call checkIfDeadAndActAccordingally on cover        			             
-			              
-			              if champ : check blocking   effects
-			                         if exists,  deduct resources from the caster, and remove that blocking effect
-			                         if doesn't, deal damage(care for the 50 % extra damage between champion types) conditions,then deduct resources,the call checkIfDeadAndActAccordingally on attacked champ
-			 
-			
-	 */
-		 Champion c = getCurrentChampion();
-		 if(c.getCurrentActionPoints() < 2)
+	 public void attack(Direction direction) throws NotEnoughResourcesException, ChampionDisarmedException {
+		 Champion attaker =  getCurrentChampion();
+		 if(doesEffectExist(attaker.getAppliedEffects(), "Disarm"))
+			 throw new ChampionDisarmedException();
+		 if(attaker.getCurrentActionPoints() < 2)
 			 throw new NotEnoughResourcesException();
-         
-		 
-		 
+         Damageable target = getFirstDamageableInRange(direction, attaker.getAttackRange());
+         if(target == null) 
+         {
+        	 attaker.setCurrentActionPoints(attaker.getCurrentActionPoints() - 2);
+        	 return;
+         }
+         if(target instanceof Cover)
+         {
+        	 landNormalAttake(attaker,target);
+        	 return;
+         }
+         Champion targetChampion = (Champion) target;
+         if(doesEffectExist(targetChampion.getAppliedEffects(), "Shield"))
+         {
+        	 for(int i = 0 ; i < targetChampion.getAppliedEffects().size() ; i++)
+        		 if(targetChampion.getAppliedEffects().get(i).getName() == "Shield")
+        		 {
+        			 targetChampion.getAppliedEffects().get(i).remove(targetChampion);
+        	         break;
+        		 }
+        	 attaker.setCurrentActionPoints(attaker.getCurrentActionPoints() - 2);
+        	 return;
+         }
+         if(doesEffectExist(targetChampion.getAppliedEffects(), "Dodge"))
+         {
+        	 Random rd = new Random();
+        	 boolean doDodge = rd.nextBoolean();
+        	 if( doDodge )
+        	 {
+        		 attaker.setCurrentActionPoints(attaker.getCurrentActionPoints() - 2);
+        		 return;       		 
+        	 }
+            	 
+         }
+         landNormalAttake(attaker,target);
+         		 		 
 	 }
 	 
 	 public void castAbility(Ability a) // use getFirstDamageableInRange 
@@ -466,7 +519,7 @@ private void placeCovers() {
 			 {
 				 throw new AbilityUseException();
 			 }
-			 if (boardLocationIsvalid(cast_location, this.getCurrentChampion().getLocation().y))
+			 if (boardLocationIsvalidAndEmpty(cast_location, this.getCurrentChampion().getLocation().y))
 			 {
 				apply_ability_cost(this.getCurrentChampion(), a);
 				this.getCurrentChampion().getAbilities().remove(a);
