@@ -471,23 +471,9 @@ private void placeCovers() {
 	 }
 	 
 	 public void castAbility(Ability a) // use getFirstDamageableInRange 
-	 {	 
-		  
+	 {
 		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-			
-		 
-		 
-		 
-		 
-		 
-		 
+	 
 		 
 		 
 		 
@@ -528,19 +514,20 @@ private void placeCovers() {
 		 c.setMana(c.getMana()-a.getManaCost());
 		 
 	 }
-	 public void castAbility(Ability a, Direction d) throws NotEnoughResourcesException, AbilityUseException
-	 {	 
+
+	 public void castAbility1(Ability a, Direction d) throws NotEnoughResourcesException, AbilityUseException
+	 {
 		 checkAbilityResources(this.getCurrentChampion(), a);
 		  
 		 if (d==Direction.RIGHT)
 		 {
-			 int cast_location = (this.getCurrentChampion().getLocation().x) +1 ;
+			 int cast_location = (this.getCurrentChampion().getLocation().y) +1 ;
 			 
 			 if (cast_location>4 )
 			 {
 				 throw new AbilityUseException();
 			 }
-			 if (boardLocationIsvalidAndEmpty(cast_location, this.getCurrentChampion().getLocation().y))
+			 if (boardLocationIsvalidAndEmpty(this.getCurrentChampion().getLocation().x,cast_location ))
 			 {
 				apply_ability_cost(this.getCurrentChampion(), a);
 				this.getCurrentChampion().getAbilities().remove(a);
@@ -548,10 +535,12 @@ private void placeCovers() {
 			 }
 		 }
 		 
-		 //.......
+		 
+		 //alo
 		 
 		 
 		 
+
 		 
 		 
 		 
@@ -583,6 +572,8 @@ private void placeCovers() {
 		 
 	 }
 	 
+	 
+		  
 	 public void castAbility(Ability a, int x, int y) throws NotEnoughResourcesException
 	 {	 
 		 checkAbilityResources(this.getCurrentChampion(), a);
@@ -673,7 +664,7 @@ for(int i=0 ;i<x.getAppliedEffects().size();i++) {// decrease the duration by 1 
 			return ; 			
 		}
 		
-		if(checkGameOver()==null) return ; ///i think this could work
+		if(checkGameOver()!=null) return ; ///i think this could work
 		
 		
 	    for(int i =0 ; i<firstPlayer.getTeam().size();i++)    
