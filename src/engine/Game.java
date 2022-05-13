@@ -640,7 +640,7 @@ for(int i=0 ;i<x.getAppliedEffects().size();i++) {// decrease the duration by 1 
 		 
 		 
 		 
-		 
+		 //cc
 		 
 		 
 	 }
@@ -654,7 +654,7 @@ for(int i=0 ;i<x.getAppliedEffects().size();i++) {// decrease the duration by 1 
 			return ; 			
 		}
 		
-		if(checkGameOver()==null) return ; ///i think this could work
+		if(checkGameOver()!=null) return ; ///i think this could work
 		
 		
 	    for(int i =0 ; i<firstPlayer.getTeam().size();i++)    
