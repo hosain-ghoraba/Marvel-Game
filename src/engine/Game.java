@@ -310,6 +310,40 @@ private void placeCovers() {
   		  }
    	
    }
+	 public ArrayList<Damageable> getDamageableInRange_Ability(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
+	 {
+		 int vertical_movement = 0;
+		 int horizontal_movement = 0;	
+		 
+		 switch(direction) 
+		 {
+		 case UP : vertical_movement = 1; break ;
+		 case DOWN : vertical_movement = -1; break ;
+		 case RIGHT : horizontal_movement = 1; break ;
+		 case LEFT : horizontal_movement = -1; break ;		 
+		 }
+		 
+		 int x_start = getCurrentChampion().getLocation().x;
+		 int y_start = getCurrentChampion().getLocation().y;
+		 ArrayList<Damageable> targets = new ArrayList<>(); 
+		 for(int i = 0 ; i < range ; i++)
+		 {		 
+			 int x_current = x_start + vertical_movement;
+			 int y_current = y_start + horizontal_movement;
+			 
+			 boolean outOfBoard = x_current > 4 || y_current > 4 || x_current < 0 || y_current < 0;
+			 if(outOfBoard)
+				 return null;
+			 Object CurrentLocation = board[x_current][y_current];
+			 if( CurrentLocation != null)
+			  targets.add((Damageable)(CurrentLocation));
+			 x_start = x_current; // done so that the x_current be updated in the start of the loop
+			 y_start = y_current; // done so that the y_current be updated in the start of the loop
+		 }
+		 return targets; // will happen in case the for loop terminated, ( in case all cells in range were checked, and they were all null)
+
+		 
+	 }
 	 public Damageable getFirstDamageableInRange(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
 	 {
 		 int vertical_movement = 0;
@@ -475,7 +509,7 @@ private void placeCovers() {
 		 
 		 
 	 }
-
+	// helper method used in castAbility (Ability, Direction)
 	 public void checkAbilityResources (Champion c , Ability a) throws NotEnoughResourcesException 
 	 {
 		 if (c.getCurrentActionPoints()<a.getRequiredActionPoints())
@@ -489,66 +523,121 @@ private void placeCovers() {
 		 
 		
 	 }
+	// helper method used in castAbility (Ability, Direction)
 	 public void apply_ability_cost (Champion c,Ability a)
 	 {
 		 c.setCurrentActionPoints(c.getCurrentActionPoints()-a.getRequiredActionPoints());
 		 c.setMana(c.getMana()-a.getManaCost());
+		 a.setCurrentCooldown(a.getBaseCooldown());
 		 
 	 }
-
-	 public void castAbility1(Ability a, Direction d) throws NotEnoughResourcesException, AbilityUseException
+	// helper method used in castAbility (Ability, Direction) 
+	 public boolean CheckFriendly_or_opponent (Champion c)
 	 {
-		 checkAbilityResources(this.getCurrentChampion(), a);
-		  
-		 if (d==Direction.RIGHT)
+
+		 for (int i=0 ;i<firstPlayer.getTeam().size();i++)
 		 {
-			 int cast_location = (this.getCurrentChampion().getLocation().y) +1 ;
-			 
-			 if (cast_location>4 )
+			 if (this.getCurrentChampion().equals(firstPlayer.getTeam().get(i)))
 			 {
-				 throw new AbilityUseException();
+				 for (int j=0;j<firstPlayer.getTeam().size();j++)
+				 {
+					 if (c.equals(firstPlayer.getTeam().get(i)))
+					 {
+						 return true;
+					 }
+				 }
+				 return false;
 			 }
-			 if (boardLocationIsvalidAndEmpty(this.getCurrentChampion().getLocation().x,cast_location ))
+		 }
+		 for (int i=0 ;i<secondPlayer.getTeam().size();i++)
+		 {
+			 if (this.getCurrentChampion().equals(secondPlayer.getTeam().get(i)))
 			 {
-				apply_ability_cost(this.getCurrentChampion(), a);
-				this.getCurrentChampion().getAbilities().remove(a);
-				
+				 for (int j=0;j<secondPlayer.getTeam().size();j++)
+				 {
+					 if (c.equals(secondPlayer.getTeam().get(i)))
+					 {
+						 return true;
+					 }
+				 }
+				 return false;
 			 }
 		 }
 		 
-		 
-		 //alo
-		 
+		 return false;
 		 
 		 
+	 }
+	
+	// helper method used in castAbility (Ability, Direction) 
+	 public void check_directionvalid (Direction d) throws InvalidTargetException
+	 {
+		 int x = this.getCurrentChampion().getLocation().y;
+		 int y = this.getCurrentChampion().getLocation().x;
+		 if (d== Direction.RIGHT && x>3)
+		 {
+			 throw new InvalidTargetException();
+		 }
+		 if (d == Direction.LEFT&& x<1)
+		 {
+			 throw new InvalidTargetException();
+		 }
+		 if (d == Direction.UP && y>3)
+		 {
+			 throw new InvalidTargetException();
+		 }
+		 if (d == Direction.DOWN && y<1)
+		 {
+			 throw new InvalidTargetException();
+		 }
+	 }
 
+	 public void castAbility1(Ability a, Direction d) throws NotEnoughResourcesException, AbilityUseException, CloneNotSupportedException, InvalidTargetException
+	 {
+		 checkAbilityResources(this.getCurrentChampion(), a);
+		 check_directionvalid(d);
 		 
-		 
-		 
+			ArrayList<Damageable> c= getDamageableInRange_Ability(d, a.getCastRange()) ;
+			ArrayList<Damageable> targets = new ArrayList<>();
+		
+			 for (int i=0;i<c.size();i++)
+				 {
+				 if (a instanceof DamagingAbility )
+				 {
+					 if (c.get(i) instanceof Cover || !CheckFriendly_or_opponent((Champion) c.get(i)))
+					 {
+						  
+						 targets.add(c.get(i));
+					 }
+					 
+				 }
+				 else if  (a instanceof HealingAbility)
+				 {
+					if (c.get(i) instanceof Champion &&CheckFriendly_or_opponent((Champion) c.get(i)))
+					{
+						targets.add(c.get(i));
+					}
+				 }
+				 else 
+				 {
+					 if (c.get(i) instanceof Champion && ((CrowdControlAbility)a).getEffect().getType()==EffectType.BUFF&&CheckFriendly_or_opponent((Champion) c.get(i)))
+					 {
+						 targets.add(c.get(i));
+					 }
+					 else 
+					 {
+						 targets.add(c.get(i));
+					 }
+					 
+				 }
+			 }
+			 apply_ability_cost(getCurrentChampion(), a);
+			 if (targets.size()==0)
+			 {
+				 throw new InvalidTargetException();
+			 }
+			 a.execute(targets);
 			
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
 		 
 		 
 	 }
