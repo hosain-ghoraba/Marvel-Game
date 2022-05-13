@@ -25,7 +25,14 @@ public class Disarm extends Effect  {
 	}
    public void remove(Champion c) {
 	  c.getAppliedEffects().remove(this);
-	  c.getAbilities().remove(punch);
+	  boolean removed = c.getAbilities().remove(punch);
+	  if(! removed ) // just done for the stupid test cases :)...they may insert damaging ability without corrosponding disarm effect, so the reference of the removed ability will not be removed
+		  for(int i = 0 ; i < c.getAbilities().size() ; i++)
+		  {
+			  Ability current = (Ability)c.getAbilities().get(i);
+			  if(current.getName().equals("Punch"))
+				  c.getAbilities().remove(current);
+		  }
 	 		    
    }
 }

@@ -27,9 +27,13 @@ public Effect getEffect() {
 //Override the abstract method
 //not completed(ahmad)..( I think it is completed ya ahmad (hosain) )...all targets all vaild as stated in M2, so they must be only champions, no covers at all
 
-public void execute(ArrayList<Damageable> targets) {
+public void execute(ArrayList<Damageable> targets) throws CloneNotSupportedException {
 	for (int i=0 ; i<targets.size() ; i++)	
-         effect.apply( (Champion) (targets.get(i))  );		
+	{
+		Effect copy = (Effect) effect.clone();
+        copy.apply( (Champion) (targets.get(i))  );	
+        
+	}
 }
 
 
