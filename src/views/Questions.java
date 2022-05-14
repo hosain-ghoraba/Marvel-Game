@@ -36,6 +36,8 @@ public class Questions {
     10- in endTurn method, if the current Champion was INACTIVE, shouldn't its timers also be updated ?
     
     11- set condition = knocked out in setCurrentHp if currentHp readed 0 ?
+    
+    12- IMPORTANT : should endTurn reconstruct the turnOrder? (because speeds might have changed)
     failues : 
     
     1- apply shouldn't change appliedEffects ...how on earth !

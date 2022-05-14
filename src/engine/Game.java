@@ -328,6 +328,7 @@ private void placeCovers() {
    	
    }
 	 public ArrayList<Damageable> getAllDamageablesInGivenRange(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
+	 
 	 {  
 		 int vertical_movement = 0;
 		 int horizontal_movement = 0;	
@@ -342,7 +343,7 @@ private void placeCovers() {
 		 
 		 int x_start = getCurrentChampion().getLocation().x;
 		 int y_start = getCurrentChampion().getLocation().y;
-		 ArrayList<Damageable> targets = new ArrayList<>(); 
+		 ArrayList<Damageable> targets = new ArrayList<Damageable>(); 
 		 for(int i = 0 ; i < range ; i++)
 		 {		 
 			 int x_current = x_start + vertical_movement;
@@ -361,7 +362,23 @@ private void placeCovers() {
 
 		 
 	 }
-
+	 public void updateTimers(Champion champ) {
+		 
+		 champ.setCurrentActionPoints(champ.getMaxActionPointsPerTurn()); //maxmize current action points for the new turn
+		 
+		 for(int i = 0 ; i < champ.getAbilities().size();i++)// decrease the cooldown by 1 .see ms1 definition of current cool down  	     	 	  	 	
+			 champ.getAbilities().get(i).setCurrentCooldown(champ.getAbilities().get(i).getCurrentCooldown()-1);    	 	
+		 
+		 int appliedEffectsSize = champ.getAppliedEffects().size(); // must define the size out of the loop because it will change every time (because we may remove an effect from it)
+		 for(int i = 0 ; i < appliedEffectsSize ; i++)// decrease the duration by 1 .see ms1 definition of current duration 
+		 {
+			 Effect currentEffect = champ.getAppliedEffects().get(i);
+			 currentEffect.setDuration(currentEffect.getDuration()-1); 
+			 if(currentEffect.getDuration() < 1) 
+				 currentEffect.remove(champ);  	 	
+		 }
+		 
+	 }
 	 public void landNormalAttake(Champion attaker, Damageable target) // used in attake method 
 	 {
 		 int DamageAmount = attaker.getAttackDamage();
@@ -376,18 +393,9 @@ private void placeCovers() {
 	 	 
 	 // required Methods in M2
 	 
- 	 public Champion getCurrentChampion() {
-	
-		while(! turnOrder.isEmpty() ) // gets the first non INCATIVE champion in the queue // it is already done in  end turn (darwish)
-		{
-			Champion currentChamp = (Champion) turnOrder.peekMin();
-			Condition cond = currentChamp.getCondition();
-	        if(cond == Condition.KNOCKEDOUT || cond == Condition.INACTIVE)   
-	        	turnOrder.remove();
-	        else
-	        	return currentChamp;	 
-	   }		
-		return null; // i think it will never happen, because the endTurn method will handle this case
+ 	 public Champion getCurrentChampion() {	     
+ 		 return (Champion)turnOrder.peekMin(); 
+	   		
 	 }
 	 public Player checkGameOver() {
          		  
@@ -450,15 +458,15 @@ private void placeCovers() {
 			 throw new ChampionDisarmedException();
 		 if(attaker.getCurrentActionPoints() < 2)
 			 throw new NotEnoughResourcesException();
-         ArrayList<Damageable> all_tangets_in_range = getAllDamageablesInGivenRange(direction, attaker.getAttackRange());
+         ArrayList<Damageable> all_targets_in_range = getAllDamageablesInGivenRange(direction, attaker.getAttackRange());
          
-         if(all_tangets_in_range.isEmpty() ) 
+         if(all_targets_in_range.isEmpty() ) 
          {
         	 attaker.setCurrentActionPoints(attaker.getCurrentActionPoints() - 2);
         	 return;
          }
          
-         Damageable firstTarget = all_tangets_in_range.get(0);
+         Damageable firstTarget = all_targets_in_range.get(0);
          
          if(firstTarget instanceof Cover)
          {
@@ -711,48 +719,44 @@ private void placeCovers() {
 	 public void endTurn()
 	 {	 	
 		 turnOrder.remove() ;
- 		
-		 
-		 if(turnOrder.isEmpty()) {
+			
+		 if(turnOrder.isEmpty())
+		 {			 
 			 prepareChampionTurns();
-			 // shouldn't be a return statement here ? (hosain)
-		//no , to prepare the first champion in the new turn 
+			 return;	 // shouldn't be a return statement here ? (hosain)		
+			             //no , to prepare the first champion in the new turn
 		 }
 		 
-		//while loop to skip inactive and knocked out champions 
-while(((Champion)turnOrder.peekMin()).getCondition().equals(Condition.KNOCKEDOUT) || ((Champion)turnOrder.peekMin()).getCondition().equals(Condition.INACTIVE))
-	turnOrder.remove() ;
-		 
-Champion x =getCurrentChampion() ;
-x.setCurrentActionPoints(x.getMaxActionPointsPerTurn()); //maxmize current action points for the new turn
-
-for(int i = 0 ; i< x.getAbilities().size();i++) {// decrease the cooldown by 1 .see ms1 definition of current cool down
-	
-	
-	x.getAbilities().get(i).setCurrentCooldown(x.getAbilities().get(i).getCurrentCooldown()-1);
-	
-}
-for(int i=0 ;i<x.getAppliedEffects().size();i++) {// decrease the duration by 1 .see ms1 definition of current duration
-	if(x.getAppliedEffects().get(i).getDuration()<1) {
-		x.getAppliedEffects().get(i).remove(getCurrentChampion());
-		x.getAppliedEffects().remove(i) ;
-	}
-	else
-	x.getAppliedEffects().get(i).setDuration(x.getAppliedEffects().get(i).getDuration()-1);
-	
-	
-}
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
+		//while loop to skip knocked out champions and to prepare Champions_needed_To_Update_their_Timers
+		ArrayList<Champion> Champions_needed_To_Update_their_Timers = new ArrayList<Champion>();
+        while(! turnOrder.isEmpty() )
+        {
+        	Champion peeked = (Champion)(turnOrder.peekMin());
+        	Condition cond = peeked.getCondition();		
+        	if(cond == Condition.KNOCKEDOUT)
+        		turnOrder.remove();
+        	else if (cond == Condition.INACTIVE)       	
+        		Champions_needed_To_Update_their_Timers.add((Champion)turnOrder.remove()); 
+        	else
+        	   {
+        		Champions_needed_To_Update_their_Timers.add(peeked);
+        	    break;
+        	   }        	
+        }
+        if(turnOrder.isEmpty())
+        {
+        	prepareChampionTurns();
+        	return;
+        }
+	               
+		for(int i = 0 ; i < Champions_needed_To_Update_their_Timers.size() ; i++) 
+		{
+			Champion current = Champions_needed_To_Update_their_Timers.get(i);
+			updateTimers(current);
+		}
+ 
 	 }
-	 
+
 	 private void prepareChampionTurns()
 	 {	 
 		
