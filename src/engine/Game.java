@@ -386,13 +386,16 @@ private void placeCovers() {
 		 for(int i = 0 ; i < champ.getAbilities().size() ; i++)// decrease the cooldown by 1 .see ms1 definition of current cool down  	     	 	  	 	
 			 champ.getAbilities().get(i).setCurrentCooldown(champ.getAbilities().get(i).getCurrentCooldown()-1);    	 	
 		 
-		 int appliedEffectsSize = champ.getAppliedEffects().size(); // must define the size out of the loop because it will change every time (because we may remove an effect from it)
-		 for(int i = 0 ; i < appliedEffectsSize ; i++)// decrease the duration by 1 .see ms1 definition of current duration 
+		 
+		 for(int i = 0 ; i < champ.getAppliedEffects().size() ; i++)// decrease the duration by 1 .see ms1 definition of current duration 
 		 {
 			 Effect currentEffect = champ.getAppliedEffects().get(i);
 			 currentEffect.setDuration(currentEffect.getDuration()-1); 
-			 if(currentEffect.getDuration() < 1) 
-				 currentEffect.remove(champ);  	 	
+			 if(currentEffect.getDuration() < 1)
+			 {
+				 currentEffect.remove(champ);
+				 i -- ; // this is horribly important ! 
+			 }
 		 }
 		 
 	 }
@@ -705,7 +708,7 @@ private void placeCovers() {
 	 {	  
 	 }
 	  
-	 public void endTurn()
+	 public void endTurn() // this methods causes an error in the testcase : " index 0 out of bound for length 0 " ...I couldn't solve it
 	 {	 	
 		 turnOrder.remove() ;
 			
@@ -713,7 +716,7 @@ private void placeCovers() {
 		 {			 
 			 prepareChampionTurns();
 	                     // shouldn't be a return statement here ? (hosain)		
-			             //no , to prepare the first champion in the new turn
+			             //no , to prepare the first champion in the new turn (Darwish)
 		 }
 		 
 		//while loop to skip knocked out champions and to prepare Champions_needed_To_Update_their_Timers
@@ -749,15 +752,14 @@ private void placeCovers() {
 	 private void prepareChampionTurns()
 	 {	 
 		
-		
 		if(checkGameOver()!=null) return ; ///i think this could work
 		
 		
-	    for(int i =0 ; i<firstPlayer.getTeam().size();i++)    
+	    for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++)    
 			 if(!firstPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
 			          turnOrder.insert(firstPlayer.getTeam().get(i));	 
 	    
-	    for(int i =0 ; i<secondPlayer.getTeam().size();i++) 	    
+	    for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++) 	    
 			 if(!secondPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
 			          turnOrder.insert(secondPlayer.getTeam().get(i));		
 
