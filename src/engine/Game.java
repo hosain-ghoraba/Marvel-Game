@@ -619,6 +619,7 @@ private void placeCovers() {
 
 	 public void castAbility1(Ability a, Direction d) throws NotEnoughResourcesException, AbilityUseException, CloneNotSupportedException, InvalidTargetException
 	 {
+		 // must call checkIfDead on each hitted champion
 		 checkAbilityResources(this.getCurrentChampion(), a);
 		 check_directionvalid(d);
 		 

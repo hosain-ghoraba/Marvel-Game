@@ -17,6 +17,7 @@ public class Questions {
 		1- apply shouldn't change appliedEffects ...how on earth !
 		2- if INACTIVE and setting to Root, should remain INACTIVE (we should search for the causing effect,
 				not the effect itself !)
+		3- "should remove attacked champion from turnOrder if life reached zero after being attacked"...how to remove it? (speeds issue)		
     
     2 - must leader ability of Villain setLift to zero ? or only setCondition to KNOCKEDOUT ?
     
