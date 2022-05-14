@@ -644,7 +644,9 @@ private void placeCovers() {
 		 check_directionvalid(d);
 		 
 			ArrayList<Damageable> c= getDamageableInRange_Ability(d, a.getCastRange()) ;
+			
 			ArrayList<Damageable> targets = new ArrayList<>();
+			
 		
 			 for (int i=0;i<c.size();i++)
 				 {
@@ -672,6 +674,8 @@ private void placeCovers() {
 					 }
 					 else 
 					 {
+						 if (c.get(i) instanceof Champion && ((CrowdControlAbility)a).getEffect().getType()==EffectType.DEBUFF&&!CheckFriendly_or_opponent((Champion) c.get(i)))
+
 						 targets.add(c.get(i));
 					 }
 					 
@@ -752,10 +756,17 @@ Champion x =getCurrentChampion() ;
 x.setCurrentActionPoints(x.getMaxActionPointsPerTurn()); //maxmize current action points for the new turn
 
 for(int i = 0 ; i< x.getAbilities().size();i++) {// decrease the cooldown by 1 .see ms1 definition of current cool down
+	
+	
 	x.getAbilities().get(i).setCurrentCooldown(x.getAbilities().get(i).getCurrentCooldown()-1);
 	
 }
 for(int i=0 ;i<x.getAppliedEffects().size();i++) {// decrease the duration by 1 .see ms1 definition of current duration
+	if(x.getAppliedEffects().get(i).getDuration()<1) {
+		x.getAppliedEffects().get(i).remove(getCurrentChampion());
+		x.getAppliedEffects().remove(i) ;
+	}
+	else
 	x.getAppliedEffects().get(i).setDuration(x.getAppliedEffects().get(i).getDuration()-1);
 	
 	
@@ -773,12 +784,7 @@ for(int i=0 ;i<x.getAppliedEffects().size();i++) {// decrease the duration by 1 
 	 
 	 private void prepareChampionTurns()
 	 {	 
-		if(firstPlayer.getTeam().isEmpty() || secondPlayer.getTeam().isEmpty()) // i think this check 
-		// is not here, it is in checkIfDead (hosain)
-		{			
-			checkGameOver() ; // don't know how this should be done ( hosain) 
-			return ; 			
-		}
+		
 		
 		if(checkGameOver()!=null) return ; ///i think this could work
 		
