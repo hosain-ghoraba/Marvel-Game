@@ -266,6 +266,23 @@ private void placeCovers() {
 			}
 			return false;
 		}
+     
+     public Effect get_effect_With_Given_Name_With_the_least_Duration(ArrayList<Effect> list,String InputName) {
+    	 
+        int listSize = list.size(); 		
+    	PriorityQueue all_Effect_with_Input_Name = new PriorityQueue(listSize); 
+ 		for(int i = 0 ; i < listSize ; i++)
+ 		{
+ 			Effect currentEffect = list.get(i);
+ 			if(InputName.equals(currentEffect.getName()) )
+ 				all_Effect_with_Input_Name.insert(currentEffect);	
+ 		}
+ 		return (Effect) all_Effect_with_Input_Name.peekMin();
+ 		
+ 		
+ 		
+ 	}    
+     
      public static int calcDistance(Damageable d1, Damageable d2)// used when casting ability
      {
      	
@@ -366,7 +383,7 @@ private void placeCovers() {
 		 
 		 champ.setCurrentActionPoints(champ.getMaxActionPointsPerTurn()); //maxmize current action points for the new turn
 		 
-		 for(int i = 0 ; i < champ.getAbilities().size();i++)// decrease the cooldown by 1 .see ms1 definition of current cool down  	     	 	  	 	
+		 for(int i = 0 ; i < champ.getAbilities().size() ; i++)// decrease the cooldown by 1 .see ms1 definition of current cool down  	     	 	  	 	
 			 champ.getAbilities().get(i).setCurrentCooldown(champ.getAbilities().get(i).getCurrentCooldown()-1);    	 	
 		 
 		 int appliedEffectsSize = champ.getAppliedEffects().size(); // must define the size out of the loop because it will change every time (because we may remove an effect from it)
@@ -547,51 +564,17 @@ private void placeCovers() {
 		 
 	 }
 	// helper method used in castAbility (Ability, Direction) 
-	 public boolean CheckFriendly_or_opponent (Champion c)
+	 public boolean isFriend (Champion c)
 	 {
-      /* there is predefined method in arrayList called : contains(Object o), I think it is easier(hosain),
-       * I think the below code works
-      
+      // there is predefined method in arrayList called : contains(Object o), I think it is easier(hosain),
+      // I think the below code works
+     
 	  Champion current  = this.getCurrentChampion();	 
 	  boolean both_in_team1 = firstPlayer.getTeam().contains(c) && firstPlayer.getTeam().contains(current);
 	  boolean both_in_team2 = secondPlayer.getTeam().contains(c) && secondPlayer.getTeam().contains(current);
 	  if(both_in_team1 || both_in_team2)
 		  return true;
-	  return false;
-	  
-	  */
-		 for (int i=0 ;i<firstPlayer.getTeam().size();i++)
-		 {
-			 if (this.getCurrentChampion().equals(firstPlayer.getTeam().get(i)))
-			 {
-				 for (int j=0;j<firstPlayer.getTeam().size();j++)
-				 {
-					 if (c.equals(firstPlayer.getTeam().get(i)))
-					 {
-						 return true;
-					 }
-				 }
-				 return false;
-			 }
-		 }
-		 for (int i=0 ;i<secondPlayer.getTeam().size();i++)
-		 {
-			 if (this.getCurrentChampion().equals(secondPlayer.getTeam().get(i)))
-			 {
-				 for (int j=0;j<secondPlayer.getTeam().size();j++)
-				 {
-					 if (c.equals(secondPlayer.getTeam().get(i)))
-					 {
-						 return true;
-					 }
-				 }
-				 return false;
-			 }
-		 }
-		 
-		 return false;
-		 
-		 
+	  return false;	 
 	 }
 	
 	// helper method used in castAbility (Ability, Direction) 
@@ -617,59 +600,64 @@ private void placeCovers() {
 		 }
 	 }
 
-	 public void castAbility1(Ability a, Direction d) throws NotEnoughResourcesException, AbilityUseException, CloneNotSupportedException, InvalidTargetException
+	 public void castAbility(Ability a, Direction d) throws NotEnoughResourcesException, AbilityUseException, CloneNotSupportedException, InvalidTargetException
 	 {
-		 // must call checkIfDead on each hitted champion
-		 checkAbilityResources(this.getCurrentChampion(), a);
-		 check_directionvalid(d);
 		 
-			ArrayList<Damageable> damageablesInRange = getAllDamageablesInGivenRange(d, a.getCastRange()) ;
+		 // must check if attacker has Silence on it
+		 // must check if defender has shield on it (in case of Damaging ability)..if yes, remove the the Shield Effect with least duration in appliedEffects
+		 // must call checkIfDead on each member in targets at the end of the method
+		 
+		 if(doesEffectExist(getCurrentChampion().getAppliedEffects(),"Silence"))
+			 throw new AbilityUseException();		 
+		 checkAbilityResources(getCurrentChampion(), a);
+		 
+		 ArrayList<Damageable> damageablesInRange = getAllDamageablesInGivenRange(d, a.getCastRange()) ;
 
-			ArrayList<Damageable> targets = new ArrayList<>();
-			
+		 ArrayList<Damageable> targets = new ArrayList<Damageable>(); // passed targets to execute method
 		
-			 for (int i=0;i<damageablesInRange.size();i++)
-				 {
-				 if (a instanceof DamagingAbility )
-				 {
-					 if (damageablesInRange.get(i) instanceof Cover || !CheckFriendly_or_opponent((Champion) damageablesInRange.get(i)))
-					 {
-						  
-						 targets.add(damageablesInRange.get(i));
-					 }
-					 
-				 }
-				 else if  (a instanceof HealingAbility)
-				 {
-					if (damageablesInRange.get(i) instanceof Champion &&CheckFriendly_or_opponent((Champion) damageablesInRange.get(i)))
-					{
-						targets.add(damageablesInRange.get(i));
-					}
-				 }
-				 else 
-				 {
-					 if (damageablesInRange.get(i) instanceof Champion && ((CrowdControlAbility)a).getEffect().getType()==EffectType.BUFF&&CheckFriendly_or_opponent((Champion) damageablesInRange.get(i)))
-					 {
-						 targets.add(damageablesInRange.get(i));
-					 }
-					 else 
-					 {
-						 if (damageablesInRange.get(i) instanceof Champion && ((CrowdControlAbility)a).getEffect().getType()==EffectType.DEBUFF&&!CheckFriendly_or_opponent((Champion) damageablesInRange.get(i)))
-
-						 targets.add(damageablesInRange.get(i));
-					 }
-					 
-				 }
-			 }
-			 apply_ability_cost(getCurrentChampion(), a);
-			 if (targets.size()==0)
+		
+		 for (int i = 0 ; i < damageablesInRange.size() ; i++)
 			 {
-				 throw new InvalidTargetException();
+			 Damageable current_target = damageablesInRange.get(i) ;
+			 if ( a instanceof DamagingAbility )
+			 {
+				 if (current_target instanceof Cover)				 						  
+					 targets.add(current_target);
+				 else
+				   {
+						Champion current_target_champ = (Champion) current_target; 
+						if( ! doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )
+							targets.add(current_target_champ);
+						else // just remove that shield from applied effects
+						{
+							Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(current_target_champ.getAppliedEffects(), "Shield");
+						    to_be_removed.remove(current_target_champ);
+						}
+						
+					
+					}						 
+				 	 
 			 }
-			 a.execute(targets);
-			
+			 else if  (a instanceof HealingAbility)			
+			 {
+				if (current_target instanceof Champion && isFriend((Champion) current_target))				
+					targets.add(current_target);
+			 }	
+			 
+			 else // it is crowdControlAbility
+			 {
+				boolean b1 = current_target instanceof Champion && isFriend( (Champion) current_target) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.BUFF ;			 				    
+				boolean b2 = current_target instanceof Champion && !isFriend((Champion) current_target) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.DEBUFF ; 
+			    if(b1 || b2)						 
+					 targets.add(current_target);									 
+			 }
+		 }
 		 
-		 
+		 a.execute(targets);
+		 for(int i = 0  ; i < targets.size() ; i++) // to remove dead targets who died after casting the ability on them 
+			 checkIfDeadAndActAccordingly(targets.get(i));
+		 apply_ability_cost(getCurrentChampion(), a);
+	 
 	 }
 	 
 	   
@@ -724,7 +712,7 @@ private void placeCovers() {
 		 if(turnOrder.isEmpty())
 		 {			 
 			 prepareChampionTurns();
-			 return;	 // shouldn't be a return statement here ? (hosain)		
+	                     // shouldn't be a return statement here ? (hosain)		
 			             //no , to prepare the first champion in the new turn
 		 }
 		 
@@ -747,7 +735,7 @@ private void placeCovers() {
         if(turnOrder.isEmpty())
         {
         	prepareChampionTurns();
-        	return;
+
         }
 	               
 		for(int i = 0 ; i < Champions_needed_To_Update_their_Timers.size() ; i++) 
