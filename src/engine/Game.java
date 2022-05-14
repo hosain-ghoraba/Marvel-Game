@@ -327,7 +327,7 @@ private void placeCovers() {
   		  }
    	
    }
-	 public ArrayList<Damageable> getDamageableInRange_Ability(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
+	 public ArrayList<Damageable> getAllDamageablesInGivenRange(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
 	 {
 		 int vertical_movement = 0;
 		 int horizontal_movement = 0;	
@@ -350,51 +350,18 @@ private void placeCovers() {
 			 
 			 boolean outOfBoard = x_current > 4 || y_current > 4 || x_current < 0 || y_current < 0;
 			 if(outOfBoard)
-				 return null;
+				 break;
 			 Object CurrentLocation = board[x_current][y_current];
 			 if( CurrentLocation != null)
-			  targets.add((Damageable)(CurrentLocation));
+			    targets.add((Damageable)(CurrentLocation));
 			 x_start = x_current; // done so that the x_current be updated in the start of the loop
 			 y_start = y_current; // done so that the y_current be updated in the start of the loop
 		 }
-		 return targets; // will happen in case the for loop terminated, ( in case all cells in range were checked, and they were all null)
+		 return targets; 
 
 		 
 	 }
-	 public Damageable getFirstDamageableInRange(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
-	 {
-		 int vertical_movement = 0;
-		 int horizontal_movement = 0;	
-		 
-		 switch(direction) 
-		 {
-		 case UP : vertical_movement = 1; break ;
-		 case DOWN : vertical_movement = -1; break ;
-		 case RIGHT : horizontal_movement = 1; break ;
-		 case LEFT : horizontal_movement = -1; break ;		 
-		 }
-		 
-		 int x_start = getCurrentChampion().getLocation().x;
-		 int y_start = getCurrentChampion().getLocation().y;
-		 
-		 for(int i = 0 ; i < range ; i++)
-		 {		 
-			 int x_current = x_start + vertical_movement;
-			 int y_current = y_start + horizontal_movement;
-			 
-			 boolean outOfBoard = x_current > 4 || y_current > 4 || x_current < 0 || y_current < 0;
-			 if(outOfBoard)
-				 return null;
-			 Object CurrentLocation = board[x_current][y_current];
-			 if( CurrentLocation != null)
-				 return (Damageable)(CurrentLocation);
-			 x_start = x_current; // done so that the x_current be updated in the start of the loop
-			 y_start = y_current; // done so that the y_current be updated in the start of the loop
-		 }
-		 return null; // will happen in case the for loop terminated, ( in case all cells in range were checked, and they were all null)
 
-		 
-	 }
 	 public void landNormalAttake(Champion attaker, Damageable target) // used in attake method 
 	 {
 		 int DamageAmount = attaker.getAttackDamage();
@@ -483,18 +450,22 @@ private void placeCovers() {
 			 throw new ChampionDisarmedException();
 		 if(attaker.getCurrentActionPoints() < 2)
 			 throw new NotEnoughResourcesException();
-         Damageable target = getFirstDamageableInRange(direction, attaker.getAttackRange());
-         if(target == null) 
+         ArrayList<Damageable> all_tangets_in_range = getAllDamageablesInGivenRange(direction, attaker.getAttackRange());
+         
+         if(all_tangets_in_range.isEmpty() ) 
          {
         	 attaker.setCurrentActionPoints(attaker.getCurrentActionPoints() - 2);
         	 return;
          }
-         if(target instanceof Cover)
+         
+         Damageable firstTarget = all_tangets_in_range.get(0);
+         
+         if(firstTarget instanceof Cover)
          {
-        	 landNormalAttake(attaker,target);
+        	 landNormalAttake(attaker,firstTarget);
         	 return;
          }
-         Champion targetChampion = (Champion) target;
+         Champion targetChampion = (Champion) firstTarget;
          if(doesEffectExist(targetChampion.getAppliedEffects(), "Shield"))
          {
         	 for(int i = 0 ; i < targetChampion.getAppliedEffects().size() ; i++)
@@ -517,7 +488,7 @@ private void placeCovers() {
         	 }
             	 
          }
-         landNormalAttake(attaker,target);
+         landNormalAttake(attaker,firstTarget);
          		 		 
 	 }
 	 
@@ -643,7 +614,7 @@ private void placeCovers() {
 		 checkAbilityResources(this.getCurrentChampion(), a);
 		 check_directionvalid(d);
 		 
-			ArrayList<Damageable> c= getDamageableInRange_Ability(d, a.getCastRange()) ;
+			ArrayList<Damageable> c= getAllDamageablesInGivenRange(d, a.getCastRange()) ;
 			ArrayList<Damageable> targets = new ArrayList<>();
 		
 			 for (int i=0;i<c.size();i++)
