@@ -12,6 +12,11 @@ public class Questions {
 
 	/* questions
        
+	FAILURES : 
+		
+		1- apply shouldn't change appliedEffects ...how on earth !
+		2- if INACTIVE and setting to Root, should remain INACTIVE (we should search for the causing effect,
+				not the effect itself !)
     
     2 - must leader ability of Villain setLift to zero ? or only setCondition to KNOCKEDOUT ?
     
@@ -38,11 +43,6 @@ public class Questions {
     11- set condition = knocked out in setCurrentHp if currentHp readed 0 ?
     
     12- IMPORTANT : should endTurn reconstruct the turnOrder? (because speeds might have changed)
-    failues : 
-    
-    1- apply shouldn't change appliedEffects ...how on earth !
-    2- if INACTIVE and setting to Root, should remain INACTIVE (we should search for the causing effect,
-    not the effect itself !)
     
     
  
