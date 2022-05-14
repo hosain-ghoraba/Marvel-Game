@@ -623,40 +623,40 @@ private void placeCovers() {
 		 checkAbilityResources(this.getCurrentChampion(), a);
 		 check_directionvalid(d);
 		 
-			ArrayList<Damageable> c= getAllDamageablesInGivenRange(d, a.getCastRange()) ;
+			ArrayList<Damageable> damageablesInRange = getAllDamageablesInGivenRange(d, a.getCastRange()) ;
 
 			ArrayList<Damageable> targets = new ArrayList<>();
 			
 		
-			 for (int i=0;i<c.size();i++)
+			 for (int i=0;i<damageablesInRange.size();i++)
 				 {
 				 if (a instanceof DamagingAbility )
 				 {
-					 if (c.get(i) instanceof Cover || !CheckFriendly_or_opponent((Champion) c.get(i)))
+					 if (damageablesInRange.get(i) instanceof Cover || !CheckFriendly_or_opponent((Champion) damageablesInRange.get(i)))
 					 {
 						  
-						 targets.add(c.get(i));
+						 targets.add(damageablesInRange.get(i));
 					 }
 					 
 				 }
 				 else if  (a instanceof HealingAbility)
 				 {
-					if (c.get(i) instanceof Champion &&CheckFriendly_or_opponent((Champion) c.get(i)))
+					if (damageablesInRange.get(i) instanceof Champion &&CheckFriendly_or_opponent((Champion) damageablesInRange.get(i)))
 					{
-						targets.add(c.get(i));
+						targets.add(damageablesInRange.get(i));
 					}
 				 }
 				 else 
 				 {
-					 if (c.get(i) instanceof Champion && ((CrowdControlAbility)a).getEffect().getType()==EffectType.BUFF&&CheckFriendly_or_opponent((Champion) c.get(i)))
+					 if (damageablesInRange.get(i) instanceof Champion && ((CrowdControlAbility)a).getEffect().getType()==EffectType.BUFF&&CheckFriendly_or_opponent((Champion) damageablesInRange.get(i)))
 					 {
-						 targets.add(c.get(i));
+						 targets.add(damageablesInRange.get(i));
 					 }
 					 else 
 					 {
-						 if (c.get(i) instanceof Champion && ((CrowdControlAbility)a).getEffect().getType()==EffectType.DEBUFF&&!CheckFriendly_or_opponent((Champion) c.get(i)))
+						 if (damageablesInRange.get(i) instanceof Champion && ((CrowdControlAbility)a).getEffect().getType()==EffectType.DEBUFF&&!CheckFriendly_or_opponent((Champion) damageablesInRange.get(i)))
 
-						 targets.add(c.get(i));
+						 targets.add(damageablesInRange.get(i));
 					 }
 					 
 				 }
