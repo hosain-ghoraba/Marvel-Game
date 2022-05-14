@@ -328,7 +328,7 @@ private void placeCovers() {
    	
    }
 	 public ArrayList<Damageable> getAllDamageablesInGivenRange(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
-	 {
+	 {  
 		 int vertical_movement = 0;
 		 int horizontal_movement = 0;	
 		 
@@ -468,7 +468,7 @@ private void placeCovers() {
          Champion targetChampion = (Champion) firstTarget;
          if(doesEffectExist(targetChampion.getAppliedEffects(), "Shield"))
          {
-        	 for(int i = 0 ; i < targetChampion.getAppliedEffects().size() ; i++)
+        	 for(int i = 0 ; i < targetChampion.getAppliedEffects().size() ; i++)// removes the shield from appliedEffects
         		 if(targetChampion.getAppliedEffects().get(i).getName() == "Shield")
         		 {
         			 targetChampion.getAppliedEffects().get(i).remove(targetChampion);
@@ -663,7 +663,7 @@ private void placeCovers() {
 		 
 	 }
 	 
-	 
+	   
 		  
 	 public void castAbility(Ability a, int x, int y) throws NotEnoughResourcesException
 	 {	 
