@@ -323,26 +323,7 @@ private void placeCovers() {
 	 public void checkIfDeadAndActAccordingly(Damageable d) { // gaveOver not checked yet(if will ever check it here in this method, not in a GameAction methods
    	  if(d.getCurrentHP() != 0)// IMPORTANT : will need also to check if condition = KNOCKOUT if removed the line " c.setCurrentHP(0) " from VILLIAN useLeaderAbility
    		  return;	
-      if(d instanceof Cover)
-  			  board[((Cover)d).getLocation().x][((Cover)d).getLocation().y] = null;
-  	  else 
-  		  {
-  			  Champion c = (Champion) d;
-  			  board[c.getLocation().x][c.getLocation().y] = null;
-  			  c.setCondition(Condition.KNOCKEDOUT);// don't know if it adds something new, but just in case! 
-  			  ArrayList<Champion> attackedTeam = this.getWaitingPlayer().getTeam();
-  			  attackedTeam.remove(c);
-		      
-  			  // if Team of c became Empty,then end the game ( how to end the game ?)..(maybe by throwing an exception, and catcher of it will display : gameover!)
-  		      if(attackedTeam.isEmpty()) // ( how to end the game ?), will ask gameRoom 
-  		      {		    	  
-  		    	  System.out.println("gameOver! winning player is :" + this.getCurrentPlayer().getName() );
-  		      }
-  		    	  
-  		   
-  		      
-  		  }
-   	
+      board[d.getLocation().x][d.getLocation().y] = null;   
    }
 	 public ArrayList<Damageable> getAllDamageablesInGivenRange(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
 	 
@@ -611,11 +592,10 @@ private void placeCovers() {
 		 // must call checkIfDead on each member in targets at the end of the method
 		 
 		 if(doesEffectExist(getCurrentChampion().getAppliedEffects(),"Silence"))
-			 throw new AbilityUseException();		 
+			 throw new AbilityUseException();			 
 		 checkAbilityResources(getCurrentChampion(), a);
 		 
 		 ArrayList<Damageable> damageablesInRange = getAllDamageablesInGivenRange(d, a.getCastRange()) ;
-
 		 ArrayList<Damageable> targets = new ArrayList<Damageable>(); // passed targets to execute method
 		
 		
