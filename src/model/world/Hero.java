@@ -29,7 +29,7 @@ public void useLeaderAbility(ArrayList<Champion> targets) {
 		}
 		 new Embrace(2).apply(currentChamp);
 	}
-	
+	  
 }
  
 
