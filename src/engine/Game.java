@@ -708,7 +708,7 @@ private void placeCovers() {
 	 {	  
 	 }
 	  
-	 public void endTurn() // this methods causes an error in the testcase : " index 0 out of bound for length 0 " ...I couldn't solve it
+	 public void endTurn() 
 	 {	 	
 		 turnOrder.remove() ;
 			

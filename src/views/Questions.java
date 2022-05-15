@@ -11,33 +11,13 @@ import model.world.Villain;
 public class Questions {
   
 	/* questions
-    ERRORS : 1 - java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
-    
-	at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64)
-	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70)
-	at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:266)
-	at java.base/java.util.Objects.checkIndex(Objects.java:359)
-	at java.base/java.util.ArrayList.get(ArrayList.java:427)
-	at tests.M2PublicTests.testEndTurnUpdatesStunnedChampion(M2PublicTests.java:25007)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:299)
-	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:293)
-	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
-	at java.base/java.lang.Thread.run(Thread.java:833)
 
 	FAILURES : 
 		
 		1- apply shouldn't change appliedEffects ...how on earth !
 		2- if INACTIVE and setting to Root, should remain INACTIVE (we should search for the causing effect,
 				not the effect itself !)
-		3- "should remove attacked champion from turnOrder if life reached zero after being attacked"...how to remove it? (speeds issue)		
+				
     
     2 - must leader ability of Villain setLift to zero ? or only setCondition to KNOCKEDOUT ?
     
