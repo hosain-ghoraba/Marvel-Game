@@ -42,9 +42,9 @@ public abstract class Effect implements Cloneable,Comparable {
 	public int compareTo(Object o) { // done to help in get_effect_With_Given_Name_With_the_least_Duration in game class
 		Effect other = (Effect) o;
 		if(other.getDuration() > this.getDuration())
-			return 1;
-		if (other.getDuration() < this.getDuration())
 			return -1;
+		if (other.getDuration() < this.getDuration())
+			return 1;
 		return 0;
 		
 		
