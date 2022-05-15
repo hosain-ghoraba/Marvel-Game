@@ -326,23 +326,9 @@ private void placeCovers() {
 	 public void checkIfDeadAndActAccordingly(Damageable d) { // gaveOver not checked yet(if will ever check it here in this method, not in a GameAction methods
    	  if(d.getCurrentHP() != 0)// IMPORTANT : will need also to check if condition = KNOCKOUT if removed the line " c.setCurrentHP(0) " from VILLIAN useLeaderAbility
    		  return;	
-<<<<<<< HEAD
-      if(d instanceof Cover)
-  			  board[((Cover)d).getLocation().x][((Cover)d).getLocation().y] = null;
-  	  else 
-  		  {
-  			  Champion c = (Champion) d;
-  			  board[c.getLocation().x][c.getLocation().y] = null;
-  			  c.setCondition(Condition.KNOCKEDOUT);// don't know if it adds something new, but just in case! 
+      board[d.getLocation().x][d.getLocation().y] = null;  
+      // must check if gameOver and terminate the game if the game is over, but don't know how to terminate the game yet.maybe in M3
 
-  		    	  
-  		   
-  		      
-  		  }
-   	
-=======
-      board[d.getLocation().x][d.getLocation().y] = null;   
->>>>>>> branch 'master' of git@github.com:hosain-ghoraba/Game.git
    }
 	 public ArrayList<Damageable> getAllDamageablesInGivenRange(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
 	 
@@ -876,7 +862,7 @@ private void placeCovers() {
 		 
 	 }
 	 
-<<<<<<< HEAD
+
 	 public void useLeaderAbility() throws LeaderNotCurrentException , LeaderAbilityAlreadyUsedException //  don't know what to loop over, team or turnOrder
 
 	 {	  
@@ -889,9 +875,13 @@ private void placeCovers() {
 		 if( b1 || b2)    
 			 throw new LeaderAbilityAlreadyUsedException();
 		 ArrayList<Champion> targets = new ArrayList<Champion>();
+		 
+		 ArrayList<Champion> friendlyTeam = getCurrentPlayer().getTeam();
+		 ArrayList<Champion> enemyTeam = getWaitingPlayer().getTeam();
+		 
 		 if(attaker instanceof Hero)
 		 {
-			 ArrayList<Champion> friendlyTeam = getCurrentPlayer().getTeam();
+			
 			 for(int i = 0 ; i < friendlyTeam.size() ; i++)
 			 {
 				Champion currentFriend = friendlyTeam.get(i); 
@@ -902,9 +892,9 @@ private void placeCovers() {
 		 }
 		 else if(attaker instanceof Villain)
 		 {
-			 for(int i = 0 ; i < this.getWaitingPlayer().getTeam().size() ; i++) // passes all alive enemies to targets
+			 for(int i = 0 ; i < enemyTeam.size() ; i++) // passes all alive enemies to targets
 			 {
-				 Champion current_Enemy = this.getWaitingPlayer().getTeam().get(i);
+				 Champion current_Enemy = enemyTeam.get(i);
 				 if(current_Enemy.getCondition() != Condition.KNOCKEDOUT)
 					 targets.add(current_Enemy);
 			 }
@@ -912,23 +902,31 @@ private void placeCovers() {
 		 }
 		 else
 		 {
-			
+			 for(int i = 0 ; i < friendlyTeam.size() ; i++)
+			 {
+				Champion currentFriend = friendlyTeam.get(i); 
+				if(currentFriend.getCondition() != Condition.KNOCKEDOUT && currentFriend != getCurrentPlayer().getLeader() )
+					 targets.add(currentFriend);
+			 }
+			 
+			 for(int i = 0 ; i < enemyTeam.size() ; i++) // passes all alive enemies to targets
+			 {
+				 Champion current_Enemy = enemyTeam.get(i);
+				 if(current_Enemy.getCondition() != Condition.KNOCKEDOUT && current_Enemy != getWaitingPlayer().getLeader())
+					 targets.add(current_Enemy);
+			 } 
+			 
 			 
 		 }
+		 if(firstPlayer.getTeam().contains(getCurrentPlayer()))
+			 firstLeaderAbilityUsed = true;
+		 else 
+			 secondLeaderAbilityUsed = true;
 		 attaker.useLeaderAbility(targets);
 		 for(int i = 0 ; i < targets.size() ; i++)
 			 checkIfDeadAndActAccordingly(targets.get(i));
-=======
-	 public void useLeaderAbility() throws AbilityUseException //  don't know what to loop over, team or turnOrder
-	 {
-		 if(!getCurrentChampion().equals(firstPlayer.getLeader()) || !getCurrentChampion().equals(secondPlayer.getLeader())) {
-			 throw new AbilityUseException() ;
-		 }
-	 
-	 
->>>>>>> branch 'master' of git@github.com:hosain-ghoraba/Game.git
 	 }
-	  //..
+
 	 public void endTurn() 
 	 {	 	
 		 turnOrder.remove() ;
