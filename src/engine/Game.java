@@ -299,17 +299,11 @@ private void placeCovers() {
      	         
      }
 	 public Player getCurrentPlayer() {
-		 Champion c = (Champion) turnOrder.peekMin();
-		 ArrayList<Champion> Team1 = firstPlayer.getTeam();
-		 ArrayList<Champion> Team2 = secondPlayer.getTeam();
-		 
-		 for(int i = 0 ; i < Team1.size() ; i++)
-			 if(Team1.get(i) == c)
-				 return firstPlayer;
-		 for(int i = 0 ; i < Team2.size() ; i++)
-			 if(Team2.get(i) == c)
-				 return secondPlayer;
-		 return null; // will never happen 
+		 if(firstPlayer.getTeam().contains(getCurrentChampion()))
+			 return firstPlayer;
+		 return secondPlayer;
+         
+
 	 }
      public Player getWaitingPlayer() {
     	 if(this.getCurrentPlayer() == firstPlayer)
@@ -918,11 +912,14 @@ private void placeCovers() {
 			 
 			 
 		 }
-		 if(firstPlayer.getTeam().contains(getCurrentPlayer()))
+		 
+		 attaker.useLeaderAbility(targets);
+		 
+		 if(firstPlayer.getTeam().contains(getCurrentChampion()))
 			 firstLeaderAbilityUsed = true;
 		 else 
 			 secondLeaderAbilityUsed = true;
-		 attaker.useLeaderAbility(targets);
+		 
 		 for(int i = 0 ; i < targets.size() ; i++)
 			 checkIfDeadAndActAccordingly(targets.get(i));
 	 }

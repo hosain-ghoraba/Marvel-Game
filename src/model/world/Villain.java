@@ -10,7 +10,7 @@ public Villain (String name, int maxHP, int mana, int maxActions, int speed, int
 // not sure about lost of percision in hp_percentage
 
 public void useLeaderAbility(ArrayList<Champion> targets) {
-	for (int i=0;i<targets.size();i++)
+	for (int i = 0 ; i<targets.size() ; i++)
 	{
 		Champion c = targets.get(i);
 		double hp_percentage = (c.getCurrentHP() / c.getMaxHP())*100;
