@@ -5,12 +5,15 @@ import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
 import exceptions.AbilityUseException;
 import exceptions.ChampionDisarmedException;
 import exceptions.InvalidTargetException;
+import exceptions.LeaderAbilityAlreadyUsedException;
+import exceptions.LeaderNotCurrentException;
 import exceptions.NotEnoughResourcesException;
 import exceptions.UnallowedMovementException;
 import model.abilities.Ability;
@@ -684,8 +687,47 @@ private void placeCovers() {
 		 
 	 }
 	 
-	 public void useLeaderAbility() //  don't know what to loop over, team or turnOrder
+	 public void useLeaderAbility() throws LeaderNotCurrentException , LeaderAbilityAlreadyUsedException //  don't know what to loop over, team or turnOrder
+
 	 {	  
+		 Champion attaker = getCurrentChampion();
+		 if( attaker != getCurrentPlayer().getLeader() )
+		     throw new LeaderNotCurrentException();
+		 
+		 boolean b1 = firstLeaderAbilityUsed && firstPlayer == getCurrentPlayer() ;// checks if firstLeaderAbility is used and the firstPlayer is indeed the one who is playing now
+		 boolean b2 = secondLeaderAbilityUsed && secondPlayer == getCurrentPlayer() ;// checks if secondLeaderAbility is used and the secondPlayer is indeed the one who is playing now
+		 if( b1 || b2)    
+			 throw new LeaderAbilityAlreadyUsedException();
+		 ArrayList<Champion> targets = new ArrayList<Champion>();
+		 if(attaker instanceof Hero)
+		 {
+			 ArrayList<Champion> friendlyTeam = getCurrentPlayer().getTeam();
+			 for(int i = 0 ; i < friendlyTeam.size() ; i++)
+			 {
+				Champion currentFriend = friendlyTeam.get(i); 
+				 if(currentFriend.getCondition() != Condition.KNOCKEDOUT)
+					 targets.add(currentFriend);
+			 }
+
+		 }
+		 else if(attaker instanceof Villain)
+		 {
+			 for(int i = 0 ; i < this.getWaitingPlayer().getTeam().size() ; i++) // passes all alive enemies to targets
+			 {
+				 Champion current_Enemy = this.getWaitingPlayer().getTeam().get(i);
+				 if(current_Enemy.getCondition() != Condition.KNOCKEDOUT)
+					 targets.add(current_Enemy);
+			 }
+			 
+		 }
+		 else
+		 {
+			
+			 
+		 }
+		 attaker.useLeaderAbility(targets);
+		 for(int i = 0 ; i < targets.size() ; i++)
+			 checkIfDeadAndActAccordingly(targets.get(i));
 	 }
 	  
 	 public void endTurn() 
