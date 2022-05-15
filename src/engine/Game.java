@@ -603,7 +603,7 @@ private void placeCovers() {
 		 }
 	 }
 
-	 public void castAbility(Ability a, Direction d) throws NotEnoughResourcesException, AbilityUseException, CloneNotSupportedException, InvalidTargetException
+	 public void castAbility(Ability a, Direction d) throws NotEnoughResourcesException, AbilityUseException, CloneNotSupportedException
 	 {
 		 
 		 // must check if attacker has Silence on it
