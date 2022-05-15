@@ -323,6 +323,7 @@ private void placeCovers() {
 	 public void checkIfDeadAndActAccordingly(Damageable d) { // gaveOver not checked yet(if will ever check it here in this method, not in a GameAction methods
    	  if(d.getCurrentHP() != 0)// IMPORTANT : will need also to check if condition = KNOCKOUT if removed the line " c.setCurrentHP(0) " from VILLIAN useLeaderAbility
    		  return;	
+<<<<<<< HEAD
       if(d instanceof Cover)
   			  board[((Cover)d).getLocation().x][((Cover)d).getLocation().y] = null;
   	  else 
@@ -336,6 +337,9 @@ private void placeCovers() {
   		      
   		  }
    	
+=======
+      board[d.getLocation().x][d.getLocation().y] = null;   
+>>>>>>> branch 'master' of git@github.com:hosain-ghoraba/Game.git
    }
 	 public ArrayList<Damageable> getAllDamageablesInGivenRange(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
 	 
@@ -685,11 +689,10 @@ private void placeCovers() {
 		 // must call checkIfDead on each member in targets at the end of the method
 		 
 		 if(doesEffectExist(getCurrentChampion().getAppliedEffects(),"Silence"))
-			 throw new AbilityUseException();		 
+			 throw new AbilityUseException();			 
 		 checkAbilityResources(getCurrentChampion(), a);
 		 
 		 ArrayList<Damageable> damageablesInRange = getAllDamageablesInGivenRange(d, a.getCastRange()) ;
-
 		 ArrayList<Damageable> targets = new ArrayList<Damageable>(); // passed targets to execute method
 		
 		
@@ -878,7 +881,7 @@ private void placeCovers() {
 	 
 	 
 	 }
-	  
+	  //..
 	 public void endTurn() 
 	 {	 	
 		 turnOrder.remove() ;
