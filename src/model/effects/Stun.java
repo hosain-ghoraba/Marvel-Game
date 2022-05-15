@@ -12,8 +12,9 @@ public class Stun extends Effect {
 	
 	
 	
-	public void apply(Champion c) {
+	public void apply(Champion c)  {
 		// TODO Auto-generated method stub
+		
 		c.getAppliedEffects().add(this);
 		c.setCondition(Condition.INACTIVE);
 		// not allowed to play there turn for a while : throws exception in another method
