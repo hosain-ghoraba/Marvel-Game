@@ -1,5 +1,3 @@
-
-
 package engine;
 import java.awt.Point;
 import java.io.BufferedReader;
@@ -8,7 +6,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
-
+//dd;
 import exceptions.AbilityUseException;
 import exceptions.ChampionDisarmedException;
 import exceptions.InvalidTargetException;
@@ -319,9 +317,8 @@ private void placeCovers() {
      }
 	 public void checkIfDeadAndActAccordingly(Damageable d) { // gaveOver not checked yet(if will ever check it here in this method, not in a GameAction methods
 		 
-   	  if(d.getCurrentHP() > 0)
+   	  if(d.getCurrentHP() != 0)// IMPORTANT : 
    		  return;	
-
       board[d.getLocation().x][d.getLocation().y] = null;  
       if(d instanceof Champion) // must remove it from his team, and from turnOrder
       {
@@ -329,20 +326,16 @@ private void placeCovers() {
 	     firstPlayer.getTeam().remove(dead_champ);// does nothing if dead_champ is not is firstPlayer team
 	     secondPlayer.getTeam().remove(dead_champ);// does nothing if dead_champ is not is secondPlayer team
 	      
-	     // done removing dead_champ from his team, lets remove it from turnOrder : 
-	     
-	      ArrayList <Champion> alive_Champions = new ArrayList<Champion>();
-	      while(true) // this loop causes extra 5 failures in castingAbility method,
-	    	          // it also may change the current champ after he
+	      ArrayList <Champion> store_Champions_In_turnOrder = new ArrayList<Champion>();
+	      boolean dead_Champ_removed = false;
+	      while(! dead_Champ_removed)
 	      {
 	    	  Champion current = (Champion)turnOrder.remove();
 	    	  if(current == dead_champ )
-	    		  break;
-	    	  alive_Champions.add(current);
-
+	    	      {
+	    		  dead_Champ_removed = true;
+	    	      }
 	      }
-	      while(! alive_Champions.isEmpty() ) // re_enter alive champions into turnOrder
-	    	  turnOrder.insert(alive_Champions.remove(0));
 	      
       }
       checkGameOver();
@@ -531,10 +524,15 @@ private void placeCovers() {
 	 }
 	 
 	 public void castAbility(Ability a) throws CloneNotSupportedException // use getFirstDamageableInRange 
-, AbilityUseException
+, AbilityUseException, NotEnoughResourcesException
 	 {
+
+		 if(doesEffectExist(getCurrentChampion().getAppliedEffects(),"Silence"))
+			 throw new AbilityUseException();		 
+		 checkAbilityResources(getCurrentChampion(), a);
+	
 		 
-	 
+		 
 		 if(a.getCastArea()== AreaOfEffect.TEAMTARGET) {
 		 if(a instanceof DamagingAbility || (a instanceof CrowdControlAbility && ((CrowdControlAbility)a).getEffect().getType()==EffectType.DEBUFF)) {
 			 ArrayList<Damageable> z = new ArrayList<>() ;
@@ -631,10 +629,15 @@ private void placeCovers() {
 		 
 		 
 		 
+		 
 	 }
 	// helper method used in castAbility (Ability, Direction)
-	 public void checkAbilityResources (Champion c , Ability a) throws NotEnoughResourcesException 
+	 public void checkAbilityResources (Champion c , Ability a) throws NotEnoughResourcesException, AbilityUseException 
 	 {
+		if(a.getCurrentCooldown()!=0) {
+			
+			throw new AbilityUseException();
+		}
 		 if (c.getCurrentActionPoints()<a.getRequiredActionPoints())
 		 {
 			 throw new NotEnoughResourcesException ();
@@ -699,11 +702,10 @@ private void placeCovers() {
 		 // must call checkIfDead on each member in targets at the end of the method
 		 
 		 if(doesEffectExist(getCurrentChampion().getAppliedEffects(),"Silence"))
-			 throw new AbilityUseException();		 
+			 throw new AbilityUseException();			 
 		 checkAbilityResources(getCurrentChampion(), a);
 		 
 		 ArrayList<Damageable> damageablesInRange = getAllDamageablesInGivenRange(d, a.getCastRange()) ;
-
 		 ArrayList<Damageable> targets = new ArrayList<Damageable>(); // passed targets to execute method
 		
 		
@@ -716,8 +718,11 @@ private void placeCovers() {
 					 targets.add(current_target);
 				 else
 				   {
-						Champion current_target_champ = (Champion) current_target; 
-						if( ! doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )
+						
+					 Champion current_target_champ = (Champion) current_target; 
+						
+					 if(!isFriend(current_target_champ)) {
+					 if( ! doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )
 							targets.add(current_target_champ);
 						else // just remove that shield from applied effects
 						{
@@ -727,7 +732,7 @@ private void placeCovers() {
 						
 					
 					}						 
-				 	 
+				   }
 			 }
 			 else if  (a instanceof HealingAbility)			
 			 {
@@ -752,12 +757,14 @@ private void placeCovers() {
 	 }
 	 
 	   
+		  
 	 public void castAbility(Ability a, int x, int y) throws NotEnoughResourcesException, AbilityUseException, InvalidTargetException, CloneNotSupportedException
 	 {	  if(doesEffectExist(getCurrentChampion().getAppliedEffects(),"Silence"))
 		       throw new AbilityUseException();
 		 
+	 
+		  
 		 checkAbilityResources(this.getCurrentChampion(), a);
-
 		 if(x>4 || x<0 || y<0 || y>4)
 		 {
 			 throw new InvalidTargetException() ;
@@ -857,7 +864,6 @@ private void placeCovers() {
 			 
 			 
 			 }
-
 		 
 		 
 		 a.execute(targets);
@@ -894,6 +900,7 @@ private void placeCovers() {
 		 
 	 }
 	 
+
 	 public void useLeaderAbility() throws LeaderNotCurrentException , LeaderAbilityAlreadyUsedException //  don't know what to loop over, team or turnOrder
 
 	 {	  
@@ -1002,5 +1009,7 @@ private void placeCovers() {
 		          turnOrder.insert(secondPlayer.getTeam().get(i));		
 
 	 }
-
+//aaa
+	 
+	 //balabizo
 }
