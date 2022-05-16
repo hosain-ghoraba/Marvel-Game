@@ -5,12 +5,15 @@ import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
 import exceptions.AbilityUseException;
 import exceptions.ChampionDisarmedException;
 import exceptions.InvalidTargetException;
+import exceptions.LeaderAbilityAlreadyUsedException;
+import exceptions.LeaderNotCurrentException;
 import exceptions.NotEnoughResourcesException;
 import exceptions.UnallowedMovementException;
 import model.abilities.Ability;
@@ -296,17 +299,11 @@ private void placeCovers() {
      	         
      }
 	 public Player getCurrentPlayer() {
-		 Champion c = (Champion) turnOrder.peekMin();
-		 ArrayList<Champion> Team1 = firstPlayer.getTeam();
-		 ArrayList<Champion> Team2 = secondPlayer.getTeam();
-		 
-		 for(int i = 0 ; i < Team1.size() ; i++)
-			 if(Team1.get(i) == c)
-				 return firstPlayer;
-		 for(int i = 0 ; i < Team2.size() ; i++)
-			 if(Team2.get(i) == c)
-				 return secondPlayer;
-		 return null; // will never happen 
+		 if(firstPlayer.getTeam().contains(getCurrentChampion()))
+			 return firstPlayer;
+		 return secondPlayer;
+         
+
 	 }
      public Player getWaitingPlayer() {
     	 if(this.getCurrentPlayer() == firstPlayer)
@@ -321,28 +318,32 @@ private void placeCovers() {
     	 return true ;
      }
 	 public void checkIfDeadAndActAccordingly(Damageable d) { // gaveOver not checked yet(if will ever check it here in this method, not in a GameAction methods
-   	  if(d.getCurrentHP() != 0)// IMPORTANT : will need also to check if condition = KNOCKOUT if removed the line " c.setCurrentHP(0) " from VILLIAN useLeaderAbility
+		 
+   	  if(d.getCurrentHP() != 0)// IMPORTANT : 
    		  return;	
-      if(d instanceof Cover)
-  			  board[((Cover)d).getLocation().x][((Cover)d).getLocation().y] = null;
-  	  else 
-  		  {
-  			  Champion c = (Champion) d;
-  			  board[c.getLocation().x][c.getLocation().y] = null;
-  			  c.setCondition(Condition.KNOCKEDOUT);// don't know if it adds something new, but just in case! 
-  			  ArrayList<Champion> attackedTeam = this.getWaitingPlayer().getTeam();
-  			  attackedTeam.remove(c);
-		      
-  			  // if Team of c became Empty,then end the game ( how to end the game ?)..(maybe by throwing an exception, and catcher of it will display : gameover!)
-  		      if(attackedTeam.isEmpty()) // ( how to end the game ?), will ask gameRoom 
-  		      {		    	  
-  		    	  System.out.println("gameOver! winning player is :" + this.getCurrentPlayer().getName() );
-  		      }
-  		    	  
-  		   
-  		      
-  		  }
-   	
+
+      board[d.getLocation().x][d.getLocation().y] = null;  
+      if(d instanceof Champion) // must remove it from his team, and from turnOrder
+      {
+	     Champion dead_champ = (Champion)d;
+	     firstPlayer.getTeam().remove(dead_champ);// does nothing if dead_champ is not is firstPlayer team
+	     secondPlayer.getTeam().remove(dead_champ);// does nothing if dead_champ is not is secondPlayer team
+	      
+	      ArrayList <Champion> store_Champions_In_turnOrder = new ArrayList<Champion>();
+	      boolean dead_Champ_removed = false;
+	      while(! dead_Champ_removed)
+	      {
+	    	  Champion current = (Champion)turnOrder.remove();
+	    	  if(current == dead_champ )
+	    	      {
+	    		  dead_Champ_removed = true;
+	    	      }
+	      }
+	      
+      }
+      checkGameOver();
+      // must check if gameOver and terminate the game if the game is over, but don't know how to terminate the game yet.maybe in M3
+
    }
 	 public ArrayList<Damageable> getAllDamageablesInGivenRange(Direction direction, int range) // used in both (attake) and (cast Ability) methods  
 	 
@@ -418,30 +419,35 @@ private void placeCovers() {
 	   		
 	 }
 	 public Player checkGameOver() {
-         		  
-		 boolean all_Team1_is_dead = true;
-		 for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++)
-		 {			 
-			 Condition cond = firstPlayer.getTeam().get(i).getCondition();
-			 if(cond != Condition.KNOCKEDOUT)
-				 all_Team1_is_dead = false;			 
-		 }
-		 if(all_Team1_is_dead)
+		 
+		 if(firstPlayer.getTeam().isEmpty())
 			 return secondPlayer;
-		 
-		 boolean all_Team2_is_dead = true;
-		 for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++)
-		 {			 
-			 Condition cond = secondPlayer.getTeam().get(i).getCondition();
-			 if(cond != Condition.KNOCKEDOUT)
-				 all_Team2_is_dead = false;			 
-		 }
-		 if(all_Team2_is_dead)
+		 if(secondPlayer.getTeam().isEmpty())
 			 return firstPlayer;
-		 
 		 return null;
+
+		 // NOTE : the below code must replace the upper code if dead champions will NOT be removed from their team ArrayList
 		 
-      		 
+//		 boolean all_Team1_is_dead = true;
+//		 for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++)
+//		 {			 
+//			 Condition cond = firstPlayer.getTeam().get(i).getCondition();
+//			 if(cond != Condition.KNOCKEDOUT)
+//				 all_Team1_is_dead = false;			 
+//		 }
+//		 if(all_Team1_is_dead)
+//			 return secondPlayer;
+//		 
+//		 boolean all_Team2_is_dead = true;
+//		 for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++)
+//		 {			 
+//			 Condition cond = secondPlayer.getTeam().get(i).getCondition();
+//			 if(cond != Condition.KNOCKEDOUT)
+//				 all_Team2_is_dead = false;			 
+//		 }
+//		 if(all_Team2_is_dead)
+//			 return firstPlayer;
+		 
 	 }
      public void move(Direction d) throws NotEnoughResourcesException , UnallowedMovementException
 	 {	 
@@ -520,13 +526,91 @@ private void placeCovers() {
          		 		 
 	 }
 	 
-	 public void castAbility(Ability a) // use getFirstDamageableInRange 
+	 public void castAbility(Ability a) throws CloneNotSupportedException // use getFirstDamageableInRange 
+, AbilityUseException
 	 {
 		 
 	 
+		 if(a.getCastArea()== AreaOfEffect.TEAMTARGET) {
+		 if(a instanceof DamagingAbility || (a instanceof CrowdControlAbility && ((CrowdControlAbility)a).getEffect().getType()==EffectType.DEBUFF)) {
+			 ArrayList<Damageable> z = new ArrayList<>() ;
+
+			 if(firstPlayer.getTeam().contains(getCurrentChampion())) {
+				 for(int i =0 ;i< secondPlayer.getTeam().size();i++) {
+					Champion x =secondPlayer.getTeam().get(i);
+					if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
+					    z.add(x);
+				 }
+				 a.execute(z); 
+				 
+			 }
+			 else {
+
+				 for(int i =0 ;i< firstPlayer.getTeam().size();i++) {
+					 Champion x =firstPlayer.getTeam().get(i);
+						if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
+						    z.add(x);
+					 
+				 }
+				 
+				 a.execute(z);
+			 }
 		 
+			 for(int i = 0  ; i < z.size() ; i++) // to remove dead targets who died after casting the ability on them 
+				 checkIfDeadAndActAccordingly(z.get(i));
+			
+			 apply_ability_cost(getCurrentChampion(), a);
+
+		 }
+		 else {
+			 ArrayList<Damageable> z = new ArrayList<>() ;
+
+			 if(firstPlayer.getTeam().contains(getCurrentChampion())) {
+				 for(int i =0 ;i< firstPlayer.getTeam().size();i++) {
+					 Champion x =firstPlayer.getTeam().get(i);
+						if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
+						    z.add(x);
+				 }
+				 a.execute(z); 
+				 
+			 }
+			 else {
+
+				 for(int i =0 ;i< secondPlayer.getTeam().size();i++) {
+						Champion x =secondPlayer.getTeam().get(i);
+						if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
+						    z.add(x);				 }
+				 
+				 a.execute(z);
+			 }
 		 
+			 for(int i = 0  ; i < z.size() ; i++) // to remove dead targets who died after casting the ability on them 
+				 checkIfDeadAndActAccordingly(z.get(i));
+			
+			 apply_ability_cost(getCurrentChampion(), a);
+		 }	 
+	 
+	 
+	 
+	 }
 		 
+	 if(a.getCastArea()== AreaOfEffect.SELFTARGET) {
+		 if(a instanceof DamagingAbility || (a instanceof CrowdControlAbility && ((CrowdControlAbility)a).getEffect().getType()==EffectType.DEBUFF)) {
+			 throw new AbilityUseException();
+		 
+		 }
+	
+		 else {
+			 ArrayList<Damageable> z = new ArrayList<>() ;
+              z.add(getCurrentChampion());
+			 a.execute(z);
+			 apply_ability_cost(getCurrentChampion(), a);
+			 
+		 }
+	 
+	 
+	 
+	 }
 		 
 		 
 		 
@@ -664,15 +748,117 @@ private void placeCovers() {
 	 }
 	 
 	   
-		  
-	 public void castAbility(Ability a, int x, int y) throws NotEnoughResourcesException
-	 {	 
+	 public void castAbility(Ability a, int x, int y) throws NotEnoughResourcesException, AbilityUseException, InvalidTargetException, CloneNotSupportedException
+	 {	  if(doesEffectExist(getCurrentChampion().getAppliedEffects(),"Silence"))
+		       throw new AbilityUseException();
+		 
 		 checkAbilityResources(this.getCurrentChampion(), a);
+
+		 if(x>4 || x<0 || y<0 || y>4)
+		 {
+			 throw new InvalidTargetException() ;
+		 }
+		 
+		 if(boardLocationIsvalidAndEmpty(x, y)) {
+			 if(a instanceof HealingAbility ) {
+				 throw new InvalidTargetException() ;
+
+			 }
+			 apply_ability_cost(getCurrentChampion(), a);
+            return ;
+		 }
+
+		 Damageable z = (Damageable)board[x][y] ;
+		 if( a.getCastRange()< calcDistance(getCurrentChampion(), z))
+			 throw new InvalidTargetException() ;		
+
+
+		 ArrayList<Damageable> targets = new ArrayList<Damageable>(); // passed targets to execute method
+		
+		
+	
+			 if ( a instanceof DamagingAbility )
+			 {
+				
+				 
+				 if (z instanceof Cover)				 						  
+					 targets.add(z);
+				 else
+				   {
+						
+					 
+					 Champion current_target_champ = (Champion) z; 
+					 if(current_target_champ.equals(getCurrentChampion())) {
+							throw new InvalidTargetException() ;
+
+					 }
+					 
+					 else if(!isFriend(current_target_champ)) {
+					
+					 
+						if( ! doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )
+							targets.add(current_target_champ);
+						else // just remove that shield from applied effects
+						{
+							Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(current_target_champ.getAppliedEffects(), "Shield");
+						    to_be_removed.remove(current_target_champ);
+						}
+						
+					 }
+					 else 
+					    	throw new InvalidTargetException() ;
+
+				   
+				   }						 
+				 	 
+			 }
+			 else if  (a instanceof HealingAbility)			
+			 {
+				
+				 if (z instanceof Champion && isFriend((Champion) z))				
+					targets.add(z);
+				 else
+				    	throw new InvalidTargetException() ;
+					 
+			 
+			 }	
+			 
+			 else // it is crowdControlAbility
+			 {
+				 
+				 if(z instanceof Cover ) {
+					throw new InvalidTargetException() ;
+					
+				}
+				
+			if(z instanceof Champion && ((Champion) z).equals(getCurrentChampion())  && ((CrowdControlAbility)a).getEffect().getType() == EffectType.DEBUFF) {
+				throw new InvalidTargetException() ;
+				
+			}
+				 
+				 
+				boolean b1 = z instanceof Champion && isFriend( (Champion) z) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.BUFF ;			 				    
+				boolean b2 = z instanceof Champion && !isFriend((Champion) z) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.DEBUFF ; 
+			    if(b1)						 
+					 targets.add(z);									 
+			 
+			    else  if(b2) {
+				
+					 targets.add(z);}
+			    else 
+			    	throw new InvalidTargetException() ;
+
+			 
+			 
+			 
+			 
+			 }
+
 		 
 		 
-		 
-		 
-		 
+		 a.execute(targets);
+			 checkIfDeadAndActAccordingly(z);
+			 apply_ability_cost(getCurrentChampion(), a);
 		 
 		 
 		 
@@ -704,30 +890,86 @@ private void placeCovers() {
 		 
 	 }
 	 
-	 public void useLeaderAbility() //  don't know what to loop over, team or turnOrder
+	 public void useLeaderAbility() throws LeaderNotCurrentException , LeaderAbilityAlreadyUsedException //  don't know what to loop over, team or turnOrder
+
 	 {	  
-	 }
-	  
-	 public void endTurn() 
-	 {	 	
-		 turnOrder.remove() ;
+		 Champion attaker = getCurrentChampion();
+		 if( attaker != getCurrentPlayer().getLeader() )
+		     throw new LeaderNotCurrentException();
+		 
+		 boolean b1 = firstLeaderAbilityUsed && firstPlayer == getCurrentPlayer() ;// checks if firstLeaderAbility is used and the firstPlayer is indeed the one who is playing now
+		 boolean b2 = secondLeaderAbilityUsed && secondPlayer == getCurrentPlayer() ;// checks if secondLeaderAbility is used and the secondPlayer is indeed the one who is playing now
+		 if( b1 || b2)    
+			 throw new LeaderAbilityAlreadyUsedException();
+		 ArrayList<Champion> targets = new ArrayList<Champion>();
+		 
+		 ArrayList<Champion> friendlyTeam = getCurrentPlayer().getTeam();
+		 ArrayList<Champion> enemyTeam = getWaitingPlayer().getTeam();
+		 
+		 if(attaker instanceof Hero)
+		 {
 			
-		 if(turnOrder.isEmpty())
-		 {			 
-			 prepareChampionTurns();
-	                     // shouldn't be a return statement here ? (hosain)		
-			             //no , to prepare the first champion in the new turn (Darwish)
+			 for(int i = 0 ; i < friendlyTeam.size() ; i++)
+			 {
+				Champion currentFriend = friendlyTeam.get(i); 
+				 if(currentFriend.getCondition() != Condition.KNOCKEDOUT)
+					 targets.add(currentFriend);
+			 }
+
+		 }
+		 else if(attaker instanceof Villain)
+		 {
+			 for(int i = 0 ; i < enemyTeam.size() ; i++) // passes all alive enemies to targets
+			 {
+				 Champion current_Enemy = enemyTeam.get(i);
+				 if(current_Enemy.getCondition() != Condition.KNOCKEDOUT)
+					 targets.add(current_Enemy);
+			 }
+			 
+		 }
+		 else
+		 {
+			 for(int i = 0 ; i < friendlyTeam.size() ; i++)
+			 {
+				Champion currentFriend = friendlyTeam.get(i); 
+				if(currentFriend.getCondition() != Condition.KNOCKEDOUT && currentFriend != getCurrentPlayer().getLeader() )
+					 targets.add(currentFriend);
+			 }
+			 
+			 for(int i = 0 ; i < enemyTeam.size() ; i++) // passes all alive enemies to targets
+			 {
+				 Champion current_Enemy = enemyTeam.get(i);
+				 if(current_Enemy.getCondition() != Condition.KNOCKEDOUT && current_Enemy != getWaitingPlayer().getLeader())
+					 targets.add(current_Enemy);
+			 } 
+			 
+			 
 		 }
 		 
-		//while loop to skip knocked out champions and to prepare Champions_needed_To_Update_their_Timers
+		 attaker.useLeaderAbility(targets);
+		 
+		 if(firstPlayer.getTeam().contains(getCurrentChampion()))
+			 firstLeaderAbilityUsed = true;
+		 else 
+			 secondLeaderAbilityUsed = true;
+		 
+		 for(int i = 0 ; i < targets.size() ; i++)
+			 checkIfDeadAndActAccordingly(targets.get(i));
+	 }
+
+	 public void endTurn() 
+	 {	 	
+		 turnOrder.remove() ;			
+		 
+		 if(turnOrder.isEmpty())		 			 
+			 prepareChampionTurns();
+				 
+		//while loop to prepare Champions_needed_To_Update_their_Timers and skip knouckedout ones
 		ArrayList<Champion> Champions_needed_To_Update_their_Timers = new ArrayList<Champion>();
         while(! turnOrder.isEmpty() )
         {
-        	Champion peeked = (Champion)(turnOrder.peekMin());
-        	Condition cond = peeked.getCondition();		
-        	if(cond == Condition.KNOCKEDOUT)
-        		turnOrder.remove();
-        	else if (cond == Condition.INACTIVE)       	
+        	Champion peeked = (Champion)(turnOrder.peekMin());	
+            if (peeked.getCondition() == Condition.INACTIVE)       	
         		Champions_needed_To_Update_their_Timers.add((Champion)turnOrder.remove()); 
         	else
         	   {
@@ -735,33 +977,25 @@ private void placeCovers() {
         	    break;
         	   }        	
         }
-        if(turnOrder.isEmpty())
-        {
+        for(int i = 0 ; i < Champions_needed_To_Update_their_Timers.size() ; i++) 
+        	updateTimers(Champions_needed_To_Update_their_Timers.get(i));
+        
+        if(turnOrder.isEmpty())        
         	prepareChampionTurns();
-
-        }
 	               
-		for(int i = 0 ; i < Champions_needed_To_Update_their_Timers.size() ; i++) 
-		{
-			Champion current = Champions_needed_To_Update_their_Timers.get(i);
-			updateTimers(current);
-		}
- 
 	 }
 
 	 private void prepareChampionTurns()
-	 {	 
-		
-		if(checkGameOver()!=null) return ; ///i think this could work
-		
-		
+	 {	 	 
+		if(checkGameOver()!=null)  ///i think this could work
+		{
+		     System.out.println("Gamed Over !");
+		     return;
+		}		
 	    for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++)    
-			 if(!firstPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
-			          turnOrder.insert(firstPlayer.getTeam().get(i));	 
-	    
-	    for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++) 	    
-			 if(!secondPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
-			          turnOrder.insert(secondPlayer.getTeam().get(i));		
+			      turnOrder.insert(firstPlayer.getTeam().get(i));	 			  
+	    for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++)    
+		          turnOrder.insert(secondPlayer.getTeam().get(i));		
 
 	 }
 
