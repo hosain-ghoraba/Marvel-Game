@@ -318,9 +318,29 @@ private void placeCovers() {
     	 return true ;
      }
 	 public void checkIfDeadAndActAccordingly(Damageable d) { // gaveOver not checked yet(if will ever check it here in this method, not in a GameAction methods
-   	  if(d.getCurrentHP() != 0)// IMPORTANT : will need also to check if condition = KNOCKOUT if removed the line " c.setCurrentHP(0) " from VILLIAN useLeaderAbility
+		 
+   	  if(d.getCurrentHP() != 0)// IMPORTANT : 
    		  return;	
       board[d.getLocation().x][d.getLocation().y] = null;  
+      if(d instanceof Champion) // must remove it from his team, and from turnOrder
+      {
+	     Champion dead_champ = (Champion)d;
+	     firstPlayer.getTeam().remove(dead_champ);// does nothing if dead_champ is not is firstPlayer team
+	     secondPlayer.getTeam().remove(dead_champ);// does nothing if dead_champ is not is secondPlayer team
+	      
+	      ArrayList <Champion> store_Champions_In_turnOrder = new ArrayList<Champion>();
+	      boolean dead_Champ_removed = false;
+	      while(! dead_Champ_removed)
+	      {
+	    	  Champion current = (Champion)turnOrder.remove();
+	    	  if(current == dead_champ )
+	    	      {
+	    		  dead_Champ_removed = true;
+	    	      }
+	      }
+	      
+      }
+      checkGameOver();
       // must check if gameOver and terminate the game if the game is over, but don't know how to terminate the game yet.maybe in M3
 
    }
@@ -398,30 +418,35 @@ private void placeCovers() {
 	   		
 	 }
 	 public Player checkGameOver() {
-         		  
-		 boolean all_Team1_is_dead = true;
-		 for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++)
-		 {			 
-			 Condition cond = firstPlayer.getTeam().get(i).getCondition();
-			 if(cond != Condition.KNOCKEDOUT)
-				 all_Team1_is_dead = false;			 
-		 }
-		 if(all_Team1_is_dead)
+		 
+		 if(firstPlayer.getTeam().isEmpty())
 			 return secondPlayer;
-		 
-		 boolean all_Team2_is_dead = true;
-		 for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++)
-		 {			 
-			 Condition cond = secondPlayer.getTeam().get(i).getCondition();
-			 if(cond != Condition.KNOCKEDOUT)
-				 all_Team2_is_dead = false;			 
-		 }
-		 if(all_Team2_is_dead)
+		 if(secondPlayer.getTeam().isEmpty())
 			 return firstPlayer;
-		 
 		 return null;
+
+		 // NOTE : the below code must replace the upper code if dead champions will NOT be removed from their team ArrayList
 		 
-      		 
+//		 boolean all_Team1_is_dead = true;
+//		 for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++)
+//		 {			 
+//			 Condition cond = firstPlayer.getTeam().get(i).getCondition();
+//			 if(cond != Condition.KNOCKEDOUT)
+//				 all_Team1_is_dead = false;			 
+//		 }
+//		 if(all_Team1_is_dead)
+//			 return secondPlayer;
+//		 
+//		 boolean all_Team2_is_dead = true;
+//		 for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++)
+//		 {			 
+//			 Condition cond = secondPlayer.getTeam().get(i).getCondition();
+//			 if(cond != Condition.KNOCKEDOUT)
+//				 all_Team2_is_dead = false;			 
+//		 }
+//		 if(all_Team2_is_dead)
+//			 return firstPlayer;
+		 
 	 }
      public void move(Direction d) throws NotEnoughResourcesException , UnallowedMovementException
 	 {	 
@@ -947,24 +972,17 @@ private void placeCovers() {
 
 	 public void endTurn() 
 	 {	 	
-		 turnOrder.remove() ;
-			
-		 if(turnOrder.isEmpty())
-		 {			 
-			 prepareChampionTurns();
-	                     // shouldn't be a return statement here ? (hosain)		
-			             //no , to prepare the first champion in the new turn (Darwish)
-		 }
+		 turnOrder.remove() ;			
 		 
-		//while loop to skip knocked out champions and to prepare Champions_needed_To_Update_their_Timers
+		 if(turnOrder.isEmpty())		 			 
+			 prepareChampionTurns();
+				 
+		//while loop to prepare Champions_needed_To_Update_their_Timers and skip knouckedout ones
 		ArrayList<Champion> Champions_needed_To_Update_their_Timers = new ArrayList<Champion>();
         while(! turnOrder.isEmpty() )
         {
-        	Champion peeked = (Champion)(turnOrder.peekMin());
-        	Condition cond = peeked.getCondition();		
-        	if(cond == Condition.KNOCKEDOUT)
-        		turnOrder.remove();
-        	else if (cond == Condition.INACTIVE)       	
+        	Champion peeked = (Champion)(turnOrder.peekMin());	
+            if (peeked.getCondition() == Condition.INACTIVE)       	
         		Champions_needed_To_Update_their_Timers.add((Champion)turnOrder.remove()); 
         	else
         	   {
@@ -972,36 +990,26 @@ private void placeCovers() {
         	    break;
         	   }        	
         }
-        if(turnOrder.isEmpty())
-        {
+        for(int i = 0 ; i < Champions_needed_To_Update_their_Timers.size() ; i++) 
+        	updateTimers(Champions_needed_To_Update_their_Timers.get(i));
+        
+        if(turnOrder.isEmpty())        
         	prepareChampionTurns();
-
-        }
 	               
-		for(int i = 0 ; i < Champions_needed_To_Update_their_Timers.size() ; i++) 
-		{
-			Champion current = Champions_needed_To_Update_their_Timers.get(i);
-			updateTimers(current);
-		}
- 
 	 }
 
 	 private void prepareChampionTurns()
-	 {	 
-		
-		if(checkGameOver()!=null) return ; ///i think this could work
-		
-		
-	    for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++) {    
-			 if(!firstPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
-			          turnOrder.insert(firstPlayer.getTeam().get(i));	 
-			  }
-	    for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++) {	    
-			 if(!secondPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
-			          turnOrder.insert(secondPlayer.getTeam().get(i));		
-			 
-	    }
-	    
+	 {	 	 
+		if(checkGameOver()!=null)  ///i think this could work
+		{
+		     System.out.println("Gamed Over !");
+		     return;
+		}		
+	    for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++)    
+			      turnOrder.insert(firstPlayer.getTeam().get(i));	 			  
+	    for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++)    
+		          turnOrder.insert(secondPlayer.getTeam().get(i));		
+
 	 }
 
 }

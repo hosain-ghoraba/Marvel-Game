@@ -49,7 +49,7 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 ////////////////// setters	
 	
 	public void setCurrentHP(int currentHP) {
-		if(currentHP < 0)	
+		if(currentHP <= 0)	
 		{
 			this.currentHP = 0;
 			this.condition = Condition.KNOCKEDOUT;
