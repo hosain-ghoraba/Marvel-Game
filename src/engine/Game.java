@@ -618,9 +618,102 @@ private void placeCovers() {
 	 
 	 
 	 }
+	 if(a.getCastArea()== AreaOfEffect.SURROUND) 
+	 {
+		 ArrayList<Point>surroundPoints= getPoints_Surround(this.getCurrentChampion().getLocation().x, this.getCurrentChampion().getLocation().y);
+		 ArrayList<Damageable>targets=new ArrayList<Damageable>(); 
+
+		 for (Point point:surroundPoints )
+	     {
+	    	 if (board[point.x][point.y]==null)
+	    	 {
+	    		 
+	    	 }
+	    		 
+	    	 
+	    	 else {
+		 Damageable z =(Damageable)board[point.x][point.y]; 
+		 if ( a instanceof DamagingAbility )
+		 {
+			
+			 
+			 if (z instanceof Cover)				 						  
+				 targets.add(z);
+			 else
+			   {
+					
+				 
+				 Champion current_target_champ = (Champion) z ; 
+				 
+				 else if(!isFriend(current_target_champ)) {
+				
+				 
+					if( ! doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )
+						targets.add(current_target_champ);
+					else // just remove that shield from applied effects
+					{
+						Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(current_target_champ.getAppliedEffects(), "Shield");
+					    to_be_removed.remove(current_target_champ);
+					}
+					
+				 }
+				 else 
+				    	throw new InvalidTargetException() ;
+
+			   
+			   }						 
+			 	 
+		 }
+	    	 }
+		 else if  (a instanceof HealingAbility)			
+		 {
+			
+			 if (z instanceof Champion && isFriend((Champion) z))				
+				targets.add(z);
+			 else
+			    	throw new InvalidTargetException() ;
+				 
+		 
+		 }	
+		 
+		 else // it is crowdControlAbility
+		 {
+			 
+			 if(z instanceof Cover ) {
+				throw new InvalidTargetException() ;
+				
+			}
+			
+		if(z instanceof Champion && ((Champion) z).equals(getCurrentChampion())  && ((CrowdControlAbility)a).getEffect().getType() == EffectType.DEBUFF) {
+			throw new InvalidTargetException() ;
+			
+		}
+			 
+			 
+			boolean b1 = z instanceof Champion && isFriend( (Champion) z) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.BUFF ;			 				    
+			boolean b2 = z instanceof Champion && !isFriend((Champion) z) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.DEBUFF ; 
+		    if(b1)						 
+				 targets.add(z);									 
+		 
+		    else  if(b2) {
+			
+				 targets.add(z);}
+		    else 
+		    	throw new InvalidTargetException() ;
+
 		 
 		 
 		 
+		 
+		 }
+	    	 
+	 
+	     
+	    	 }
+	 }
+		 
+		 
+	 }
 		 
 		 
 		 
@@ -636,7 +729,50 @@ private void placeCovers() {
 		 
 		 
 	 }
+	 public boolean checkpointexist (int x,int y)
+	 {
+		 if(x>4 || x<0 || y<0 || y>4)
+		 {
+			 return false;
+			 
+		 }
+		 return true;
+		 
+	 }
 	// helper method used in castAbility (Ability, Direction)
+	 public ArrayList<Point> getPoints_Surround (int x, int y)
+	 {
+		 ArrayList<Point> result= new ArrayList<>();
+		Point a1 = new Point(x+1,y);
+		if (checkpointexist(a1.x, a1.y))
+			result.add(a1);
+		Point a2 = new Point(x-1,y);
+		if (checkpointexist(a2.x, a2.y))
+			result.add(a2);
+		Point a3 = new Point(x,y-1);
+		if (checkpointexist(a3.x, a3.y))
+			result.add(a3);
+		Point a4 = new Point(x+1,y-1);
+		if (checkpointexist(a4.x, a4.y))
+			result.add(a4);
+		Point a5 = new Point(x-1,y-1);
+		if (checkpointexist(a5.x, a5.y))
+			result.add(a5);
+		Point a6 = new Point(x,y+1);
+		if (checkpointexist(a6.x, a6.y))
+			result.add(a6);
+		Point a7 = new Point(x+1,y+1);
+		if (checkpointexist(a7.x, a7.y))
+			result.add(a7);
+		Point a8 = new Point(x-1,y+1);
+		if (checkpointexist(a8.x, a8.y))
+			result.add(a8);
+		return result;
+		
+	 }
+	 {
+		 
+	 }
 	 public void checkAbilityResources (Champion c , Ability a) throws NotEnoughResourcesException, AbilityUseException 
 	 {
 		if(a.getCurrentCooldown()!=0) {
