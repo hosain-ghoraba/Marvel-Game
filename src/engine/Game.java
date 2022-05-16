@@ -645,7 +645,7 @@ private void placeCovers() {
 				 
 				 Champion current_target_champ = (Champion) z ; 
 				 
-				 else if(!isFriend(current_target_champ)) {
+				 if(!isFriend(current_target_champ)) {
 				
 				 
 					if( ! doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )
@@ -657,21 +657,19 @@ private void placeCovers() {
 					}
 					
 				 }
-				 else 
-				    	throw new InvalidTargetException() ;
+				
 
 			   
 			   }						 
 			 	 
 		 }
-	    	 }
+	    	 
 		 else if  (a instanceof HealingAbility)			
 		 {
 			
 			 if (z instanceof Champion && isFriend((Champion) z))				
 				targets.add(z);
-			 else
-			    	throw new InvalidTargetException() ;
+			 
 				 
 		 
 		 }	
@@ -679,15 +677,9 @@ private void placeCovers() {
 		 else // it is crowdControlAbility
 		 {
 			 
-			 if(z instanceof Cover ) {
-				throw new InvalidTargetException() ;
-				
-			}
 			
-		if(z instanceof Champion && ((Champion) z).equals(getCurrentChampion())  && ((CrowdControlAbility)a).getEffect().getType() == EffectType.DEBUFF) {
-			throw new InvalidTargetException() ;
 			
-		}
+		
 			 
 			 
 			boolean b1 = z instanceof Champion && isFriend( (Champion) z) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.BUFF ;			 				    
@@ -698,9 +690,7 @@ private void placeCovers() {
 		    else  if(b2) {
 			
 				 targets.add(z);}
-		    else 
-		    	throw new InvalidTargetException() ;
-
+		   
 		 
 		 
 		 
@@ -708,9 +698,14 @@ private void placeCovers() {
 		 }
 	    	 
 	 
-	     
 	    	 }
-	 }
+	    	 
+	     }
+		 a.execute(targets);
+		for(Damageable z : targets)
+		 checkIfDeadAndActAccordingly(z);
+		 apply_ability_cost(getCurrentChampion(), a);
+		 }
 		 
 		 
 	 }
@@ -728,7 +723,7 @@ private void placeCovers() {
 		 
 		 
 		 
-	 }
+	 
 	 public boolean checkpointexist (int x,int y)
 	 {
 		 if(x>4 || x<0 || y<0 || y>4)
