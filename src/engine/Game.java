@@ -1009,7 +1009,6 @@ private void placeCovers() {
 		          turnOrder.insert(secondPlayer.getTeam().get(i));		
 
 	 }
-//aaa
-	 
-	 //balabizo
 }
+	 //aaa
+//bbb aaaaaa
