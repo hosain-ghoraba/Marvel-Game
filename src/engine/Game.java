@@ -531,6 +531,9 @@ private void placeCovers() {
 	 {
 		 
 	 
+		 
+		 
+
 		 if(a.getCastArea()== AreaOfEffect.TEAMTARGET) {
 		 if(a instanceof DamagingAbility || (a instanceof CrowdControlAbility && ((CrowdControlAbility)a).getEffect().getType()==EffectType.DEBUFF)) {
 			 ArrayList<Damageable> z = new ArrayList<>() ;
@@ -611,6 +614,7 @@ private void placeCovers() {
 	 
 	 
 	 }
+		 
 		 
 		 
 		 
@@ -748,10 +752,11 @@ private void placeCovers() {
 	 }
 	 
 	   
+		  
+
 	 public void castAbility(Ability a, int x, int y) throws NotEnoughResourcesException, AbilityUseException, InvalidTargetException, CloneNotSupportedException
 	 {	  if(doesEffectExist(getCurrentChampion().getAppliedEffects(),"Silence"))
 		       throw new AbilityUseException();
-		 
 		 checkAbilityResources(this.getCurrentChampion(), a);
 
 		 if(x>4 || x<0 || y<0 || y>4)
@@ -854,8 +859,6 @@ private void placeCovers() {
 			 
 			 }
 
-		 
-		 
 		 a.execute(targets);
 			 checkIfDeadAndActAccordingly(z);
 			 apply_ability_cost(getCurrentChampion(), a);
@@ -890,6 +893,7 @@ private void placeCovers() {
 		 
 	 }
 	 
+
 	 public void useLeaderAbility() throws LeaderNotCurrentException , LeaderAbilityAlreadyUsedException //  don't know what to loop over, team or turnOrder
 
 	 {	  
