@@ -516,8 +516,9 @@ private void placeCovers() {
 
 			 if(firstPlayer.getTeam().contains(getCurrentChampion())) {
 				 for(int i =0 ;i< secondPlayer.getTeam().size();i++) {
-					
-					 z.add(secondPlayer.getTeam().get(i));
+					Champion x =secondPlayer.getTeam().get(i);
+					if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
+					    z.add(x);
 				 }
 				 a.execute(z); 
 				 
@@ -525,7 +526,10 @@ private void placeCovers() {
 			 else {
 
 				 for(int i =0 ;i< firstPlayer.getTeam().size();i++) {
-					 z.add(firstPlayer.getTeam().get(i));
+					 Champion x =firstPlayer.getTeam().get(i);
+						if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
+						    z.add(x);
+					 
 				 }
 				 
 				 a.execute(z);
@@ -542,7 +546,9 @@ private void placeCovers() {
 
 			 if(firstPlayer.getTeam().contains(getCurrentChampion())) {
 				 for(int i =0 ;i< firstPlayer.getTeam().size();i++) {
-					 z.add(firstPlayer.getTeam().get(i));
+					 Champion x =firstPlayer.getTeam().get(i);
+						if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
+						    z.add(x);
 				 }
 				 a.execute(z); 
 				 
@@ -550,8 +556,9 @@ private void placeCovers() {
 			 else {
 
 				 for(int i =0 ;i< secondPlayer.getTeam().size();i++) {
-					 z.add(secondPlayer.getTeam().get(i));
-				 }
+						Champion x =secondPlayer.getTeam().get(i);
+						if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
+						    z.add(x);				 }
 				 
 				 a.execute(z);
 			 }
@@ -732,6 +739,7 @@ private void placeCovers() {
 	 {	  if(doesEffectExist(getCurrentChampion().getAppliedEffects(),"Silence"))
 		       throw new AbilityUseException();
 		 
+	 
 		  
 		 checkAbilityResources(this.getCurrentChampion(), a);
 		 if(x>4 || x<0 || y<0 || y>4)
@@ -747,8 +755,11 @@ private void placeCovers() {
 			 apply_ability_cost(getCurrentChampion(), a);
             return ;
 		 }
+
 		 Damageable z = (Damageable)board[x][y] ;
-		 
+		 if( a.getCastRange()< calcDistance(getCurrentChampion(), z))
+			 throw new InvalidTargetException() ;		
+
 
 		 ArrayList<Damageable> targets = new ArrayList<Damageable>(); // passed targets to execute method
 		
@@ -770,7 +781,7 @@ private void placeCovers() {
 
 					 }
 					 
-					 if(!isFriend(current_target_champ)) {
+					 else if(!isFriend(current_target_champ)) {
 					
 					 
 						if( ! doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )
@@ -782,17 +793,22 @@ private void placeCovers() {
 						}
 						
 					 }
-					}						 
+					 else 
+					    	throw new InvalidTargetException() ;
+
+				   
+				   }						 
 				 	 
 			 }
 			 else if  (a instanceof HealingAbility)			
 			 {
-				if(z instanceof Cover ) {
-					throw new InvalidTargetException() ;
-					
-				}
+				
 				 if (z instanceof Champion && isFriend((Champion) z))				
 					targets.add(z);
+				 else
+				    	throw new InvalidTargetException() ;
+					 
+			 
 			 }	
 			 
 			 else // it is crowdControlAbility
@@ -803,28 +819,33 @@ private void placeCovers() {
 					
 				}
 				
+			if(z instanceof Champion && ((Champion) z).equals(getCurrentChampion())  && ((CrowdControlAbility)a).getEffect().getType() == EffectType.DEBUFF) {
+				throw new InvalidTargetException() ;
+				
+			}
+				 
 				 
 				boolean b1 = z instanceof Champion && isFriend( (Champion) z) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.BUFF ;			 				    
 				boolean b2 = z instanceof Champion && !isFriend((Champion) z) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.DEBUFF ; 
 			    if(b1)						 
 					 targets.add(z);									 
 			 
-			 if(b2) {
-				 if(((Champion)z).equals(getCurrentChampion())) {
-						throw new InvalidTargetException() ;
+			    else  if(b2) {
+				
+					 targets.add(z);}
+			    else 
+			    	throw new InvalidTargetException() ;
 
-				 }
-				 else
-					 targets.add(z);									 
-
-			 }
+			 
+			 
+			 
 			 
 			 }
 		 
 		 
 		 a.execute(targets);
 			 checkIfDeadAndActAccordingly(z);
-		 apply_ability_cost(getCurrentChampion(), a);
+			 apply_ability_cost(getCurrentChampion(), a);
 		 
 		 
 		 
@@ -971,14 +992,16 @@ private void placeCovers() {
 		if(checkGameOver()!=null) return ; ///i think this could work
 		
 		
-	    for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++)    
+	    for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++) {    
 			 if(!firstPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
 			          turnOrder.insert(firstPlayer.getTeam().get(i));	 
-	    
-	    for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++) 	    
+			  }
+	    for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++) {	    
 			 if(!secondPlayer.getTeam().get(i).getCondition().equals(Condition.KNOCKEDOUT))
 			          turnOrder.insert(secondPlayer.getTeam().get(i));		
-
+			 
+	    }
+	    
 	 }
 
 }
