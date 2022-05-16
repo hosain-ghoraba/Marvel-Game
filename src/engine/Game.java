@@ -319,7 +319,7 @@ private void placeCovers() {
      }
 	 public void checkIfDeadAndActAccordingly(Damageable d) { // gaveOver not checked yet(if will ever check it here in this method, not in a GameAction methods
 		 
-   	  if(d.getCurrentHP() != 0)// IMPORTANT : 
+   	  if(d.getCurrentHP() > 0)
    		  return;	
       board[d.getLocation().x][d.getLocation().y] = null;  
       if(d instanceof Champion) // must remove it from his team, and from turnOrder
@@ -328,16 +328,20 @@ private void placeCovers() {
 	     firstPlayer.getTeam().remove(dead_champ);// does nothing if dead_champ is not is firstPlayer team
 	     secondPlayer.getTeam().remove(dead_champ);// does nothing if dead_champ is not is secondPlayer team
 	      
-	      ArrayList <Champion> store_Champions_In_turnOrder = new ArrayList<Champion>();
-	      boolean dead_Champ_removed = false;
-	      while(! dead_Champ_removed)
+	     // done removing dead_champ from his team, lets remove it from turnOrder : 
+	     
+	      ArrayList <Champion> alive_Champions = new ArrayList<Champion>();
+	      while(true) // this loop causes extra 5 failures in castingAbility method,
+	    	          // it also may change the current champ after he
 	      {
 	    	  Champion current = (Champion)turnOrder.remove();
 	    	  if(current == dead_champ )
-	    	      {
-	    		  dead_Champ_removed = true;
-	    	      }
+	    		  break;
+	    	  alive_Champions.add(current);
+
 	      }
+	      while(! alive_Champions.isEmpty() ) // re_enter alive champions into turnOrder
+	    	  turnOrder.insert(alive_Champions.remove(0));
 	      
       }
       checkGameOver();
