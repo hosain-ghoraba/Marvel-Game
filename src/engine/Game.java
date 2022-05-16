@@ -917,7 +917,7 @@ private void placeCovers() {
 
 		 Damageable z = (Damageable)board[x][y] ;
 		 if( a.getCastRange()< calcDistance(getCurrentChampion(), z))
-			 throw new InvalidTargetException() ;		
+			 throw new AbilityUseException () ;		
 
 
 		 ArrayList<Damageable> targets = new ArrayList<Damageable>(); // passed targets to execute method

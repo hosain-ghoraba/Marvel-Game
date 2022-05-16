@@ -82,7 +82,7 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 	 // modified in M2 (Hosain)
 	public void setCondition(Condition condition) { // Darwish !! : Very Important: the order of removing the effect from appliedEffects and setting the condition = ACTIVE is Fatal when using this method in remove method in stun class ( Darwish, Care PLS !)
 // may need to be modified due to the stupid test cases!! they may make a champion having a condition without corrosponding exsisting effect in appliedEffects, the method won't work then.... :( !
-		if(condition == Condition.KNOCKEDOUT ||this.condition == Condition.KNOCKEDOUT )
+/*		if(condition == Condition.KNOCKEDOUT ||this.condition == Condition.KNOCKEDOUT )
 		    {
 			this.condition = Condition.KNOCKEDOUT;
 			return;
@@ -109,7 +109,9 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 				}
 			this.condition = Condition.ACTIVE;
 					 
-	        }		    
+	        }		
+	        */
+		this.condition=condition;
 	}
 	public void setLocation(Point location) {
 		this.location = location;

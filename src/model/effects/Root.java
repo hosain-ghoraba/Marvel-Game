@@ -13,15 +13,37 @@ public class Root extends Effect {
 	public void apply(Champion c)  {
 		
         c.getAppliedEffects().add(this);
+        if (c.getCondition()==Condition.INACTIVE)
+        {
+        	
+        }
+        else {
         c.setCondition(Condition.ROOTED);
 		//  throw exception in move method if tried to move while rooted
-	
+        }
 	}
 	@Override
 	public void remove(Champion c) {
 		c.getAppliedEffects().remove(this);
-		c.setCondition((Condition.ACTIVE));
 		
+		   if (c.getCondition()==Condition.INACTIVE)
+	        {
+	        	return;
+	        }
+	        else  {
+	        	//there a failure in this code I can not figure it out this should for loop should handle it but it did not
+	        	// failure name:remove logic Root (Yousry)
+	        	for (int i=0;i<c.getAppliedEffects().size();i++)
+	        	{
+	        		if (c.getAppliedEffects().get(i).getName().equals("Root"))
+	        		{
+	        			c.setCondition(Condition.ROOTED);
+	        			return;
+	        		}
+	        	}
+	        	
+		c.setCondition((Condition.ACTIVE));
+	        }
 	}
 	
 
