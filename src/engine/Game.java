@@ -381,7 +381,8 @@ private void placeCovers() {
 	 }
 	 public void updateTimers(Champion champ) {
 		 
-		 champ.setCurrentActionPoints(champ.getMaxActionPointsPerTurn()); //maxmize current action points for the new turn
+		 if(champ.getCondition()!=Condition.INACTIVE)
+		    champ.setCurrentActionPoints(champ.getMaxActionPointsPerTurn()); //maxmize current action points for the new turn
 		 
 		 for(int i = 0 ; i < champ.getAbilities().size() ; i++)// decrease the cooldown by 1 .see ms1 definition of current cool down  	     	 	  	 	
 			 champ.getAbilities().get(i).setCurrentCooldown(champ.getAbilities().get(i).getCurrentCooldown()-1);    	 	
@@ -1146,13 +1147,19 @@ private void placeCovers() {
 		     System.out.println("Gamed Over !");
 		     return;
 		}		
-	    for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++)    
-			      turnOrder.insert(firstPlayer.getTeam().get(i));	 			  
-	    for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++)    
-		          turnOrder.insert(secondPlayer.getTeam().get(i));		
-
+	    for(int i = 0 ; i < firstPlayer.getTeam().size() ; i++)  {  
+			  if(firstPlayer.getTeam().get(i).getCondition()!=Condition.KNOCKEDOUT )   
+	    	turnOrder.insert(firstPlayer.getTeam().get(i));
+			  else
+				  firstPlayer.getTeam().remove(i) ;
+	    }	 			  
+	    for(int i = 0 ; i < secondPlayer.getTeam().size() ; i++) {    
+	    	  if(secondPlayer.getTeam().get(i).getCondition()!=Condition.KNOCKEDOUT )   
+	  	    	turnOrder.insert(secondPlayer.getTeam().get(i));
+	  			  else
+	  				  secondPlayer.getTeam().remove(i) ;
 	 }
-}
+}}
 
 
 
