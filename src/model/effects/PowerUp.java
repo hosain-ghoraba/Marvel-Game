@@ -15,7 +15,7 @@ public class PowerUp extends Effect {
 
 	@Override
 	public void apply(Champion c)  {
-		c.getAppliedEffects().add(this);
+		//c.getAppliedEffects().add(this);
 		
 		for(int i = 0 ; i < c.getAbilities().size() ; i++)
 		{
@@ -40,7 +40,7 @@ public class PowerUp extends Effect {
 
 	@Override
 	public void remove(Champion c) {
-		c.getAppliedEffects().remove(this);
+		//c.getAppliedEffects().remove(this);
 		
 		for(int i = 0 ; i < c.getAbilities().size() ; i++)
 		{

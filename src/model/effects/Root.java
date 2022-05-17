@@ -13,7 +13,7 @@ public class Root extends Effect {
 	@Override
 	public void apply(Champion c)  {
 		
-        c.getAppliedEffects().add(this);
+     //   c.getAppliedEffects().add(this);
         if (c.getCondition() == Condition.INACTIVE)
              return;
         c.setCondition(Condition.ROOTED);
@@ -22,12 +22,12 @@ public class Root extends Effect {
 	}
 	@Override
 	public void remove(Champion c) {
-		c.getAppliedEffects().remove(this);
-		
+		//c.getAppliedEffects().remove(this);
+		System.out.println("was"+c.getCondition());
 		   if (c.getCondition()==Condition.INACTIVE ||c.getCondition()==Condition.KNOCKEDOUT)
 	        {
-
-	        	return;
+				System.out.println("is"+c.getCondition());
+				return;
 	        }
 	       // else  {
 	        	//there a failure in this code I can not figure it out this should for loop should handle it but it did not
@@ -52,9 +52,14 @@ public class Root extends Effect {
 	//	c.setCondition((Condition.ACTIVE));
 	        
 		if( Game.doesEffectExist(c.getAppliedEffects(), "Root") )
- 				return;
-		
+		{
+			System.out.println("is Rooted"+c.getCondition());
+				return;
+
+		}
 	c.setCondition(Condition.ACTIVE);
+	System.out.println("finally: "+ c.getCondition());
+
 			
 
 	}

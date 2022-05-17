@@ -12,7 +12,8 @@ public class Shock extends Effect {
 	@Override
 	public void apply(Champion c) {
 		// TODO Auto-generated method stub
-		c.getAppliedEffects().add(this);
+		
+	//	c.getAppliedEffects().add(this);
 		c.setSpeed((int)(c.getSpeed()*0.9));
         c.setAttackDamage((int)(c.getAttackDamage()*0.9));
         c.setMaxActionPointsPerTurn(c.getMaxActionPointsPerTurn()-1);
@@ -22,7 +23,7 @@ public class Shock extends Effect {
 	@Override
 	public void remove(Champion c) {
 		// TODO Auto-generated method stub
-		c.getAppliedEffects().remove(this);
+		//c.getAppliedEffects().remove(this);
 		c.setSpeed((int)(c.getSpeed()/0.9));
 		c.setAttackDamage((int)(c.getAttackDamage()/0.9));	
 		c.setMaxActionPointsPerTurn(c.getMaxActionPointsPerTurn()+1);

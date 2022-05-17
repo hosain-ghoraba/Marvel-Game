@@ -32,7 +32,7 @@ public void execute(ArrayList<Damageable> targets) throws CloneNotSupportedExcep
 	{
 		Effect copy = (Effect) effect.clone();
         copy.apply( (Champion) (targets.get(i))  );	
-        
+        ((Champion) (targets.get(i))).getAppliedEffects().add(copy);
 	}
 }
 

@@ -394,6 +394,8 @@ private void placeCovers() {
 			 if(currentEffect.getDuration() < 1)
 			 {
 				 currentEffect.remove(champ);
+				 champ.getAppliedEffects().remove(i);
+				 //removing from arrayList
 				 i -- ; // this is horribly important ! 
 			 }
 		 }
@@ -507,7 +509,8 @@ private void placeCovers() {
         		 if(targetChampion.getAppliedEffects().get(i).getName() == "Shield")
         		 {
         			 targetChampion.getAppliedEffects().get(i).remove(targetChampion);
-        	         break;
+        			 targetChampion.getAppliedEffects().remove(i);
+        			 break;
         		 }
         	 attaker.setCurrentActionPoints(attaker.getCurrentActionPoints() - 2);
         	 return;
@@ -544,6 +547,8 @@ private void placeCovers() {
 			 if(firstPlayer.getTeam().contains(getCurrentChampion())) {
 				 for(int i =0 ;i< secondPlayer.getTeam().size();i++) {
 					Champion x =secondPlayer.getTeam().get(i);
+					System.out.println(x.getLocation());
+					System.out.println(getCurrentChampion().getLocation());
 					if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
 					    z.add(x);
 				 }
@@ -653,6 +658,7 @@ private void placeCovers() {
 					{
 						Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(current_target_champ.getAppliedEffects(), "Shield");
 					    to_be_removed.remove(current_target_champ);
+					current_target_champ.getAppliedEffects().remove(to_be_removed);
 					}
 					
 				 }
@@ -863,6 +869,7 @@ private void placeCovers() {
 						{
 							Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(current_target_champ.getAppliedEffects(), "Shield");
 						    to_be_removed.remove(current_target_champ);
+						current_target_champ.getAppliedEffects().remove(to_be_removed);
 						}
 						
 					
@@ -902,7 +909,8 @@ private void placeCovers() {
 		 checkAbilityResources(this.getCurrentChampion(), a);
 		 if(x>4 || x<0 || y<0 || y>4)
 		 {
-			 throw new InvalidTargetException() ;
+			//throw new AbilityUseException() ;
+			  throw new InvalidTargetException() ;
 		 }
 		 
 		 if(boardLocationIsvalidAndEmpty(x, y)) {
@@ -948,6 +956,7 @@ private void placeCovers() {
 						{
 							Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(current_target_champ.getAppliedEffects(), "Shield");
 						    to_be_removed.remove(current_target_champ);
+						current_target_champ.getAppliedEffects().remove(to_be_removed);
 						}
 						
 					 }

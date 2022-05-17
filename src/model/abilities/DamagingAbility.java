@@ -33,6 +33,7 @@ public void execute(ArrayList<Damageable> targets) {
 	{
 		Damageable x = targets.get(i);
 	    x.setCurrentHP(x.getCurrentHP()-damageAmount);	    
+	
 	}
 	
 }
