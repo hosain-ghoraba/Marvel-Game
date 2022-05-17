@@ -29,32 +29,32 @@ public class Root extends Effect {
 
 	        	return;
 	        }
-	        else  {
+	       // else  {
 	        	//there a failure in this code I can not figure it out this should for loop should handle it but it did not
 	        	// failure name:remove logic Root (Yousry)
-	        	for (int i=0;i<c.getAppliedEffects().size();i++)
-	        	{
-	        		if (c.getAppliedEffects().get(i).getName().equals("Stun"))
-	        		{
-	        			c.setCondition(Condition.INACTIVE);
-	        			return;
-	        		}
-	        	}
-	        	for (int i=0;i<c.getAppliedEffects().size();i++)
-	        	{
-	        		if (c.getAppliedEffects().get(i).getName().equals("Root"))
-	        		{
-	        			c.setCondition(Condition.ROOTED);
-	        			return;
-	        		}
-	        	}
+	        //	for (int i=0;i<c.getAppliedEffects().size();i++)
+	        	//{
+	        		//if (c.getAppliedEffects().get(i).getName().equals("Stun"))
+	        		//{
+	        			//c.setCondition(Condition.INACTIVE);
+	        			//return;
+	        		//}
+	        //	}
+	        	//for (int i=0;i<c.getAppliedEffects().size();i++)
+	        	//{
+	        		//if (c.getAppliedEffects().get(i).getName().equals("Root"))
+	        		//{
+	        			//c.setCondition(Condition.ROOTED);
+	        		//	return;
+	        		//}
+	        	//}
 	        	
-		c.setCondition((Condition.ACTIVE));
-	        }
-	//	if( Game.doesEffectExist(c.getAppliedEffects(), "Root") )
- 		//		return;
+	//	c.setCondition((Condition.ACTIVE));
+	        
+		if( Game.doesEffectExist(c.getAppliedEffects(), "Root") )
+ 				return;
 		
-	//	c.setCondition(Condition.ACTIVE);
+	c.setCondition(Condition.ACTIVE);
 			
 
 	}
