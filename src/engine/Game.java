@@ -259,12 +259,9 @@ private void placeCovers() {
 	 
 	 // collection of  helper methods used here and outside(in other classes) ( not required in M2)
      public static boolean doesEffectExist(ArrayList<Effect> list,String EffectName) {
-			for(int i = 0 ; i < list.size() ; i++)
-			{
+			for(int i = 0 ; i < list.size() ; i++)			
 				if(list.get(i).getName().equals(EffectName))
-					return true;
-			    i++;
-			}
+					return true;			
 			return false;
 		}
      
