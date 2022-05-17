@@ -28,6 +28,7 @@ public int getDamageAmount() {
 // Override abstract method
 
 public void execute(ArrayList<Damageable> targets) {
+	
 	for (int i=0;i<targets.size();i++)
 	{
 		Damageable x = targets.get(i);

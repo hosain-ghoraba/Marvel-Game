@@ -26,13 +26,21 @@ public class Root extends Effect {
 	public void remove(Champion c) {
 		c.getAppliedEffects().remove(this);
 		
-		   if (c.getCondition()==Condition.INACTIVE)
+		   if (c.getCondition()==Condition.INACTIVE ||c.getCondition()==Condition.KNOCKEDOUT)
 	        {
 	        	return;
 	        }
 	        else  {
 	        	//there a failure in this code I can not figure it out this should for loop should handle it but it did not
 	        	// failure name:remove logic Root (Yousry)
+	        	for (int i=0;i<c.getAppliedEffects().size();i++)
+	        	{
+	        		if (c.getAppliedEffects().get(i).getName().equals("Stun"))
+	        		{
+	        			c.setCondition(Condition.INACTIVE);
+	        			return;
+	        		}
+	        	}
 	        	for (int i=0;i<c.getAppliedEffects().size();i++)
 	        	{
 	        		if (c.getAppliedEffects().get(i).getName().equals("Root"))

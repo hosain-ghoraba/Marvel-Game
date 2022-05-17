@@ -417,6 +417,8 @@ private void placeCovers() {
 	 // required Methods in M2
 	 
  	 public Champion getCurrentChampion() {	     
+ 		 
+ 		 
  		 return (Champion)turnOrder.peekMin(); 
 	   		
 	 }
@@ -1000,8 +1002,7 @@ private void placeCovers() {
 			 
 			 
 			 }
-		 
-		 
+	
 		 a.execute(targets);
 			 checkIfDeadAndActAccordingly(z);
 			 apply_ability_cost(getCurrentChampion(), a);
