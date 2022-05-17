@@ -1,5 +1,6 @@
 package model.effects;
 
+import engine.Game;
 import model.world.Champion;
 import model.world.Condition;
 
@@ -13,14 +14,11 @@ public class Root extends Effect {
 	public void apply(Champion c)  {
 		
         c.getAppliedEffects().add(this);
-        if (c.getCondition()==Condition.INACTIVE)
-        {
-        	
-        }
-        else {
+        if (c.getCondition() == Condition.INACTIVE)
+             return;
         c.setCondition(Condition.ROOTED);
 		//  throw exception in move method if tried to move while rooted
-        }
+        
 	}
 	@Override
 	public void remove(Champion c) {
@@ -28,6 +26,7 @@ public class Root extends Effect {
 		
 		   if (c.getCondition()==Condition.INACTIVE ||c.getCondition()==Condition.KNOCKEDOUT)
 	        {
+
 	        	return;
 	        }
 	        else  {
@@ -52,6 +51,12 @@ public class Root extends Effect {
 	        	
 		c.setCondition((Condition.ACTIVE));
 	        }
+	//	if( Game.doesEffectExist(c.getAppliedEffects(), "Root") )
+ 		//		return;
+		
+	//	c.setCondition(Condition.ACTIVE);
+			
+
 	}
 	
 
