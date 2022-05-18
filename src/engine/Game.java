@@ -928,13 +928,11 @@ private void placeCovers() {
 		 
 		 if(boardLocationIsvalidAndEmpty(x, y)) {
 
-			 if(a instanceof HealingAbility ) {
 				 throw new InvalidTargetException() ;
+               
+			 
+//			 apply_ability_cost(getCurrentChampion(), a);
 
-			 }
-			 apply_ability_cost(getCurrentChampion(), a);
-
-            return ;
 		 }
 
 		 Damageable z = (Damageable)board[x][y] ;
