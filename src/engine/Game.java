@@ -548,11 +548,16 @@ private void placeCovers() {
 			 if(firstPlayer.getTeam().contains(getCurrentChampion())) {
 				 for(int i =0 ;i< secondPlayer.getTeam().size();i++) {
 					Champion x =secondPlayer.getTeam().get(i);
-					System.out.println(x.getLocation());
-					System.out.println(getCurrentChampion().getLocation());
-					if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
+					 if( a instanceof DamagingAbility &&doesEffectExist(x.getAppliedEffects(), "Shield") )
+					 {
+						 Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(x.getAppliedEffects(), "Shield");
+						    to_be_removed.remove(x);
+						x.getAppliedEffects().remove(to_be_removed);
+					 }
+					 else {
+					 if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
 					    z.add(x);
-				 }
+				 }}
 				 a.execute(z); 
 				 
 			 }
@@ -560,10 +565,17 @@ private void placeCovers() {
 
 				 for(int i =0 ;i< firstPlayer.getTeam().size();i++) {
 					 Champion x =firstPlayer.getTeam().get(i);
-						if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
+					 if( a instanceof DamagingAbility &&doesEffectExist(x.getAppliedEffects(), "Shield") )
+					 {
+						 Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(x.getAppliedEffects(), "Shield");
+						    to_be_removed.remove(x);
+						x.getAppliedEffects().remove(to_be_removed);
+					 }	
+					 else {
+					 if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
 						    z.add(x);
 					 
-				 }
+				 }}
 				 
 				 a.execute(z);
 			 }
@@ -573,7 +585,7 @@ private void placeCovers() {
 			
 			 apply_ability_cost(getCurrentChampion(), a);
 
-		 }
+			 }
 		 else {
 			 ArrayList<Damageable> z = new ArrayList<>() ;
 
@@ -915,11 +927,13 @@ private void placeCovers() {
 		 }
 		 
 		 if(boardLocationIsvalidAndEmpty(x, y)) {
+
 			 if(a instanceof HealingAbility ) {
 				 throw new InvalidTargetException() ;
 
 			 }
 			 apply_ability_cost(getCurrentChampion(), a);
+
             return ;
 		 }
 
@@ -1159,7 +1173,43 @@ private void placeCovers() {
 	  			  else
 	  				  secondPlayer.getTeam().remove(i) ;
 	 }
-}}
+}
+	 
+public static void main(String[] args) throws AbilityUseException, NotEnoughResourcesException, CloneNotSupportedException, IOException {
+	Player o = new Player("ffff");
+	
+	Player t = new Player("ssss");
+ 
+	loadChampions("Champions.csv");
+	loadAbilities("Abilities.csv");
+	
+	o.getTeam().add(availableChampions.get(0));
+ 
+ o.getTeam().add(availableChampions.get(1));
+ o.getTeam().add(availableChampions.get(2));
+ t.getTeam().add(availableChampions.get(3));
+ t.getTeam().add(availableChampions.get(4));t.getTeam().add(availableChampions.get(5));
+
+ for(int i =0 ; i<availableAbilities.size();i++) {
+ if(availableAbilities.get(i) instanceof DamagingAbility) {
+	 o.getTeam().get(0).getAbilities().add(availableAbilities.get(i)) ;
+ break;
+ 
+ }}
+o.getTeam().get(0).setLocation(new Point(1,1));
+o.getTeam().get(1).setLocation(new Point(1,2));
+o.getTeam().get(2).setLocation(new Point(1,3));
+t.getTeam().get(0).setLocation(new Point(2,1));
+t.getTeam().get(1).setLocation(new Point(2,2));
+t.getTeam().get(2).setLocation(new Point(2,3));
+Game a = new Game(o, t);
+
+a.castAbility(o.getTeam().get(0).getAbilities().get(0)) ;
+ 
+
+
+}
+}
 
 
 
