@@ -543,7 +543,7 @@ private void placeCovers() {
 		 
 		 if(a.getCastArea()== AreaOfEffect.TEAMTARGET) {
 		 if(a instanceof DamagingAbility || (a instanceof CrowdControlAbility && ((CrowdControlAbility)a).getEffect().getType()==EffectType.DEBUFF)) {
-			 ArrayList<Damageable> z = new ArrayList<>() ;
+			 ArrayList<Damageable> z = new ArrayList<Damageable>() ;
 
 			 if(firstPlayer.getTeam().contains(getCurrentChampion())) {
 				 for(int i =0 ;i< secondPlayer.getTeam().size();i++) {
@@ -577,6 +577,7 @@ private void placeCovers() {
 					 
 				 }}
 				 
+				 
 				 a.execute(z);
 			 }
 		 
@@ -587,7 +588,7 @@ private void placeCovers() {
 
 			 }
 		 else {
-			 ArrayList<Damageable> z = new ArrayList<>() ;
+			 ArrayList<Damageable> z = new ArrayList<Damageable>() ;
 
 			 if(firstPlayer.getTeam().contains(getCurrentChampion())) {
 				 for(int i =0 ;i< firstPlayer.getTeam().size();i++) {
@@ -625,7 +626,7 @@ private void placeCovers() {
 		 }
 	
 		 else {
-			 ArrayList<Damageable> z = new ArrayList<>() ;
+			 ArrayList<Damageable> z = new ArrayList<Damageable>() ;
               z.add(getCurrentChampion());
 			 a.execute(z);
 			 apply_ability_cost(getCurrentChampion(), a);
@@ -720,8 +721,12 @@ private void placeCovers() {
 	    	 
 	     }
 		 a.execute(targets);
-		for(Damageable z : targets)
-		 checkIfDeadAndActAccordingly(z);
+		for(int i =0 ;i<targets.size();i++) {
+		
+			
+			checkIfDeadAndActAccordingly(targets.get(i));
+		 
+		}
 		 apply_ability_cost(getCurrentChampion(), a);
 		 }
 		 
@@ -755,7 +760,7 @@ private void placeCovers() {
 	// helper method used in castAbility (Ability, Direction)
 	 public ArrayList<Point> getPoints_Surround (int x, int y)
 	 {
-		 ArrayList<Point> result= new ArrayList<>();
+		 ArrayList<Point> result= new ArrayList<Point>();
 		Point a1 = new Point(x+1,y);
 		if (checkpointexist(a1.x, a1.y))
 			result.add(a1);
