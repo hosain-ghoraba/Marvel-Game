@@ -2,7 +2,6 @@ package model.world;
 
 import java.util.ArrayList;
 
-import model.effects.Disarm;
 import model.effects.Effect;
 import model.effects.EffectType;
 import model.effects.Embrace;
@@ -23,16 +22,18 @@ public void useLeaderAbility(ArrayList<Champion> targets) {
 	    ArrayList<Effect> curretAppliedEffects = currentChamp.getAppliedEffects();
 		for (int j = 0 ; j < curretAppliedEffects.size() ; j++)
 		{
+			
 		  Effect currentEffect = curretAppliedEffects.get(j);
 		  if (currentEffect.getType() == EffectType.DEBUFF)	
 		  {
 			  currentEffect.remove(currentChamp);
 			  currentChamp.getAppliedEffects().remove(currentEffect);
-			  j--; //(this is the new edit) :  horribly important ! ..because the upper line will decrease the size of currentAppliedEffects
+			  j--; // :  horribly important ! ..because the upper line will decrease the size of currentAppliedEffects
 		  }
 		}
+		
 		 new Embrace(2).apply(currentChamp);
-	        ((Champion) (targets.get(i))).getAppliedEffects().add(new Embrace(2));
+	     ((Champion) (targets.get(i))).getAppliedEffects().add(new Embrace(2));
 
 	}
 	  

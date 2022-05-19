@@ -12,10 +12,9 @@ public class PowerUp extends Effect {
 		super("PowerUp", duration, EffectType.BUFF);
 		
 	}
-
 	@Override
-	public void apply(Champion c)  {
-		//c.getAppliedEffects().add(this);
+	public void apply(Champion c) 
+	{
 		
 		for(int i = 0 ; i < c.getAbilities().size() ; i++)
 		{
@@ -39,27 +38,27 @@ public class PowerUp extends Effect {
 	}
 
 	@Override
-	public void remove(Champion c) {
-		//c.getAppliedEffects().remove(this);
+	public void remove(Champion c)
+	{
 		
 		for(int i = 0 ; i < c.getAbilities().size() ; i++)
 		{
 			Ability current = (Ability) c.getAbilities().get(i);
-			if(current instanceof DamagingAbility)
-			{
-			  int damage = ((DamagingAbility) current).getDamageAmount();
-			  int result = (int)(damage / 1.2);
-			  ((DamagingAbility) current).setDamageAmount(result);
-			}
-			else if(current instanceof HealingAbility)
-			{
-				int heal = ((HealingAbility) current).getHealAmount();
-				int result = (int)(heal / 1.2);
-				((HealingAbility) current).setHealAmount(result);
 			
-			}
-		}
-		
-	}
-	
+			if(current instanceof DamagingAbility)
+				{
+				  int damage = ((DamagingAbility) current).getDamageAmount();
+				  int result = (int)(damage / 1.2);
+				  ((DamagingAbility) current).setDamageAmount(result);
+				}
+			
+			else if(current instanceof HealingAbility)
+				{
+					int heal = ((HealingAbility) current).getHealAmount();
+					int result = (int)(heal / 1.2);
+					((HealingAbility) current).setHealAmount(result);
+				
+				}
+		}	
+	}	
 }

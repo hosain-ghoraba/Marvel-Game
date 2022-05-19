@@ -10,24 +10,22 @@ public class Shock extends Effect {
 	}
 
 	@Override
-	public void apply(Champion c) {
-		// TODO Auto-generated method stub
-		
-	//	c.getAppliedEffects().add(this);
-		c.setSpeed((int)(c.getSpeed()*0.9));
-        c.setAttackDamage((int)(c.getAttackDamage()*0.9));
-        c.setMaxActionPointsPerTurn(c.getMaxActionPointsPerTurn()-1);
-        c.setCurrentActionPoints(c.getCurrentActionPoints()-1);
+	public void apply(Champion c) 
+	{
+
+		c.setSpeed((int)(c.getSpeed() * 0.9));
+        c.setAttackDamage((int)(c.getAttackDamage() * 0.9));
+        c.setMaxActionPointsPerTurn(c.getMaxActionPointsPerTurn() - 1);
+        c.setCurrentActionPoints(c.getCurrentActionPoints() - 1);
 	}
 
 	@Override
-	public void remove(Champion c) {
-		// TODO Auto-generated method stub
-		//c.getAppliedEffects().remove(this);
-		c.setSpeed((int)(c.getSpeed()/0.9));
-		c.setAttackDamage((int)(c.getAttackDamage()/0.9));	
-		c.setMaxActionPointsPerTurn(c.getMaxActionPointsPerTurn()+1);
-		c.setCurrentActionPoints(c.getCurrentActionPoints()+1);
+	public void remove(Champion c) 
+	{
+		c.setSpeed((int)(c.getSpeed() / 0.9));
+		c.setAttackDamage((int)(c.getAttackDamage() / 0.9));	
+		c.setMaxActionPointsPerTurn(c.getMaxActionPointsPerTurn() + 1);
+		c.setCurrentActionPoints(c.getCurrentActionPoints() + 1);
 	}
 
 }

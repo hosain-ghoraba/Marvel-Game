@@ -6,10 +6,7 @@ import java.util.ArrayList;
 
 import model.abilities.Ability;
 import model.effects.Effect;
-import model.effects.Root;
-import model.effects.Stun;
-import engine.Game;
-import engine.Player;
+
 
 
 
@@ -67,8 +64,11 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 		this.maxActionPointsPerTurn = maxActionPointsPerTurn;
 	}
 	public void setCurrentActionPoints(int currentActionPoints) {
-		if(currentActionPoints < 0)
+		if(currentActionPoints <= 0)
+		{
 			this.currentActionPoints = 0;
+			this.setCondition(Condition.KNOCKEDOUT);
+		}
 		else if (currentActionPoints > maxActionPointsPerTurn)
 			this.currentActionPoints = maxActionPointsPerTurn;
 		else
@@ -80,38 +80,8 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	 // modified in M2 (Hosain)
-	public void setCondition(Condition condition) { // Darwish !! : Very Important: the order of removing the effect from appliedEffects and setting the condition = ACTIVE is Fatal when using this method in remove method in stun class ( Darwish, Care PLS !)
-// may need to be modified due to the stupid test cases!! they may make a champion having a condition without corrosponding exsisting effect in appliedEffects, the method won't work then.... :( !
-/*		if(condition == Condition.KNOCKEDOUT ||this.condition == Condition.KNOCKEDOUT )
-		    {
-			this.condition = Condition.KNOCKEDOUT;
-			return;
-		    }		
-        if(condition == Condition.INACTIVE)
-		    {			
-			this.condition = Condition.INACTIVE;
-			return;
-		    }
-		if(condition == Condition.ROOTED)
-            if(! Game.doesEffectExist(appliedEffects,"Stun"))
-	            {
-	            this.condition = Condition.ROOTED;
-	            return;
-	            }
-		if(condition == Condition.ACTIVE)// will only happen in remove method in (Root) and (Stun) classes 
-			{
-			if(Game.doesEffectExist(appliedEffects,"Stun"))			
-					return;				
-			if (Game.doesEffectExist(appliedEffects,"Root"))
-				{
-					this.condition = Condition.ROOTED;
-					return;
-				}
-			this.condition = Condition.ACTIVE;
-					 
-	        }		
-	        */
+	public void setCondition(Condition condition) { 
+
 		this.condition=condition;
 	}
 	public void setLocation(Point location) {
@@ -168,12 +138,11 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 	public abstract void useLeaderAbility(ArrayList<Champion> targets) ;
 	@Override
 	public int compareTo(Object o) {
-		// TODO Auto-generated method stub 
-		Champion x =(Champion)o;
+		
+	Champion other = (Champion) o ;
 	if (speed > ((Champion)o).speed ) return -1;
-	if (speed < ((Champion)o).speed ) return 1;
-	else 	
-     return -1 * x.name.compareTo(name) ; // dont know if should multiply the result by -1...he didn't clear this point, he only said : compare the champions names if their speeds are identical. we will know anyway in public tests     	
+	if (speed < ((Champion)o).speed ) return 1;	
+    return  this.name.compareTo(other.name) ;      	
 	}
 
 	  
