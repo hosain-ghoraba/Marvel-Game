@@ -53,6 +53,7 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 		{
 			this.currentHP = 0;
 			this.condition = Condition.KNOCKEDOUT;
+			
 		}
 		else if(currentHP > maxHP)
 			this.currentHP = maxHP;

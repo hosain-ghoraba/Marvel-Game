@@ -327,7 +327,7 @@ private void placeCovers() {
 		     // done removing dead_champ from his team, lets remove it from turnOrder : 
 		     
 		      ArrayList <Champion> alive_Champions = new ArrayList<Champion>();
-		      while(true) // this loop causes extra 5 failures in castingAbility method,
+		      while(!turnOrder.isEmpty()) // this loop causes extra 5 failures in castingAbility method,
 		    	          // : IMPORTANT : it also may change the current champ after the dead_champ is removed !
 		      {
 		    	  Champion current = (Champion)turnOrder.remove();
