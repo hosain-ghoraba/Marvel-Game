@@ -7,6 +7,7 @@ public class Questions {
 
 	FAILURES : 
 
+    0- can crowed control ability affect the caster ?
         
 	1 - should INACTIVE champions be inserted in turnOrder in prepareChampionsturns ? if no, then should I update their timers in prepareChampionsTurns?  
     

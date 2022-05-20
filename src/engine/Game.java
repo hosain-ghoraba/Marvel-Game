@@ -591,10 +591,8 @@ import model.world.Villain;
 		 if(doesEffectExist(getCurrentChampion().getAppliedEffects(),"Silence"))
 			 throw new AbilityUseException();		 
 		 checkAbilityResources(getCurrentChampion(), a);
-	
 		 
-		 
-		 if(a.getCastArea()== AreaOfEffect.TEAMTARGET) {
+		 if(a.getCastArea() == AreaOfEffect.TEAMTARGET) {
 		 if(a instanceof DamagingAbility || (a instanceof CrowdControlAbility && ((CrowdControlAbility)a).getEffect().getType()==EffectType.DEBUFF)) {
 			 ArrayList<Damageable> z = new ArrayList<Damageable>() ;
 
@@ -785,44 +783,41 @@ import model.world.Villain;
 		 
 		 
 	 }
-    public void castAbility(Ability a, Direction d) throws NotEnoughResourcesException, AbilityUseException, CloneNotSupportedException
+    public void castAbility(Ability casted_ability, Direction d) throws NotEnoughResourcesException, AbilityUseException, CloneNotSupportedException
 	 {
-
-		 if(doesEffectExist(getCurrentChampion().getAppliedEffects(),"Silence"))
+         Champion attaker = getCurrentChampion();
+		 if(doesEffectExist(attaker.getAppliedEffects(),"Silence"))
 			 throw new AbilityUseException();			 
-		 checkAbilityResources(getCurrentChampion(), a);
+		 checkAbilityResources(attaker, casted_ability);
 		 
-		 ArrayList<Damageable> damageablesInRange = getAllDamageablesInGivenRange(d, a.getCastRange()) ;
+		 ArrayList<Damageable> damageablesInRange = getAllDamageablesInGivenRange(d, casted_ability.getCastRange()) ;
 		 ArrayList<Damageable> targets = new ArrayList<Damageable>(); // passed targets to execute method
 		
 		
-		 for (int i = 0 ; i < damageablesInRange.size() ; i++)
-			 {
+		 for (int i = 0 ; i < damageablesInRange.size() ; i++) {
+			 
 			 Damageable current_target = damageablesInRange.get(i) ;
-			 if ( a instanceof DamagingAbility )
-			 {
+			 if ( casted_ability instanceof DamagingAbility )
+			 
 				 if (current_target instanceof Cover)				 						  
 					 targets.add(current_target);
 				 else
-				   {
-						
+				   {						
 					 Champion current_target_champ = (Champion) current_target; 
 						
-					 if(!isFriend(current_target_champ)) {
-					 if( ! doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )
-							targets.add(current_target_champ);
-						else // just remove that shield from applied effects
-						{
-							Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(current_target_champ.getAppliedEffects(), "Shield");
-						    to_be_removed.remove(current_target_champ);
-						current_target_champ.getAppliedEffects().remove(to_be_removed);
-						}
-						
-					
-					}						 
+					 if(!isFriend(current_target_champ)) 
+							 if( ! doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )
+									targets.add(current_target_champ);
+							 else // just remove that shield from applied effects
+								{
+								Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(current_target_champ.getAppliedEffects(), "Shield");
+							    to_be_removed.remove(current_target_champ);
+							    current_target_champ.getAppliedEffects().remove(to_be_removed);
+								}
+							 
 				   }
-			 }
-			 else if  (a instanceof HealingAbility)			
+			 
+			 else if  (casted_ability instanceof HealingAbility)			
 			 {
 				if (current_target instanceof Champion && isFriend((Champion) current_target))				
 					targets.add(current_target);
@@ -830,160 +825,83 @@ import model.world.Villain;
 			 
 			 else // it is crowdControlAbility
 			 {
-				boolean b1 = current_target instanceof Champion && isFriend( (Champion) current_target) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.BUFF ;			 				    
-				boolean b2 = current_target instanceof Champion && !isFriend((Champion) current_target) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.DEBUFF ; 
+				boolean b1 = current_target instanceof Champion && isFriend( (Champion) current_target) && ((CrowdControlAbility)casted_ability).getEffect().getType() == EffectType.BUFF ;			 				    
+				boolean b2 = current_target instanceof Champion && !isFriend((Champion) current_target) && ((CrowdControlAbility)casted_ability).getEffect().getType() == EffectType.DEBUFF ; 
 			    if(b1 || b2)						 
 					 targets.add(current_target);									 
 			 }
 		 }
 		 
-		 a.execute(targets);
-		 for(int i = 0  ; i < targets.size() ; i++) // to remove dead targets who died after casting the ability on them 
-			 checkIfDeadAndActAccordingly(targets.get(i));
-		 apply_ability_cost(getCurrentChampion(), a);
+		 casted_ability.execute(targets);
+         for(Damageable target : targets)
+        	 checkIfDeadAndActAccordingly(target);
+		 apply_ability_cost(attaker, casted_ability);
 	 
 	 }
-    public void castAbility(Ability a, int x, int y) throws NotEnoughResourcesException, AbilityUseException, InvalidTargetException, CloneNotSupportedException
-	 {	  if(doesEffectExist(getCurrentChampion().getAppliedEffects(),"Silence"))
-		       throw new AbilityUseException();
+    public void castAbility(Ability casted_ability, int x, int y) throws NotEnoughResourcesException, AbilityUseException, InvalidTargetException, CloneNotSupportedException
+	 {	  
+    	Champion attaker = getCurrentChampion();
+   	
+    	if(doesEffectExist(attaker.getAppliedEffects(),"Silence"))
+		      throw new AbilityUseException();
+	  
+		 checkAbilityResources(attaker, casted_ability);
 		 
-	 
-		  
-		 checkAbilityResources(this.getCurrentChampion(), a);
-		 if(x>4 || x<0 || y<0 || y>4)
-		 {
-			//throw new AbilityUseException() ;
-			  throw new InvalidTargetException() ;
-		 }
-		 
-		 if(boardLocationIsvalidAndEmpty(x, y)) {
-
-				 throw new InvalidTargetException() ;
+		 if(! checkPointExist(x, y))
+			  throw new InvalidTargetException() ; // or throw AbilityUseException ? 
+		 		
+		 if(board[x][y] == null) 
+		      throw new InvalidTargetException() ;
                
-			 
-//			 apply_ability_cost(getCurrentChampion(), a);
-
-		 }
-
-		 Damageable z = (Damageable)board[x][y] ;
-		 if( a.getCastRange()< calcDistance(getCurrentChampion(), z))
-			 throw new AbilityUseException () ;		
-
-
-		 ArrayList<Damageable> targets = new ArrayList<Damageable>(); // passed targets to execute method
-		
-		
-	
-			 if ( a instanceof DamagingAbility )
-			 {
-				
+		 Damageable target = (Damageable) board[x][y] ;
+		 
+		 if( casted_ability.getCastRange() < calcDistance(attaker, target))
+			 throw new AbilityUseException () ;
+		 
+	     ArrayList <Damageable> targets = new ArrayList<Damageable>();
+			 if ( casted_ability instanceof DamagingAbility )
 				 
-				 if (z instanceof Cover)				 						  
-					 targets.add(z);
-				 else
-				   {
-						
-					 
-					 Champion current_target_champ = (Champion) z; 
-					 if(current_target_champ.equals(getCurrentChampion())) {
-							throw new InvalidTargetException() ;
-
+					 if(target instanceof Cover)
+						 targets.add(target);
+					 else
+					 {
+						  Champion current_target_champ = (Champion) target;
+	                      if( isFriend(current_target_champ) )
+	                	      throw new InvalidTargetException();
+	                  
+						  if( !doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )						
+	                     		targets.add(target);						
+						  else // just remove that shield from applied effects
+							{
+								Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(current_target_champ.getAppliedEffects(), "Shield");
+							    to_be_removed.remove(current_target_champ);
+							    current_target_champ.getAppliedEffects().remove(to_be_removed);
+							}						
 					 }
-					 
-					 else if(!isFriend(current_target_champ)) {
-					
-					 
-						if( ! doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )
-							targets.add(current_target_champ);
-						else // just remove that shield from applied effects
-						{
-							Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(current_target_champ.getAppliedEffects(), "Shield");
-						    to_be_removed.remove(current_target_champ);
-						current_target_champ.getAppliedEffects().remove(to_be_removed);
-						}
-						
-					 }
-					 else 
-					    	throw new InvalidTargetException() ;
-
-				   
-				   }						 
-				 	 
-			 }
-			 else if  (a instanceof HealingAbility)			
-			 {
-				
-				 if (z instanceof Champion && isFriend((Champion) z))				
-					targets.add(z);
-				 else
-				    	throw new InvalidTargetException() ;
-					 
-			 
-			 }	
-			 
+				 
+			 else if  (casted_ability instanceof HealingAbility)								
+					 if (target instanceof Champion && isFriend((Champion) target))				
+						targets.add(target);
+					 else
+					    throw new InvalidTargetException() ;
+ 
 			 else // it is crowdControlAbility
-			 {
-				 
-				 if(z instanceof Cover ) {
+			 {				 
+				 if(target instanceof Cover ) 
 					throw new InvalidTargetException() ;
-					
-				}
-				
-			if(z instanceof Champion && ((Champion) z).equals(getCurrentChampion())  && ((CrowdControlAbility)a).getEffect().getType() == EffectType.DEBUFF) {
-				throw new InvalidTargetException() ;
-				
-			}
 				 
-				 
-				boolean b1 = z instanceof Champion && isFriend( (Champion) z) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.BUFF ;			 				    
-				boolean b2 = z instanceof Champion && !isFriend((Champion) z) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.DEBUFF ; 
-			    if(b1)						 
-					 targets.add(z);									 
-			 
-			    else  if(b2) {
-				
-					 targets.add(z);}
-			    else 
-			    	throw new InvalidTargetException() ;
-
-			 
-			 
-			 
-			 
+				 Champion current_target_champ = (Champion) target;
+ 
+				 boolean b1 =  isFriend( current_target_champ) && ((CrowdControlAbility)casted_ability).getEffect().getType() == EffectType.BUFF ;			 				    
+				 boolean b2 =  !isFriend( current_target_champ) && ((CrowdControlAbility)casted_ability).getEffect().getType() == EffectType.DEBUFF ; 
+			     if(b1 || b2)						 
+				 	 targets.add(target);									 
+			     else 
+			     	throw new InvalidTargetException() ;
 			 }
-	
-		 a.execute(targets);
-			 checkIfDeadAndActAccordingly(z);
-			 apply_ability_cost(getCurrentChampion(), a);
-		 
-		 
-		 
-		
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
-		 
+		     casted_ability.execute(targets);
+			 checkIfDeadAndActAccordingly(targets.get(0));
+			 apply_ability_cost(attaker, casted_ability);
 	 }
     public void useLeaderAbility() throws LeaderNotCurrentException , LeaderAbilityAlreadyUsedException 
 
