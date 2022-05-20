@@ -14,7 +14,10 @@ public void useLeaderAbility(ArrayList<Champion> targets) {
 		Champion current_champ = targets.get(i);
 		double hp_percentage = (current_champ.getCurrentHP() / current_champ.getMaxHP())*100;
 		if (hp_percentage < 30)	
-			current_champ.setCurrentHP(0); 			
+		{	
+			current_champ.setCurrentHP(0);
+			current_champ.setCondition(Condition.KNOCKEDOUT);
+		}
 	}
 	
 }

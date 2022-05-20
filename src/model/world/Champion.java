@@ -47,11 +47,7 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 	
 	public void setCurrentHP(int currentHP) {
 		if(currentHP <= 0)	
-		{
 			this.currentHP = 0;
-			this.condition = Condition.KNOCKEDOUT;
-			
-		}
 		else if(currentHP > maxHP)
 			this.currentHP = maxHP;
 		else 
@@ -65,10 +61,7 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 	}
 	public void setCurrentActionPoints(int currentActionPoints) {
 		if(currentActionPoints <= 0)
-		{
 			this.currentActionPoints = 0;
-			this.setCondition(Condition.KNOCKEDOUT);
-		}
 		else if (currentActionPoints > maxActionPointsPerTurn)
 			this.currentActionPoints = maxActionPointsPerTurn;
 		else
