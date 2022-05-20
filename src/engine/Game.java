@@ -434,10 +434,12 @@ import model.world.Villain;
 			 a.setCurrentCooldown(a.getBaseCooldown());
 			 
 		 }
-	public boolean checkPointExist (int x,int y) {
+	public boolean checkPointExistAndOccupied (int x,int y) {
 			 
 			 if(x > 4 || x < 0 || y > 4 || y < 0)		 
-				 return false;			 	 
+				 return false;	
+			 if(board[x][y] == null)
+				 return false;
 			 return true;
 			 
 		 }
@@ -446,35 +448,35 @@ import model.world.Villain;
 			 ArrayList<Point> result= new ArrayList<Point>();
 			 
 			 Point a1 = new Point(x+1, y);
-			 if (checkPointExist(a1.x, a1.y))
+			 if (checkPointExistAndOccupied(a1.x, a1.y))
 				 result.add(a1);
 			 
 			 Point a2 = new Point(x-1,y);
-			 if (checkPointExist(a2.x, a2.y))
+			 if (checkPointExistAndOccupied(a2.x, a2.y))
 				 result.add(a2);
 			 
 			 Point a3 = new Point(x,y+1);
-			 if (checkPointExist(a3.x, a3.y))
+			 if (checkPointExistAndOccupied(a3.x, a3.y))
 				 result.add(a3);
 			 
 			 Point a4 = new Point(x,y-1);
-			 if (checkPointExist(a4.x, a4.y))
+			 if (checkPointExistAndOccupied(a4.x, a4.y))
 				 result.add(a4);
 			 
 			 Point a5 = new Point(x+1,y+1);
-			 if (checkPointExist(a5.x, a5.y))
+			 if (checkPointExistAndOccupied(a5.x, a5.y))
 				 result.add(a5);
 			 
 			 Point a6 = new Point(x-1,y-1);
-			 if (checkPointExist(a6.x, a6.y))
+			 if (checkPointExistAndOccupied(a6.x, a6.y))
 				 result.add(a6);
 			 
 			 Point a7 = new Point(x+1,y-1);
-			 if (checkPointExist(a7.x, a7.y))
+			 if (checkPointExistAndOccupied(a7.x, a7.y))
 				 result.add(a7);
 			 
 			 Point a8 = new Point(x-1,y+1);
-			 if (checkPointExist(a8.x, a8.y))
+			 if (checkPointExistAndOccupied(a8.x, a8.y))
 				 result.add(a8);
 			 
 			 return result;
@@ -584,204 +586,95 @@ import model.world.Villain;
          land_normal_attack(attaker,first_valid_target);
          		 		 
 	 }
-    public void castAbility(Ability a) throws CloneNotSupportedException // use getFirstDamageableInRange 
-, AbilityUseException, NotEnoughResourcesException
+    public void castAbility(Ability casted_ability) throws CloneNotSupportedException, AbilityUseException, NotEnoughResourcesException
 	 {
-
-		 if(doesEffectExist(getCurrentChampion().getAppliedEffects(),"Silence"))
-			 throw new AbilityUseException();		 
-		 checkAbilityResources(getCurrentChampion(), a);
+    	 Champion attaker = getCurrentChampion();
+		 if(doesEffectExist(attaker.getAppliedEffects(),"Silence"))
+			 throw new AbilityUseException();	
 		 
-		 if(a.getCastArea() == AreaOfEffect.TEAMTARGET) {
-		 if(a instanceof DamagingAbility || (a instanceof CrowdControlAbility && ((CrowdControlAbility)a).getEffect().getType()==EffectType.DEBUFF)) {
-			 ArrayList<Damageable> z = new ArrayList<Damageable>() ;
-
-			 if(firstPlayer.getTeam().contains(getCurrentChampion())) {
-				 for(int i =0 ;i< secondPlayer.getTeam().size();i++) {
-					Champion x =secondPlayer.getTeam().get(i);
-					 if( a instanceof DamagingAbility &&doesEffectExist(x.getAppliedEffects(), "Shield") )
-					 {
-						 Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(x.getAppliedEffects(), "Shield");
-						    to_be_removed.remove(x);
-						x.getAppliedEffects().remove(to_be_removed);
-					 }
-					 else {
-					 if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
-					    z.add(x);
-				 }}
-				 a.execute(z); 
-				 
-			 }
-			 else {
-
-				 for(int i =0 ;i< firstPlayer.getTeam().size();i++) {
-					 Champion x =firstPlayer.getTeam().get(i);
-					 if( a instanceof DamagingAbility &&doesEffectExist(x.getAppliedEffects(), "Shield") )
-					 {
-						 Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(x.getAppliedEffects(), "Shield");
-						    to_be_removed.remove(x);
-						x.getAppliedEffects().remove(to_be_removed);
-					 }	
-					 else {
-					 if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
-						    z.add(x);
-					 
-				 }}
-				 
-				 
-				 a.execute(z);
-			 }
+		 checkAbilityResources(attaker, casted_ability);
 		 
-			 for(int i = 0  ; i < z.size() ; i++) // to remove dead targets who died after casting the ability on them 
-				 checkIfDeadAndActAccordingly(z.get(i));
-			
-			 apply_ability_cost(getCurrentChampion(), a);
-
-			 }
-		 else {
-			 ArrayList<Damageable> z = new ArrayList<Damageable>() ;
-
-			 if(firstPlayer.getTeam().contains(getCurrentChampion())) {
-				 for(int i =0 ;i< firstPlayer.getTeam().size();i++) {
-					 Champion x =firstPlayer.getTeam().get(i);
-						if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
-						    z.add(x);
-				 }
-				 a.execute(z); 
-				 
-			 }
-			 else {
-
-				 for(int i =0 ;i< secondPlayer.getTeam().size();i++) {
-						Champion x =secondPlayer.getTeam().get(i);
-						if( a.getCastRange()>=calcDistance(getCurrentChampion(), x))
-						    z.add(x);				 }
-				 
-				 a.execute(z);
-			 }
+		 ArrayList<Damageable> targets = new ArrayList<Damageable>();
 		 
-			 for(int i = 0  ; i < z.size() ; i++) // to remove dead targets who died after casting the ability on them 
-				 checkIfDeadAndActAccordingly(z.get(i));
-			
-			 apply_ability_cost(getCurrentChampion(), a);
-		 }	 
-	 
-	 
-	 
-	 }
-		 
-	 if(a.getCastArea()== AreaOfEffect.SELFTARGET) {
-		 if(a instanceof DamagingAbility || (a instanceof CrowdControlAbility && ((CrowdControlAbility)a).getEffect().getType()==EffectType.DEBUFF)) {
-			 throw new AbilityUseException();
-		 
+		 if(casted_ability.getCastArea() == AreaOfEffect.SELFTARGET) 
+		 {
+			 if(casted_ability instanceof DamagingAbility || (casted_ability instanceof CrowdControlAbility && ((CrowdControlAbility)casted_ability).getEffect().getType()==EffectType.DEBUFF)) 
+				 throw new AbilityUseException();
+	         targets.add(attaker);
+
 		 }
-	
-		 else {
-			 ArrayList<Damageable> z = new ArrayList<Damageable>() ;
-              z.add(getCurrentChampion());
-			 a.execute(z);
-			 apply_ability_cost(getCurrentChampion(), a);
+		 else if(casted_ability.getCastArea() == AreaOfEffect.TEAMTARGET) 
+		 {
 			 
-		 }
-	 
-	 
-	 
-	 }
-	 if(a.getCastArea()== AreaOfEffect.SURROUND) 
-	 {
-		 ArrayList<Point>surroundPoints= getPoints_Surround(this.getCurrentChampion().getLocation().x, this.getCurrentChampion().getLocation().y);
-		 ArrayList<Damageable>targets=new ArrayList<Damageable>(); 
+				 if(casted_ability instanceof DamagingAbility || (casted_ability instanceof CrowdControlAbility && ((CrowdControlAbility)casted_ability).getEffect().getType()==EffectType.DEBUFF)) 		 
+				 {
+		                 ArrayList<Champion> enemyTeam = getWaitingPlayer().getTeam();
+						 for(Champion current_enemy : enemyTeam)           							
+							if(casted_ability.getCastRange() >= calcDistance(current_enemy, attaker))
+								 if(doesEffectExist(current_enemy.getAppliedEffects(), "Shield") )
+								 {
+									 Effect to_be_removed = get_effect_With_Given_Name_With_the_least_Duration(current_enemy.getAppliedEffects(), "Shield");
+									 to_be_removed.remove(current_enemy);
+									 current_enemy.getAppliedEffects().remove(to_be_removed);
+								 }
+								 else 
+							         targets.add(current_enemy);			    
+                 }
+				 else // it is healing ability or buff crowedControlAbility				
+					 for(Champion friend : getCurrentPlayer().getTeam() )					 
+						 if(casted_ability.getCastRange() >= calcDistance(friend, attaker) )
+							 targets.add(friend);				 
+		  }
 
-		 for (Point point:surroundPoints )
+
+		 else // it is SURROUND 
 	     {
-	    	 if (board[point.x][point.y]==null)
-	    	 {
-	    		 
-	    	 }
-	    		 
-	    	 
-	    	 else {
-		 Damageable z =(Damageable)board[point.x][point.y]; 
-		 if ( a instanceof DamagingAbility )
-		 {
-			
-			 
-			 if (z instanceof Cover)				 						  
-				 targets.add(z);
-			 else
-			   {
-					
-				 
-				 Champion current_target_champ = (Champion) z ; 
-				 
-				 if(!isFriend(current_target_champ)) {
+				 ArrayList<Point> occupied_surround_Points = getPoints_Surround(attaker.getLocation().x, attaker.getLocation().y);// contains only OCCUPIED SURROUD POINTS (MODIFIED)
+		         
+				 for (Point point : occupied_surround_Points )
+				 {
+				         Damageable current_target = (Damageable)board[point.x][point.y];
+						 if ( casted_ability instanceof DamagingAbility )
+						 {
+					 
+							 if (current_target instanceof Cover)				 						  
+								 targets.add(current_target);
+							 else
+							   {
+								 Champion current_target_champ = (Champion) current_target ; 				 
+								 if(!isFriend(current_target_champ)) 		
+									 
+										if( doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )
+										{
+											Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(current_target_champ.getAppliedEffects(), "Shield");
+										    to_be_removed.remove(current_target_champ);
+										    current_target_champ.getAppliedEffects().remove(to_be_removed);
+										}
+										else 
+										    targets.add(current_target_champ);
 				
-				 
-					if( ! doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )
-						targets.add(current_target_champ);
-					else // just remove that shield from applied effects
-					{
-						Effect to_be_removed =  get_effect_With_Given_Name_With_the_least_Duration(current_target_champ.getAppliedEffects(), "Shield");
-					    to_be_removed.remove(current_target_champ);
-					current_target_champ.getAppliedEffects().remove(to_be_removed);
-					}
-					
-				 }
-				
-
-			   
-			   }						 
-			 	 
-		 }
-	    	 
-		 else if  (a instanceof HealingAbility)			
-		 {
-			
-			 if (z instanceof Champion && isFriend((Champion) z))				
-				targets.add(z);
-			 
-				 
-		 
-		 }	
-		 
-		 else // it is crowdControlAbility
-		 {
-			 
-			
-			
+							   }						 
+							 	 
+						 }  	 
+						 else if  (casted_ability instanceof HealingAbility)		
+						 {
+							     if (current_target instanceof Champion && isFriend((Champion) current_target))				
+								       targets.add(current_target);
+						 }
+						 else // it is crowdControlAbility
+						 {	
+							boolean b1 =  current_target instanceof Champion && isFriend( (Champion) current_target) && ((CrowdControlAbility)casted_ability).getEffect().getType() == EffectType.BUFF ;			 				    
+							boolean b2 =  current_target instanceof Champion && !isFriend((Champion) current_target) && ((CrowdControlAbility)casted_ability).getEffect().getType() == EffectType.DEBUFF ; 
+						    if(b1 || b2)						 
+								 targets.add(current_target);
+						 }
 		
-			 
-			 
-			boolean b1 = z instanceof Champion && isFriend( (Champion) z) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.BUFF ;			 				    
-			boolean b2 = z instanceof Champion && !isFriend((Champion) z) && ((CrowdControlAbility)a).getEffect().getType() == EffectType.DEBUFF ; 
-		    if(b1)						 
-				 targets.add(z);									 
-		 
-		    else  if(b2) {
-			
-				 targets.add(z);}
-		   
-		 
-		 
-		 
-		 
-		 }
-	    	 
-	 
-	    	 }
-	    	 
-	     }
-		 a.execute(targets);
-		for(int i =0 ;i<targets.size();i++) {
-		
-			
-			checkIfDeadAndActAccordingly(targets.get(i));
-		 
-		}
-		 apply_ability_cost(getCurrentChampion(), a);
-		 }
-		 
-		 
+				   }	 // for loop bracket
+	     }// surround case bracket
+		 casted_ability.execute(targets);
+		 for(Damageable target : targets)
+			 checkIfDeadAndActAccordingly(target);			 
+		 apply_ability_cost(attaker, casted_ability);
 	 }
     public void castAbility(Ability casted_ability, Direction d) throws NotEnoughResourcesException, AbilityUseException, CloneNotSupportedException
 	 {
@@ -847,7 +740,7 @@ import model.world.Villain;
 	  
 		 checkAbilityResources(attaker, casted_ability);
 		 
-		 if(! checkPointExist(x, y))
+		 if(! checkPointExistAndOccupied(x, y))
 			  throw new InvalidTargetException() ; // or throw AbilityUseException ? 
 		 		
 		 if(board[x][y] == null) 
@@ -984,46 +877,10 @@ import model.world.Villain;
 	    for(Champion champ : secondPlayer.getTeam())  
 	    	    turnOrder.insert(champ);
      }
-	 
-	 public static void main(String[] args) throws AbilityUseException, NotEnoughResourcesException, CloneNotSupportedException, IOException {
-		Player o = new Player("ffff");
-		
-		Player t = new Player("ssss");
-	 
-		loadChampions("Champions.csv");
-		loadAbilities("Abilities.csv");
-		
-		o.getTeam().add(availableChampions.get(0));
-	 
-	 o.getTeam().add(availableChampions.get(1));
-	 o.getTeam().add(availableChampions.get(2));
-	 t.getTeam().add(availableChampions.get(3));
-	 t.getTeam().add(availableChampions.get(4));t.getTeam().add(availableChampions.get(5));
-	
-	 for(int i =0 ; i<availableAbilities.size();i++) {
-	 if(availableAbilities.get(i) instanceof DamagingAbility) {
-		 o.getTeam().get(0).getAbilities().add(availableAbilities.get(i)) ;
-	 break;
-	 
-	 }}
-	o.getTeam().get(0).setLocation(new Point(1,1));
-	o.getTeam().get(1).setLocation(new Point(1,2));
-	o.getTeam().get(2).setLocation(new Point(1,3));
-	t.getTeam().get(0).setLocation(new Point(2,1));
-	t.getTeam().get(1).setLocation(new Point(2,2));
-	t.getTeam().get(2).setLocation(new Point(2,3));
-	Game a = new Game(o, t);
-	
-	a.castAbility(o.getTeam().get(0).getAbilities().get(0)) ;
-	 
-	
-	
-	}
-
-
-
-
-}
+ 
+ 
+ 
+ }
 
 
 
