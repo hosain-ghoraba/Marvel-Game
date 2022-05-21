@@ -9,22 +9,15 @@ public class Stun extends Effect {
 	public Stun( int duration) {
 		super("Stun", duration, EffectType.DEBUFF);
 	}
-    
-	
-	
-	
-	public void apply(Champion c)   {
-		
-		
-		//c.getAppliedEffects().add(this);
+    		
+	public void apply(Champion c) 
+   {				
 		c.setCondition(Condition.INACTIVE);
-		// not allowed to play there turn for a while : throws exception in another method
-
-	}
+   }
 	
 	
-	public void remove(Champion c) { // DARWISH !! Leave this Method as is PLS! the order of these 2 lines is very Fatal ( see setCondition() Method in Champion Class to understand why)
-		//c.getAppliedEffects().remove(this);
+	public void remove(Champion c) 
+	{ 
 		
 		if(Game.doesEffectExist(c.getAppliedEffects(), "Stun"))
 				return;
@@ -36,10 +29,5 @@ public class Stun extends Effect {
 		c.setCondition(Condition.ACTIVE);
 	}
 
-
-
-
-
-	
 	
 }

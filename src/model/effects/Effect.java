@@ -1,15 +1,13 @@
 package model.effects;
 
-import java.util.ArrayList;
-
 import model.world.Champion;
 
 public abstract class Effect implements Cloneable,Comparable {
-	 
-	
+	 	
 	private String name;
 	private int duration;
 	private EffectType type;
+	
 	public Effect (String name, int duration, EffectType type)
 	{
 		this.name=name;
@@ -34,8 +32,6 @@ public abstract class Effect implements Cloneable,Comparable {
 	}
 	
 ///////////// end of getters
-	
-    // overriden from Protected in Object class to PUBLIC to be seen in all sub classes of Effect !
 	public Object clone() throws CloneNotSupportedException  {
 		return super.clone();
 	}

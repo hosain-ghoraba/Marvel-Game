@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import model.world.Damageable;
 
-public abstract class Ability {
+public abstract class Ability implements Cloneable {
 
 	
 private	String name;	
@@ -16,6 +16,7 @@ private	int requiredActionPoints;
 private	AreaOfEffect castArea;
 
 public Ability(String name,int cost, int baseCoolDown, int castRange, AreaOfEffect area ,int required) {
+	
 	this.name = name;
 	this.manaCost = cost;
 	this.baseCooldown = baseCoolDown;

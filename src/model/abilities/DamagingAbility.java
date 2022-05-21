@@ -29,11 +29,10 @@ public int getDamageAmount() {
 
 public void execute(ArrayList<Damageable> targets) {
 	
-	for (int i=0;i<targets.size();i++)
+	for (int i = 0 ; i < targets.size() ; i++)
 	{
 		Damageable x = targets.get(i);
-	    x.setCurrentHP(x.getCurrentHP()-damageAmount);	    
-	
+	    x.setCurrentHP(x.getCurrentHP() - damageAmount);	    
 	}
 	
 }
