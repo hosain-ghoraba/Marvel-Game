@@ -742,9 +742,6 @@ import model.world.Villain;
 		 
 		 if(! checkPointExistAndOccupied(x, y))
 			  throw new InvalidTargetException() ; // or throw AbilityUseException ? 
-		 		
-		 if(board[x][y] == null) 
-		      throw new InvalidTargetException() ;
                
 		 Damageable target = (Damageable) board[x][y] ;
 		 
@@ -792,8 +789,11 @@ import model.world.Villain;
 			     else 
 			     	throw new InvalidTargetException() ;
 			 }
+			 if(! targets.isEmpty())
+			 { 
 		     casted_ability.execute(targets);
 			 checkIfDeadAndActAccordingly(targets.get(0));
+			 }
 			 apply_ability_cost(attaker, casted_ability);
 	 }
     public void useLeaderAbility() throws LeaderNotCurrentException , LeaderAbilityAlreadyUsedException 
