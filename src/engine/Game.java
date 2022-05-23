@@ -1159,7 +1159,17 @@ private void placeCovers() {
 	  			  else
 	  				  secondPlayer.getTeam().remove(i) ;
 	 }
-}}
+}
+	 
+     public static void main(String[] args) {
+	     ArrayList<Integer> lis = new ArrayList<>();
+	     System.out.println(lis.size());
+    	 ArrayList<Effect> list = new ArrayList<Effect>();
+    	 list.add(new Stun(4));
+    	 Effect e = list.get(0);
+    	 System.out.println(e);
+}
+}
 
-
+     
 
