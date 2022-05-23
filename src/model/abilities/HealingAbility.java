@@ -23,13 +23,12 @@ public int getHealAmount() {
 	return healAmount;
 }
 ////// end of getters
-//Override the abstarct method
+//Override the abstract method
 public void execute(ArrayList<Damageable> targets) {
-	for (int i=0;i<targets.size();i++)
+	for (int i = 0 ; i < targets.size() ; i++)
 	{
-		
 		Damageable x=targets.get(i);
-	    x.setCurrentHP(x.getCurrentHP()+ healAmount);	
+	    x.setCurrentHP(x.getCurrentHP() + healAmount);	
 	}
 	
 }
