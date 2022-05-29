@@ -19,7 +19,7 @@ public class chooseChampions extends JFrame {
 	public chooseChampions (Game game)
 	{
 		
-		this.setTitle("Marvel: Ultimate War");
+		this.setTitle("choose Champions window !");
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(500,500);

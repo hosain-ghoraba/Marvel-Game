@@ -22,7 +22,7 @@ public class loginWindow extends JFrame implements ActionListener  {
 //	chooseChampions
 	public loginWindow ()
 	{
-		this.setTitle("Marvel: Ultimate War");
+		this.setTitle(" Login window !");
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(500,500);
@@ -59,9 +59,9 @@ public void actionPerformed(ActionEvent e)  {
 
 	} catch (IOException e1) {
 		
-		System.out.println("balabizoo 2l l3ba byza");
+		System.out.println("error loading champions or abilities !");
 	}
-
+    	
 	this.dispose();
 	
 	new chooseChampions(game);
