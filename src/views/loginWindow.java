@@ -26,7 +26,7 @@ public class loginWindow extends JFrame implements ActionListener  {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(500,500);
-		this.setResizable(false);
+		//this.setResizable(false);
 		ImageIcon logo = new ImageIcon("logo.png");
 		this.setIconImage(logo.getImage());
 		textField_Palyer1 = new JTextField();
@@ -38,6 +38,7 @@ public class loginWindow extends JFrame implements ActionListener  {
 	    textField_Palyer2.setBackground(Color.white);
 	    this.getContentPane().add(textField_Palyer2,BorderLayout.WEST);
 	    JButton submit = new JButton("Enter");
+	    submit.addActionListener(this);
 	    this.add(submit,BorderLayout.CENTER);
 		
 		

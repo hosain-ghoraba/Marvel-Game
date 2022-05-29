@@ -23,7 +23,7 @@ public class chooseChampions extends JFrame {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(500,500);
-		this.setResizable(false);
+	//	this.setResizable(false);
 		ImageIcon logo = new ImageIcon("logo.png");
 		this.setIconImage(logo.getImage());
 		JPanel champs = new JPanel();
@@ -31,6 +31,7 @@ public class chooseChampions extends JFrame {
 		champs.setSize(new Dimension(400,400));
 		champs.setLayout(new GridLayout(0, 4));
 		// add it in the center of the JFrame
+		btnsProduct = new ArrayList<>() ;
 		add(champs, BorderLayout.CENTER);
 		for ( Champion champ : game.getAvailableChampions()) {
 			// create a JButton for each product in the supermarket
