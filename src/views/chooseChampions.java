@@ -104,15 +104,15 @@ public void actionPerformed(ActionEvent e) {
 
 	public void  updatetxt () {
 		
-		String s = pl1.getName() + "'s"+ " champions :" + "\n" ;
+		String pl1_Champs = pl1.getName() + "'s"+ " champions :" + "\n" ;		
 		for(int i = 0 ; i < pl1.getTeam().size() ; i++) 		
-			s += pl1.getTeam().get(i).getName() + "\n" ;	
-		
-		String v = pl2.getName()+ "'s"+ " champions :"+ "\n" ;
+			pl1_Champs += pl1.getTeam().get(i).getName() + "\n" ;	
+				
+		String pl2_Champs = pl2.getName()+ "'s"+ " champions :"+ "\n" ;		
 		for(int i = 0 ; i < pl2.getTeam().size() ; i++) 
-			v += pl2.getTeam().get(i).getName() + "\n" ;
+			pl2_Champs += pl2.getTeam().get(i).getName() + "\n" ;
 					
-		txtchamp.setText(s + "\n" + v);
+		txtchamp.setText(pl1_Champs + "\n" + pl2_Champs);
 
 	
 	}
