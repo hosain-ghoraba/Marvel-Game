@@ -24,6 +24,7 @@ public class chooseChampions extends JFrame  implements ActionListener{
 private ArrayList<JButton> champsbuttons;
 private Player pl1 ;
 private Player pl2 ;
+private Game game;
 private JTextArea txtchamp;
 
 
@@ -71,7 +72,7 @@ updatetxt();
 
 			
 btnchamp.setText(champ.getName()+  "\n" +"max health points : "+ champ.getMaxHP()+ "\n"+ "mana : "+ champ.getMana()+"\n"+"max action points per turn " + champ.getMaxActionPointsPerTurn()+"\n"+ "speed : "+ champ.getSpeed()+"\n"+"attack range :"+ champ.getAttackRange()+"\n"+ "attack damage: "+champ.getAttackDamage());
-		btnchamp.setVisible(true);
+		
 		champs.add(btnchamp) ;
 			// add the controller as its ActionListener
 		//	btnProduct.addActionListener(this);oifjdjiofsss
@@ -129,7 +130,7 @@ if(pl1.getTeam().size()==3) {
 		if(pl2.getTeam().size()==3) {
 		this.dispose();
 
-	   new chooseleader(pl1,pl2) ;
+	   new chooseleaderPlayer1(game,pl1,pl2) ;
    }
 	}
 	
