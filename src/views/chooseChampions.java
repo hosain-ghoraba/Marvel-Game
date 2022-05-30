@@ -56,7 +56,7 @@ updatetxt();
 		JPanel champs = new JPanel();
 		// set it to use the GridLayout with 3 columns in width
 		champs.setSize(new Dimension(350,500));
-		champs.setLayout(new GridLayout(0, 3));
+		champs.setLayout(new GridLayout(0, 1));
 		// add it in the center of the JFrame
 		champsbuttons = new ArrayList<>() ;
 		this.add(champs, BorderLayout.CENTER);
@@ -64,7 +64,10 @@ updatetxt();
 			// create a JButton for each product in the supermarket
 			JButton btnchamp = new JButton();
 			btnchamp.addActionListener(this);// set its text to the product's info
-			btnchamp.setText(champ.getName());
+			//	public Champion(String name, int maxHP, int mana, int maxActions, int speed, int attackRange,int attackDamage) {
+
+			
+btnchamp.setText(champ.getName()+  "\n" +"max health points : "+ champ.getMaxHP()+ "\n"+ "mana : "+ champ.getMana()+"\n"+"max action points per turn " + champ.getMaxActionPointsPerTurn()+"\n"+ "speed : "+ champ.getSpeed()+"\n"+"attack range :"+ champ.getAttackRange()+"\n"+ "attack damage: "+champ.getAttackDamage());
 		btnchamp.setVisible(true);
 		champs.add(btnchamp) ;
 			// add the controller as its ActionListener
