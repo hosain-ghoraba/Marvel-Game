@@ -30,6 +30,7 @@ private JTextArea txtchamp;
 
 	public chooseChampions (Game game , Player pl1, Player pl2)
 	{
+		this.game =game ;
 		this.pl1 = pl1 ; 
 		this.pl2 = pl2 ;
 		this.setTitle(pl1.getName()+"   choose your champions");

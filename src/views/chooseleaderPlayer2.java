@@ -21,7 +21,7 @@ public class chooseleaderPlayer2 extends JFrame implements ActionListener {
 	private Game game;
 	public chooseleaderPlayer2 (Game game , Player pl1, Player pl2)
 	{
-		
+		this.game =game ;
 		this.pl2 = pl2 ;
 		this.setTitle(pl2.getName()+"   choose your Leader");
 		this.setVisible(true);
@@ -59,6 +59,6 @@ public class chooseleaderPlayer2 extends JFrame implements ActionListener {
 
         }
         this.dispose();
-        new gamewindow(game,pl1,pl2);
+        new gamewindow(game,game.getFirstPlayer(),game.getSecondPlayer());
 	}
 }
