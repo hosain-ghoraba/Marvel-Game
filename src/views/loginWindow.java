@@ -86,28 +86,63 @@ public class loginWindow extends JFrame implements ActionListener  {
 
 		this.validate();;
 		this.repaint();
+		String s = "sdf";
+		
 	}
    public static void main(String[] args) {
 	   new loginWindow ();
 }
-@Override
+
+public static boolean stringIsMereSpaces(String s) {
+	for(int i = 0 ; i < s.length() ; i++)
+		if(s.charAt(i) != ' ')
+			return false;
+	return true;
+					
+		
+}
 public void actionPerformed(ActionEvent e)  {
+		
+	String name1 = textField_Palyer1.getText();
+	String name2 = textField_Palyer2.getText();
 	
-	if(textField_Palyer1.getText().isEmpty() && textField_Palyer2.getText().isEmpty() )
+	if(name1.isEmpty() && name2.isEmpty() )
 	{
 		JOptionPane.showMessageDialog(null, "both players must enter their names !","", JOptionPane.ERROR_MESSAGE);
 		return;
 	}
-	if(textField_Palyer1.getText().isEmpty())
+	if(name1.isEmpty())
 	{
 		JOptionPane.showMessageDialog(null, "First Player must enter his name !","", JOptionPane.ERROR_MESSAGE);
 		return;
 	}
-	if(textField_Palyer2.getText().isEmpty())
+	if(stringIsMereSpaces(name1))
+	{
+		JOptionPane.showMessageDialog(null, "first player name must contain some characters, not only spaces !","", JOptionPane.ERROR_MESSAGE);
+		return;
+
+	}
+	if(name2.isEmpty())
 	{
 		JOptionPane.showMessageDialog(null, "Second Player must enter his name !","", JOptionPane.ERROR_MESSAGE);
 		return;
 	}
+	
+	if(stringIsMereSpaces(name2))
+	{
+		JOptionPane.showMessageDialog(null, "second player name must contain some characters, not only spaces !","", JOptionPane.ERROR_MESSAGE);
+		return;
+
+	}
+	if(name1.equals(name2))
+	{
+		JOptionPane.showMessageDialog(null, "players names must be different !","", JOptionPane.ERROR_MESSAGE);
+		return;
+
+	}
+	
+	
+	
 	
 		
 	Player player1 = new Player(textField_Palyer1.getText());
