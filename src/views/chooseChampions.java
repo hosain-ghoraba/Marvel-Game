@@ -68,7 +68,7 @@ updatetxt();
 		btnchamp.setVisible(true);
 		champs.add(btnchamp) ;
 			// add the controller as its ActionListener
-		//	btnProduct.addActionListener(this);
+		//	btnProduct.addActionListener(this);oifjdjiof
 			// add it to the products buy buttons panel
 		//	supermarketView.addProduct(btnProduct);
 
