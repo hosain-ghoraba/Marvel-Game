@@ -26,6 +26,7 @@ private Player pl1 ;
 private Player pl2 ;
 private JTextArea txtchamp;
 
+
 	public chooseChampions (Game game , Player pl1, Player pl2)
 	{
 		this.pl1 = pl1 ; 
@@ -56,7 +57,8 @@ updatetxt();
 		JPanel champs = new JPanel();
 		// set it to use the GridLayout with 3 columns in width
 		champs.setSize(new Dimension(350,500));
-		champs.setLayout(new GridLayout(0, 3));
+		// THE DIFFERENCE BETWEN (5,5) AND (1,5) !!!?
+		champs.setLayout(new GridLayout(0, 5));
 		// add it in the center of the JFrame
 		champsbuttons = new ArrayList<>() ;
 		this.add(champs, BorderLayout.CENTER);
@@ -64,7 +66,7 @@ updatetxt();
 			// create a JButton for each product in the supermarket
 			JButton btnchamp = new JButton();
 			btnchamp.addActionListener(this);// set its text to the product's info
-			btnchamp.setText(champ.getName());
+			btnchamp.setText(champ.getName()+ "/n"+champ.getMana());
 		btnchamp.setVisible(true);
 		champs.add(btnchamp) ;
 			// add the controller as its ActionListener
@@ -114,13 +116,7 @@ if(pl1.getTeam().size()==3) {
 }
 	
 	else {
-		if(pl2.getTeam().size()==3) {
-			this.dispose();
-
-			new gamewindow() ;
-
-
-		}
+		
 		pl2.getTeam().add(Game.getAvailableChampions().get(i));
 		x.setEnabled(false) ;
 
@@ -129,7 +125,7 @@ if(pl1.getTeam().size()==3) {
 		if(pl2.getTeam().size()==3) {
 		this.dispose();
 
-	   new gamewindow() ;
+	   new chooseleader(pl1,pl2) ;
    }
 	}
 	
