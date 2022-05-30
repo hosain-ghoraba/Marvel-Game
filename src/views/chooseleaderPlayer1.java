@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import engine.Game;
@@ -43,7 +44,8 @@ public class chooseleaderPlayer1 extends JFrame implements ActionListener {
 		}
 		
 		this.add(panelChooseLeader1);
-	
+		JOptionPane.showMessageDialog(null, pl1.getName()+ " : choose your leader","", JOptionPane.INFORMATION_MESSAGE);
+
 
 	
 	}
