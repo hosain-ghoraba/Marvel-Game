@@ -3,15 +3,22 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 import engine.Game;
 import engine.Player;
@@ -21,28 +28,72 @@ public class loginWindow extends JFrame implements ActionListener  {
 	JTextField textField_Palyer2 ;
 //	chooseChampions
 	public loginWindow ()
-	{
-		this.setTitle(" Login window !");
+	{   
+		//JFrame window
+		this.setTitle("Marvel: Ultimate War");
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(500,500);
-		//this.setResizable(false);
+		this.setSize(700,525);
+		this.setIconImage(getIconImage());
+		
+	//	this.setResizable(false);
 		ImageIcon logo = new ImageIcon("logo.png");
-		this.setIconImage(logo.getImage());
-		textField_Palyer1 = new JTextField(20);
-		textField_Palyer1.setText("firstPlayerName");
-	  //  textField_Palyer1.setBounds(getWidth() /4, getHeight() / 4, getWidth() / 3, getHeight() / 20);
-	    textField_Palyer1.setBackground(Color.white);
-	    this.getContentPane().add(textField_Palyer1,BorderLayout.NORTH);
-	    textField_Palyer2 = new JTextField();
-	    textField_Palyer2.setPreferredSize(new Dimension(100,20));
-	    textField_Palyer2.setBackground(Color.white);
-	    this.getContentPane().add(textField_Palyer2,BorderLayout.NORTH);
-	    JButton submit = new JButton("Enter");
-	    submit.addActionListener(this);
-	    this.add(submit,BorderLayout.SOUTH);
+		this.setIconImage(logo.getImage());				
+		//panel
+		JLabel loginJlabel = new JLabel();
+	
+		ImageIcon BackgroundImage = new ImageIcon("Background7.jpg");
+		loginJlabel.setIcon(BackgroundImage);
 		
+		this.add(loginJlabel);
 		
+		loginJlabel.setLayout(null);
+		textField_Palyer1 = new JTextField();
+	    textField_Palyer1.setBounds(140, 400, 140,30);
+	    textField_Palyer1.setBackground(Color.LIGHT_GRAY);
+	    Border border = BorderFactory.createLineBorder(Color.RED);
+	    textField_Palyer1.setFont(new Font ("Times New Roman",Font.BOLD,17));
+	    textField_Palyer1.setBorder(border);
+	    loginJlabel.add(textField_Palyer1);
+	    
+	    JLabel labeltextpalyer1 = new JLabel("FirstPlayer:");
+	    labeltextpalyer1.setFont(new Font ("Times New Roman",Font.BOLD,17));
+        labeltextpalyer1.setForeground(Color.WHITE);
+	    labeltextpalyer1.setBounds(40,398,120, 30);
+	    
+	    loginJlabel.add(labeltextpalyer1);
+
+		loginJlabel.setLayout(null);
+		textField_Palyer2 = new JTextField();
+	    textField_Palyer2.setBounds(520, 400, 140,30);
+	    textField_Palyer2.setBackground(Color.LIGHT_GRAY);
+	    textField_Palyer2.setFont(new Font ("Times New Roman",Font.BOLD,17));
+	    textField_Palyer2.setBorder(border);
+	    loginJlabel.add(textField_Palyer2);
+	    
+	    JLabel labeltextpalyer2 = new JLabel("SecondPlayer:");
+	    labeltextpalyer2.setFont(new Font ("Times New Roman",Font.BOLD,17));
+        labeltextpalyer2.setForeground(Color.WHITE);
+	    labeltextpalyer2.setBounds(410,398,120, 30);
+	    
+	    loginJlabel.add(labeltextpalyer2);
+	    
+	    
+	    
+	    JButton Enter = new JButton("Play");
+	 Enter.addActionListener(this);
+	    Enter.setBounds(302,430, 150,40);
+	    Enter.setFont(new Font ("Times New Roman",Font.BOLD,17));
+	    Enter.setForeground(Color.black);
+	    Enter.setBackground(new Color(0xccccb3));
+	    Enter.setBorder(BorderFactory.createEtchedBorder());
+	    Enter.setFocusable(false);
+	    
+	    loginJlabel.add(Enter);
+
+	    
+	  
+
 		this.validate();;
 		this.repaint();
 	}
@@ -60,12 +111,12 @@ public void actionPerformed(ActionEvent e)  {
 
 	} catch (IOException e1) {
 		
-		System.out.println("error loading champions or abilities !");
+		System.out.println("balabizoo 2l l3ba byza");
 	}
-    	
+
 	this.dispose();
 	
-	new chooseChampions(game);
+	new chooseChampions(game, player1, player2);
 	
 	
 }
