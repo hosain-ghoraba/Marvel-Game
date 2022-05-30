@@ -83,6 +83,7 @@ public class loginWindow extends JFrame implements ActionListener  {
 	    
 	    
 	    JButton Enter = new JButton("Play");
+	 Enter.addActionListener(this);
 	    Enter.setBounds(302,430, 150,40);
 	    Enter.setFont(new Font ("Times New Roman",Font.BOLD,17));
 	    Enter.setForeground(Color.black);
@@ -116,7 +117,7 @@ public void actionPerformed(ActionEvent e)  {
 
 	this.dispose();
 	
-	new chooseChampions(game);
+	new chooseChampions(game, player1, player2);
 	
 	
 }
