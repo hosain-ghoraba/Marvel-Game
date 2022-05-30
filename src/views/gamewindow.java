@@ -11,13 +11,18 @@ import javax.swing.JTextArea;
 
 import engine.Game;
 import engine.Player;
+
 import model.world.Champion;
 import model.*;
+
 public class gamewindow extends JFrame {
+
 	JTextArea txtchamp ;
 	Player pl1 ;
 	Player pl2 ;
-	public gamewindow(Game game ,Player p1 , Player p2) {
+	 
+	
+	public gamewindow(Game game , Player pl1, Player pl2) {
 		this.setVisible(true);
 		this.pl1=pl1;
 		this.pl2=pl2 ;
@@ -25,6 +30,7 @@ public class gamewindow extends JFrame {
 		this.setSize(500,500);
 	//	this.setResizable(false);
 		ImageIcon logo = new ImageIcon("logo.png");
+
 		this.setIconImage(logo.getImage());
 		txtchamp = new JTextArea();
 		txtchamp.setPreferredSize(new Dimension(150, getHeight()));
