@@ -36,7 +36,7 @@ public class loginWindow extends JFrame implements ActionListener  {
 		this.setSize(700,525);
 		this.setIconImage(getIconImage());
 		
-	//	this.setResizable(false);
+	 	this.setResizable(false);
 		ImageIcon logo = new ImageIcon("logo.png");
 		this.setIconImage(logo.getImage());				
 		//panel
