@@ -34,6 +34,7 @@ private JTextArea txtchamp;
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(500,500);
+	//	this.setResizable(false);
 		ImageIcon logo = new ImageIcon("logo.png");
 		this.setIconImage(logo.getImage());
 		txtchamp = new JTextArea();
@@ -42,88 +43,115 @@ private JTextArea txtchamp;
 		txtchamp.setEditable(false);
 		txtchamp.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		add(txtchamp, BorderLayout.EAST);
-        updatetxt();
-				
+updatetxt();
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		JPanel champs = new JPanel();
+		// set it to use the GridLayout with 3 columns in width
 		champs.setSize(new Dimension(350,500));
 		champs.setLayout(new GridLayout(0, 3));
+		// add it in the center of the JFrame
 		champsbuttons = new ArrayList<>() ;
 		this.add(champs, BorderLayout.CENTER);
-		for ( Champion champ : Game.getAvailableChampions()) 
-		{
+		for ( Champion champ : game.getAvailableChampions()) {
+			// create a JButton for each product in the supermarket
 			JButton btnchamp = new JButton();
-			btnchamp.addActionListener(this);
+			btnchamp.addActionListener(this);// set its text to the product's info
 			btnchamp.setText(champ.getName());
-	    	btnchamp.setVisible(true);
-		    champs.add(btnchamp) ;
-			champsbuttons.add(btnchamp);	
-		}
+		btnchamp.setVisible(true);
+		champs.add(btnchamp) ;
+			// add the controller as its ActionListener
+		//	btnProduct.addActionListener(this);
+			// add it to the products buy buttons panel
+		//	supermarketView.addProduct(btnProduct);
+
+			// and also add it to the ArrayList for later use
+			champsbuttons.add(btnchamp);	}
 
 		JOptionPane.showMessageDialog(null, pl1.getName()+ " : choose your 3 champions","", JOptionPane.INFORMATION_MESSAGE);
 
 		this.validate();;
 		this.repaint();
 		
+		
+		
+		
+		
+		
+		
+		
+
+		
+		
+		
+		
 	}
 
+	@Override
+	
+	
+	public void actionPerformed(ActionEvent e) {
+JButton x = 	(JButton)e.getSource() ;
+int i = champsbuttons.indexOf(x);
+if(pl1.getTeam().size()<3) {
+pl1.getTeam().add(Game.getAvailableChampions().get(i));
+updatetxt();
+x.setEnabled(false) ;
 
-	
-@Override	
-public void actionPerformed(ActionEvent e) {
-		
-	JButton x = (JButton)e.getSource() ;
-	int i = champsbuttons.indexOf(x);
-	
-	if(pl1.getTeam().size() < 3)
-	{
-		pl1.getTeam().add(Game.getAvailableChampions().get(i));
-		updatetxt();
-		x.setEnabled(false);
-		
-		if(pl1.getTeam().size() == 3) 
-		{
-			this.setTitle(pl2.getName()+"   choose your champions");
-			JOptionPane.showMessageDialog(null, pl2.getName()+ " : choose your 3 champions","", JOptionPane.INFORMATION_MESSAGE);		
-		}
-	}
-		
-	else 
-	   {
-			pl2.getTeam().add(Game.getAvailableChampions().get(i));
-			updatetxt();
-			x.setEnabled(false);	
-	
-			if(pl2.getTeam().size() == 3) 
-			{
-			this.dispose();	
-		    new gamewindow() ;
-	        }
-		}
-	
+
+if(pl1.getTeam().size()==3) {
+	this.setTitle(pl2.getName()+"   choose your champions");
+	JOptionPane.showMessageDialog(null, pl2.getName()+ " : choose your 3 champions","", JOptionPane.INFORMATION_MESSAGE);
+
 }
+}
+	
+	else {
+		if(pl2.getTeam().size()==3) {
+			this.dispose();
+
+			new gamewindow() ;
+
+
+		}
+		pl2.getTeam().add(Game.getAvailableChampions().get(i));
+		x.setEnabled(false) ;
+
+		updatetxt();
+
+		if(pl2.getTeam().size()==3) {
+		this.dispose();
+
+	   new gamewindow() ;
+   }
+	}
+	
+	}
 
 	public void  updatetxt () {
+		String s = pl1.getName()+ "'s"+ " champions :"+ "\n" ;
+		for(int i = 0 ; i< pl1.getTeam().size() ;i++) {
+			s+= pl1.getTeam().get(i).getName() + "\n" ;
+			
+		}
+		String v = pl2.getName()+ "'s"+ " champions :"+ "\n" ;
+		for(int i = 0 ; i< pl2.getTeam().size() ;i++) {
+			v+= pl2.getTeam().get(i).getName() + "\n" ;
+			
+		}
 		
-		String pl1_Champs = pl1.getName() + "'s"+ " champions :" + "\n" ;		
-		for(int i = 0 ; i < pl1.getTeam().size() ; i++) 		
-			pl1_Champs += pl1.getTeam().get(i).getName() + "\n" ;	
-				
-		String pl2_Champs = pl2.getName()+ "'s"+ " champions :"+ "\n" ;		
-		for(int i = 0 ; i < pl2.getTeam().size() ; i++) 
-			pl2_Champs += pl2.getTeam().get(i).getName() + "\n" ;
-					
-		txtchamp.setText(pl1_Champs + "\n" + pl2_Champs);
+		txtchamp.setText(s+ "\n"+v);
 
 	
+		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 }
