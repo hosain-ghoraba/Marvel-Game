@@ -29,17 +29,18 @@ public class loginWindow extends JFrame implements ActionListener  {
 		//this.setResizable(false);
 		ImageIcon logo = new ImageIcon("logo.png");
 		this.setIconImage(logo.getImage());
-		textField_Palyer1 = new JTextField();
-	    textField_Palyer1.setPreferredSize(new Dimension(100,20));
+		textField_Palyer1 = new JTextField(20);
+		textField_Palyer1.setText("firstPlayerName");
+	  //  textField_Palyer1.setBounds(getWidth() /4, getHeight() / 4, getWidth() / 3, getHeight() / 20);
 	    textField_Palyer1.setBackground(Color.white);
-	    this.getContentPane().add(textField_Palyer1,BorderLayout.EAST);
+	    this.getContentPane().add(textField_Palyer1,BorderLayout.NORTH);
 	    textField_Palyer2 = new JTextField();
 	    textField_Palyer2.setPreferredSize(new Dimension(100,20));
 	    textField_Palyer2.setBackground(Color.white);
-	    this.getContentPane().add(textField_Palyer2,BorderLayout.WEST);
+	    this.getContentPane().add(textField_Palyer2,BorderLayout.NORTH);
 	    JButton submit = new JButton("Enter");
 	    submit.addActionListener(this);
-	    this.add(submit,BorderLayout.CENTER);
+	    this.add(submit,BorderLayout.SOUTH);
 		
 		
 		this.validate();;
