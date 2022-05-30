@@ -1,23 +1,13 @@
 package views;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.TextField;
+import java.awt.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 import engine.Game;
@@ -102,6 +92,24 @@ public class loginWindow extends JFrame implements ActionListener  {
 }
 @Override
 public void actionPerformed(ActionEvent e)  {
+	
+	if(textField_Palyer1.getText().isEmpty() && textField_Palyer2.getText().isEmpty() )
+	{
+		JOptionPane.showMessageDialog(null, "both players must enter their names !","", JOptionPane.ERROR_MESSAGE);
+		return;
+	}
+	if(textField_Palyer1.getText().isEmpty())
+	{
+		JOptionPane.showMessageDialog(null, "First Player must enter his name !","", JOptionPane.ERROR_MESSAGE);
+		return;
+	}
+	if(textField_Palyer2.getText().isEmpty())
+	{
+		JOptionPane.showMessageDialog(null, "Second Player must enter his name !","", JOptionPane.ERROR_MESSAGE);
+		return;
+	}
+	
+		
 	Player player1 = new Player(textField_Palyer1.getText());
 	Player player2 = new Player(textField_Palyer2.getText());
 	Game game = new Game(player1, player2);
