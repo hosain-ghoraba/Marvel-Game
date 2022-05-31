@@ -26,7 +26,7 @@ public class gamewindow extends JFrame {
 	 
 	
 	public gamewindow(Game game , Player pl1, Player pl2) {
-		this.game =game ;
+		this.game =new Game(pl1,pl2) ;
 		this.setVisible(true);
 		this.pl1=pl1;
 		this.pl2=pl2 ;
@@ -89,7 +89,7 @@ update_curchamp_datails();
 		}
 		s+="\n"+" attack damage :"+c.getAttackDamage()+"\n"+"attack range:"+ c.getAttackRange();
 		
-
+    cur_champ_details.setText(s);
 		
 	}
 	//eee
