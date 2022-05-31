@@ -105,7 +105,7 @@ public void updateplayersdata(){
 				s+= x.getName() + "  ";
 			}
 		}
-		if(game.isFirstLeaderAbilityUsed()) {
+		if(!game.isFirstLeaderAbilityUsed()) {
 			s+="\n"+"  LeaderAbility not used";
 		}
 		else
@@ -116,7 +116,7 @@ public void updateplayersdata(){
 				z+= x.getName() + "  ";
 			}
 		}
-		if(game.isSecondLeaderAbilityUsed()) {
+		if(!game.isSecondLeaderAbilityUsed()) {
 			z+="\n"+"  LeaderAbility not used";
 		}
 		else
