@@ -3,10 +3,13 @@ import model.world.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.util.concurrent.locks.Condition;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import engine.Game;
@@ -34,26 +37,27 @@ public class gamewindow extends JFrame {
 		this.setSize(500,500);
 	//	this.setResizable(false);
 		ImageIcon logo = new ImageIcon("logo.png");
-
+		setLayout(new GridLayout(6,6));
 		this.setIconImage(logo.getImage());
 		playersdetails = new JTextArea();
 		playersdetails.setPreferredSize(new Dimension(150, getHeight()));
 
 		playersdetails.setEditable(false);
 		playersdetails.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-		add(playersdetails, BorderLayout.CENTER);
+		add(playersdetails);
 updateplayersdata();
 cur_champ_details =new JTextArea();
         
 
 cur_champ_details.setEditable(false);
 cur_champ_details.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-add(cur_champ_details, BorderLayout.SOUTH);
+add(cur_champ_details);
 update_curchamp_datails();
-
-
-
-
+JPanel x1 =new JPanel();
+JButton z=new JButton();
+z.setText("heee");
+x1.add(z);
+add(x1);
 
 	}
 	public void update_curchamp_datails() {
