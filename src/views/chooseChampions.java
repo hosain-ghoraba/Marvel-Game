@@ -72,7 +72,7 @@ updatetxt();
 			//	public Champion(String name, int maxHP, int mana, int maxActions, int speed, int attackRange,int attackDamage) {
 
 			
-btnchamp.setText(champ.getName()+  "\n" +"max health points : "+ champ.getMaxHP()+ "\n"+ "mana : "+ champ.getMana()+"\n"+"max action points per turn " + champ.getMaxActionPointsPerTurn()+"\n"+ "speed : "+ champ.getSpeed()+"\n"+"attack range :"+ champ.getAttackRange()+"\n"+ "attack damage: "+champ.getAttackDamage());
+btnchamp.setText(champ.getName()+  "\n" +"max health points : "+ champ.getMaxHP()+ "\n"+ "mana : "+ champ.getMana()+"\n"+"max action points per turn " + champ.getMaxActionPointsPerTurn()+"\n"+ "speed : "+ champ.getSpeed()+"\n"+"attack range :"+ champ.getAttackRange()+"\n"+ "attack damage: "+champ.getAttackDamage()+" Abilities:  "+champ.getAbilities().get(0).getName()+champ.getAbilities().get(1).getName()+champ.getAbilities().get(2).getName());
 		
 		champs.add(btnchamp) ;
 			// add the controller as its ActionListener
