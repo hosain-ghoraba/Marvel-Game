@@ -20,9 +20,10 @@ public class gamewindow extends JFrame {
 	JTextArea txtchamp ;
 	Player pl1 ;
 	Player pl2 ;
-	 
+	 Game game ;
 	
 	public gamewindow(Game game , Player pl1, Player pl2) {
+		this.game =game ;
 		this.setVisible(true);
 		this.pl1=pl1;
 		this.pl2=pl2 ;
@@ -50,6 +51,23 @@ public void updatetxt(){
 				s+= x.getName() + "  ";
 			}
 		}
-	}
+		if(game.isFirstLeaderAbilityUsed()) {
+			s+="\n"+"  LeaderAbility not used";
+		}
+		else
+			s+="\n"+"  LeaderAbility  used";
+		String z = pl2.getName() +" : "+"\n" + "remaining champions :";
+		for(Champion x : pl2.getTeam()) {
+			if(x.getCondition()!=(model.world.Condition.KNOCKEDOUT)) {
+				z+= x.getName() + "  ";
+			}
+		}
+		if(game.isSecondLeaderAbilityUsed()) {
+			z+="\n"+"  LeaderAbility not used";
+		}
+		else
+			z+="\n"+"  LeaderAbility  used";
+txtchamp.setText(s +"\n"+z);
+}
 	
 }
