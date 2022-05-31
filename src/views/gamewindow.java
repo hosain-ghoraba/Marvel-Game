@@ -14,13 +14,16 @@ import engine.Player;
 
 import model.world.Champion;
 import model.*;
+import model.abilities.Ability;
+import model.effects.Effect;
 
 public class gamewindow extends JFrame {
-
-	JTextArea txtchamp ;
+	JTextArea cur_champ_details ;
+	JTextArea playersdetails ;
 	Player pl1 ;
 	Player pl2 ;
 	 Game game ;
+	 
 	
 	public gamewindow(Game game , Player pl1, Player pl2) {
 		this.game =game ;
@@ -33,18 +36,65 @@ public class gamewindow extends JFrame {
 		ImageIcon logo = new ImageIcon("logo.png");
 
 		this.setIconImage(logo.getImage());
-		txtchamp = new JTextArea();
-		txtchamp.setPreferredSize(new Dimension(150, getHeight()));
+		playersdetails = new JTextArea();
+		playersdetails.setPreferredSize(new Dimension(150, getHeight()));
 
-		txtchamp.setEditable(false);
-		txtchamp.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-		add(txtchamp, BorderLayout.NORTH);
-updatetxt();
+		playersdetails.setEditable(false);
+		playersdetails.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		add(playersdetails, BorderLayout.CENTER);
+updateplayersdata();
+cur_champ_details =new JTextArea();
+        
 
+cur_champ_details.setEditable(false);
+cur_champ_details.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+add(cur_champ_details, BorderLayout.SOUTH);
+update_curchamp_datails();
+
+
+
+
+
+	}
+	public void update_curchamp_datails() {
+		Champion c = game.getCurrentChampion();
+	//*	Their name.
+		//Their type.
+		//their currentHp, mana, and actions points.
+		//Their list of abilities, as well as information about each ability. (Indicated below).
+		//Their list of applied effects, as well as information. (Name and duration)
+		//Their attack damage and attack range.
+		
+			
+		String s = "current champion : "+c.getName() +"\n"+ "type: ";
+		if(c instanceof AntiHero) {
+			s+= "Anti hero" ;
+		}
+		else if(c instanceof Hero) {
+			s+= " hero" ;
+
+		}
+		else
+			s+= "villain" ;
+		s+= "\n"+ "current Health points:  "+c.getCurrentHP() +"\n"+" mana"+ c.getMana() +"\n"+ "actions points :"+c.getCurrentActionPoints()+ "abilities";
+		for(Ability x : c.getAbilities()) {
+			s+=x.getName()+ " ," ;
+		//need to add info
+		}
+		s+="\n";
+		for(Effect x :c.getAppliedEffects()) {
+			
+			s+= x.getName() + " duration :" + x.getDuration()+ "  ,";
+			//need to add info
+		}
+		s+="\n"+" attack damage :"+c.getAttackDamage()+"\n"+"attack range:"+ c.getAttackRange();
+		
+
+		
 	}
 	//eee
 	
-public void updatetxt(){
+public void updateplayersdata(){
 		String s = pl1.getName() +" : "+"\n" + "remaining champions :";
 		for(Champion x : pl1.getTeam()) {
 			if(x.getCondition()!=(model.world.Condition.KNOCKEDOUT)) {
@@ -67,7 +117,7 @@ public void updatetxt(){
 		}
 		else
 			z+="\n"+"  LeaderAbility  used";
-txtchamp.setText(s +"\n"+z);
+playersdetails.setText(s +"\n"+z);
 }
 	
 }
