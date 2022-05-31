@@ -92,7 +92,7 @@ update_curchamp_datails();
     cur_champ_details.setText(s);
 		
 	}
-	//eee
+	//eeewww
 	
 public void updateplayersdata(){
 		String s = pl1.getName() +" : "+"\n" + "remaining champions :";
