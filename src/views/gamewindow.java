@@ -34,11 +34,13 @@ public class gamewindow extends JFrame {
 		this.pl1=pl1;
 		this.pl2=pl2 ;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(500,500);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+	//	this.setUndecorated(true);
 	//	this.setResizable(false);
 		ImageIcon logo = new ImageIcon("logo.png");
 		setLayout(new GridLayout(6,6));
 		this.setIconImage(logo.getImage());
+		
 		playersdetails = new JTextArea();
 		playersdetails.setPreferredSize(new Dimension(150, getHeight()));
 
@@ -53,11 +55,9 @@ cur_champ_details.setEditable(false);
 cur_champ_details.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 add(cur_champ_details);
 update_curchamp_datails();
-JPanel x1 =new JPanel();
-JButton z=new JButton();
-z.setText("heee");
-x1.add(z);
-add(x1);
+JPanel gamePanel =new JPanel();
+// gamePanel.setLayout(5,5);
+
 
 	}
 	public void update_curchamp_datails() {
