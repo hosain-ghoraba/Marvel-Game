@@ -18,6 +18,9 @@ import engine.Player;
 import model.world.Champion;
 import model.*;
 import model.abilities.Ability;
+import model.abilities.CrowdControlAbility;
+import model.abilities.DamagingAbility;
+import model.abilities.HealingAbility;
 import model.effects.Effect;
 
 public class gamewindow extends JFrame {
@@ -56,7 +59,8 @@ cur_champ_details.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 add(cur_champ_details);
 update_curchamp_datails();
 JPanel gamePanel =new JPanel();
-// gamePanel.setLayout(5,5);
+gamePanel.setLayout(new GridLayout(5,5));
+gamePanel.setSize(this.getWidth()-100,this.getHeight());
 
 
 	}
@@ -80,10 +84,23 @@ JPanel gamePanel =new JPanel();
 		}
 		else
 			s+= "villain" ;
-		s+= "\n"+ "current Health points:  "+c.getCurrentHP() +"\n"+" mana"+ c.getMana() +"\n"+ "actions points :"+c.getCurrentActionPoints()+ "abilities";
+		s+= "\n"+ "current Health points:  "+c.getCurrentHP() +"\n"+" mana"+ c.getMana() +"\n"+ "actions points :"+c.getCurrentActionPoints()+ "\n"+"abilities :";
 		for(Ability x : c.getAbilities()) {
-			s+=x.getName()+ " ," ;
-		//need to add info
+			s+="\n";
+			s+=x.getName()+ " ,"  +"type: " ;
+			if(x instanceof HealingAbility) {
+				s+="HealingAbility"+ " ," +"mana: "+x.getManaCost()+ " ," +"action cost :"+x.getCastRange()+ " ," +"current cooldown: "+x.getCurrentCooldown()+ " ,"+" base cooldown:"+x.getBaseCooldown() + " ," ;
+				s+= " heal amount :"+((HealingAbility)x).getHealAmount() ;
+			}
+			else if(x instanceof DamagingAbility) {
+				s+= "DamagingAbility"+ " ," +"mana: "+x.getManaCost()+ " ," +"action cost :"+x.getCastRange()+ " ," +"current cooldown: "+x.getCurrentCooldown()+ " ,"+" base cooldown:"+x.getBaseCooldown() + " ," ;
+				s+= " Damageamount:"+((DamagingAbility)x).getDamageAmount() ;
+			}
+			else {
+				s+="CrowdControlAbility"+ " ," +"mana: "+x.getManaCost()+ " ," +"action cost :"+x.getCastRange()+ " ," +"current cooldown: "+x.getCurrentCooldown()+ " ,"+" base cooldown:"+x.getBaseCooldown() + " ," ;
+				s+= " effect:"+ ((CrowdControlAbility)x).getEffect().getName() + "  effects's duration: "+((CrowdControlAbility)x).getEffect().getDuration() ;
+			}
+				//need to add info
 			/*
 			 * The ability name./*
 The ability type.

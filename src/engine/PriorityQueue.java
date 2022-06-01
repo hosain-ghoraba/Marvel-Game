@@ -1,5 +1,7 @@
 package engine;
 
+import java.util.ArrayList;
+
 public class PriorityQueue {
  
    private Comparable[] elements;
@@ -21,6 +23,7 @@ public class PriorityQueue {
       elements[i + 1] = item;
       nItems++;
    }
+   
     
    public Comparable remove() {
       nItems--;
@@ -42,5 +45,13 @@ public class PriorityQueue {
    public int size() {
       return nItems;
    }
+   public ArrayList<Object> turnorderall(){
+		
+		  ArrayList<Object> x =new ArrayList<>() ;
+		  for(int i=0 ;i<nItems;i++) {
+			  x.add(elements[i]);
+		  }
+		  return x ;
+	  }
    
 }
