@@ -84,12 +84,21 @@ add(x1);
 		for(Ability x : c.getAbilities()) {
 			s+=x.getName()+ " ," ;
 		//need to add info
+			/*
+			 * The ability name./*
+The ability type.
+The ability area of effect.
+The ability cast range.
+The mana and action costs.
+The current and base cooldowns.
+The healAmount/ damageAmount/ effect. (Depending on ability type).
+			 */
 		}
 		s+="\n";
 		for(Effect x :c.getAppliedEffects()) {
 			
 			s+= x.getName() + " duration :" + x.getDuration()+ "  ,";
-			//need to add info
+			
 		}
 		s+="\n"+" attack damage :"+c.getAttackDamage()+"\n"+"attack range:"+ c.getAttackRange();
 		
