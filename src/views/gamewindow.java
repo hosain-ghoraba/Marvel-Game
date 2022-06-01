@@ -69,7 +69,7 @@ add(cur_champ_details);
 update_curchamp_datails();
 JPanel gamePanel =new JPanel();
 gamePanel.setLayout(new GridLayout(5,5,0,0));
-gamePanel.setBounds(0,0,this.getWidth()-225,this.getHeight());
+gamePanel.setBounds(0,0,this.getWidth()-255,this.getHeight());
 JButton zero_zero = new JButton ("1");
 JButton zero_one = new JButton ("2");
 JButton zero_two = new JButton ("3");
