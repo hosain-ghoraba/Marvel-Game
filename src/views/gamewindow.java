@@ -1,6 +1,7 @@
 package views;
 import model.world.*;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -31,22 +32,26 @@ public class gamewindow extends JFrame {
 	 Game game ;
 	 
 	
-	public gamewindow(Game game , Player pl1, Player pl2) {
+	public gamewindow(Game game,Player pl1,Player pl2) {
 		this.game =new Game(pl1,pl2) ;
 		this.setVisible(true);
 		this.pl1=pl1;
 		this.pl2=pl2 ;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-	//	this.setUndecorated(true);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		
+		this.setLayout(null);
+		//check this method functionalitty
+	    
 	//	this.setResizable(false);
 		ImageIcon logo = new ImageIcon("logo.png");
-		setLayout(new GridLayout(6,6));
+	
 		this.setIconImage(logo.getImage());
 		
 		playersdetails = new JTextArea();
-		playersdetails.setPreferredSize(new Dimension(150, getHeight()));
-
+	
+		
+        playersdetails.setBounds(this.getWidth()-255,0,255,(getHeight()/2)-50 );
 		playersdetails.setEditable(false);
 		playersdetails.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		add(playersdetails);
@@ -56,13 +61,20 @@ cur_champ_details =new JTextArea();
 
 cur_champ_details.setEditable(false);
 cur_champ_details.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+
+
+cur_champ_details.setBounds(this.getWidth()-255,(getHeight()/2)-50, 255, (this.getHeight()/2)+50);
+
 add(cur_champ_details);
 update_curchamp_datails();
 JPanel gamePanel =new JPanel();
 gamePanel.setLayout(new GridLayout(5,5));
-gamePanel.setSize(this.getWidth()-100,this.getHeight());
+gamePanel.setBounds(0,0,this.getWidth()-150,this.getHeight());
+JButton zero-zero = new JButton ();
+add(gamePanel);
 
-
+this.revalidate();
+this.repaint();
 	}
 	public void update_curchamp_datails() {
 		Champion c = game.getCurrentChampion();
@@ -149,5 +161,4 @@ public void updateplayersdata(){
 			z+="\n"+"  LeaderAbility  used";
 playersdetails.setText(s +"\n"+z);
 }
-	
 }

@@ -25,7 +25,7 @@ public class loginWindow extends JFrame implements ActionListener  {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 
-		this.setSize(700,525);
+     	this.setSize(700,525);
 		this.setIconImage(getIconImage());
 		
 	 	this.setResizable(false);
