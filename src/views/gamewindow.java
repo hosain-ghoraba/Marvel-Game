@@ -32,7 +32,7 @@ public class gamewindow extends JFrame implements ActionListener {
 	Player pl1 ;
 	Player pl2 ;
 	 Game game ;
-	 
+	 JPanel gamePanel ;	 
 	
 	public gamewindow(Game game,Player pl1,Player pl2) {
 		this.game =new Game(pl1,pl2) ;
@@ -69,9 +69,11 @@ cur_champ_details.setBounds(this.getWidth()-255,(getHeight()/2)-50, 255, (this.g
 
 add(cur_champ_details);
 update_curchamp_datails();
-JPanel gamePanel =new JPanel();
+gamePanel =new JPanel();
 gamePanel.setLayout(new GridLayout(5,5,0,0));
 gamePanel.setBounds(0,0,this.getWidth()-255,this.getHeight());
+gamePanel.setVisible(true);
+/*
 JButton zero_zero = new JButton ("1");
 JButton zero_one = new JButton ("2");
 JButton zero_two = new JButton ("3");
@@ -142,6 +144,8 @@ gamePanel.add(four_one);
 gamePanel.add(four_two);
 gamePanel.add(four_three);
 gamePanel.add(four_four);
+
+*/
 add(gamePanel);
 this.revalidate();
 this.repaint();
@@ -231,7 +235,11 @@ public void updateplayersdata(){
 			z+="\n"+"  LeaderAbility  used";
 playersdetails.setText(s +"\n"+z);
 }
-@Override
+
+public void add_button(JButton x) {
+	gamePanel.add(x);
+	
+}
 public void actionPerformed(ActionEvent e) {
 	// TODO Auto-generated method stub
 	

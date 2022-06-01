@@ -9,21 +9,45 @@ import javax.swing.JButton;
 
 import engine.Game;
 import engine.Player;
+import model.world.Champion;
+import model.world.Cover;
 
 public class marvelcontroler implements ActionListener {
-
+private gamewindow w ;
 	private JButton [][] boardJbutton ;
 	private Game game;
 	public marvelcontroler (Game game , Player pl1 , Player pl2)
 	{
-		this.game=game;
+		this.game=new Game(pl1, pl2);
+		
+		boardJbutton = new JButton [5][5] ;
+		w =new gamewindow(game,game.getFirstPlayer(),game.getSecondPlayer());
 		for (int i=0;i<5;i++)
 		{
 			for (int j=0;j<5;j++)
 			{
-			JButton x = new JButton ();
+			
+				JButton x = new JButton ();
 			x.addActionListener(this);
 			boardJbutton[i][j]=x;
+			if(game.getBoard()[i][j]!=null) {
+				Object z =game.getBoard()[i][j];
+				if(z instanceof Cover) {
+				Cover c = (Cover)z ;
+					
+					x.setText("cover "+ " current healthpoints: "+c.getCurrentHP() );	
+				
+				}
+				else {
+				Champion c =(Champion) z;
+				x.setText(c.getName());
+					
+				}
+			
+			}
+			w.add_button(x);
+		
+			
 			}
 		}
 		JButton zero_zero = new JButton ("1");
@@ -51,6 +75,7 @@ public class marvelcontroler implements ActionListener {
 		JButton four_two = new JButton() ;
 		JButton four_three = new JButton();
 		JButton four_four = new JButton();
+
 
 	}
 	 
