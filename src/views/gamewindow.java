@@ -70,7 +70,58 @@ update_curchamp_datails();
 JPanel gamePanel =new JPanel();
 gamePanel.setLayout(new GridLayout(5,5));
 gamePanel.setBounds(0,0,this.getWidth()-150,this.getHeight());
-JButton zero-zero = new JButton ();
+JButton zero_zero = new JButton ();
+JButton zero_one = new JButton ();
+JButton zero_two = new JButton ();
+JButton zero_three = new JButton ();
+JButton zero_four = new JButton ();
+JButton one_zero = new JButton ();
+JButton one_one = new JButton ();
+JButton one_two = new JButton ();
+JButton one_three = new JButton ();
+JButton one_four = new JButton ();
+JButton two_zero = new JButton ();
+JButton two_one = new JButton ();
+JButton two_two = new JButton ();
+JButton two_three = new JButton ();
+JButton two_four = new JButton ();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 add(gamePanel);
 
 this.revalidate();
