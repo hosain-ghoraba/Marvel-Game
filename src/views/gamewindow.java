@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.concurrent.locks.Condition;
 
 import javax.swing.ImageIcon;
@@ -24,7 +26,7 @@ import model.abilities.DamagingAbility;
 import model.abilities.HealingAbility;
 import model.effects.Effect;
 
-public class gamewindow extends JFrame {
+public class gamewindow extends JFrame implements ActionListener {
 	JTextArea cur_champ_details ;
 	JTextArea playersdetails ;
 	Player pl1 ;
@@ -95,6 +97,26 @@ JButton four_one =new JButton() ;
 JButton four_two = new JButton() ;
 JButton four_three = new JButton();
 JButton four_four = new JButton();
+zero_zero.addActionListener(this);
+zero_one.addActionListener(this);
+zero_two.addActionListener(this);
+zero_three.addActionListener(this);
+zero_four.addActionListener(this);
+one_zero.addActionListener(this);
+one_one.addActionListener(this);one_two.addActionListener(this);
+one_three.addActionListener(this);
+one_four.addActionListener(this);
+two_zero.addActionListener(this);two_one.addActionListener(this);
+two_two.addActionListener(this);
+two_three.addActionListener(this);
+two_four.addActionListener(this);three_zero.addActionListener(this);three_one.addActionListener(this);
+three_two.addActionListener(this);
+three_three.addActionListener(this);three_four.addActionListener(this);
+four_zero.addActionListener(this);
+four_one.addActionListener(this);
+four_two.addActionListener(this);four_three.addActionListener(this);four_four.addActionListener(this);
+
+
 gamePanel.add(zero_zero);
 gamePanel.add(zero_one);
 gamePanel.add(zero_two);
@@ -121,7 +143,6 @@ gamePanel.add(four_two);
 gamePanel.add(four_three);
 gamePanel.add(four_four);
 add(gamePanel);
-
 this.revalidate();
 this.repaint();
 	}
@@ -209,5 +230,10 @@ public void updateplayersdata(){
 		else
 			z+="\n"+"  LeaderAbility  used";
 playersdetails.setText(s +"\n"+z);
+}
+@Override
+public void actionPerformed(ActionEvent e) {
+	// TODO Auto-generated method stub
+	
 }
 }
