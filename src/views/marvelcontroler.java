@@ -2,6 +2,8 @@ package views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 
@@ -10,8 +12,20 @@ import engine.Player;
 
 public class marvelcontroler implements ActionListener {
 
+	private JButton [][] boardJbutton ;
+	private Game game;
 	public marvelcontroler (Game game , Player pl1 , Player pl2)
 	{
+		this.game=game;
+		for (int i=0;i<5;i++)
+		{
+			for (int j=0;j<5;j++)
+			{
+			JButton x = new JButton ();
+			x.addActionListener(this);
+			boardJbutton[i][j]=x;
+			}
+		}
 		JButton zero_zero = new JButton ("1");
 		JButton zero_one = new JButton ("2");
 		JButton zero_two = new JButton ("3");
