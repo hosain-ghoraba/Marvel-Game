@@ -68,13 +68,13 @@ cur_champ_details.setBounds(this.getWidth()-255,(getHeight()/2)-50, 255, (this.g
 add(cur_champ_details);
 update_curchamp_datails();
 JPanel gamePanel =new JPanel();
-gamePanel.setLayout(new GridLayout(5,5));
-gamePanel.setBounds(0,0,this.getWidth()-150,this.getHeight());
-JButton zero_zero = new JButton ();
-JButton zero_one = new JButton ();
-JButton zero_two = new JButton ();
-JButton zero_three = new JButton ();
-JButton zero_four = new JButton ();
+gamePanel.setLayout(new GridLayout(5,5,0,0));
+gamePanel.setBounds(0,0,this.getWidth()-225,this.getHeight());
+JButton zero_zero = new JButton ("1");
+JButton zero_one = new JButton ("2");
+JButton zero_two = new JButton ("3");
+JButton zero_three = new JButton ("4");
+JButton zero_four = new JButton ("5");
 JButton one_zero = new JButton ();
 JButton one_one = new JButton ();
 JButton one_two = new JButton ();
@@ -85,43 +85,41 @@ JButton two_one = new JButton ();
 JButton two_two = new JButton ();
 JButton two_three = new JButton ();
 JButton two_four = new JButton ();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+JButton three_zero = new JButton() ;
+JButton three_one =new JButton() ;
+JButton three_two = new JButton() ;
+JButton three_three = new JButton();
+JButton three_four = new JButton();		
+JButton four_zero = new JButton() ;
+JButton four_one =new JButton() ;
+JButton four_two = new JButton() ;
+JButton four_three = new JButton();
+JButton four_four = new JButton();
+gamePanel.add(zero_zero);
+gamePanel.add(zero_one);
+gamePanel.add(zero_two);
+gamePanel.add(zero_three);
+gamePanel.add(zero_four);
+gamePanel.add(one_zero);
+gamePanel.add(one_one);
+gamePanel.add(one_two);
+gamePanel.add(one_three);
+gamePanel.add(one_four);
+gamePanel.add(two_zero);
+gamePanel.add(two_one);
+gamePanel.add(two_two);
+gamePanel.add(two_three);
+gamePanel.add(two_four);
+gamePanel.add(three_zero);
+gamePanel.add(three_one);
+gamePanel.add(three_two);
+gamePanel.add(three_three);
+gamePanel.add(three_four);
+gamePanel.add(four_zero);
+gamePanel.add(four_one);
+gamePanel.add(four_two);
+gamePanel.add(four_three);
+gamePanel.add(four_four);
 add(gamePanel);
 
 this.revalidate();
