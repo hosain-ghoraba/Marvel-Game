@@ -89,7 +89,8 @@ public class loginWindow extends JFrame implements ActionListener  {
 	}
    public static void main(String[] args) {
 	   new loginWindow ();
-}
+
+   }
 
 public static boolean stringIsMereSpaces(String s) {
 	for(int i = 0 ; i < s.length() ; i++)

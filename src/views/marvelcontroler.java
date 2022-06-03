@@ -4,9 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import engine.Game;
+import exceptions.ChampionDisarmedException;
 import exceptions.LeaderAbilityAlreadyUsedException;
 import exceptions.LeaderNotCurrentException;
 import exceptions.NotEnoughResourcesException;
@@ -56,7 +61,7 @@ public class marvelcontroler implements GameListener,ActionListener ,KeyListener
 			
 			}
 		}
-		JButton zero_zero = new JButton ("1");
+	/*	JButton zero_zero = new JButton ("1");
 		JButton zero_one = new JButton ("2");
 		JButton zero_two = new JButton ("3");
 		JButton zero_three = new JButton ("4");
@@ -81,13 +86,11 @@ public class marvelcontroler implements GameListener,ActionListener ,KeyListener
 		JButton four_two = new JButton() ;
 		JButton four_three = new JButton();
 		JButton four_four = new JButton();
-
+*/
 
 	}
 	 
-	public static void main(String[] args) {
-
-	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -180,11 +183,123 @@ System.out.println(e.getKeyChar());
 		// TODO Auto-generated catch block
 		JOptionPane.showMessageDialog(null, "  LeaderNotCurrent","", JOptionPane.ERROR_MESSAGE);
 	}
+    	break;
+    	case('a')://attack
+    		String[] options = new String[] {"Right", "left", "up", "down"};
+        int response = JOptionPane.showOptionDialog(null, "choose the direction of the attack", "attack",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+            null, options, options[0]);
+         attack(response);  
+         w.updateplayersdata();
+            updateboard();  //need to update the board 
+         //need to check if game is over
+         break ;
+    	case('e'): //end turn 
+    	
+    			game.endTurn();
+    			w.update_curchamp_datails();
+    			w.updateplayersdata();
+    		     updateboard();   //need to update the board
+    	         //need to check if game is over
+break ;
+    	case ('c'): //casting an ability 
+              		
+    		          		
+    	
 default: break ;
 }
 	
 }
+	public void updateboard() {
+		for(int i=0 ;i<5;i++) {
+			for(int j=0;j<5;j++) {
+				if(game.getBoard()[i][j]==null)
+					boardJbutton[i][j].setText("")
+					;
+				else {
+					if(game.getBoard()[i][j] instanceof Champion) {
+						boardJbutton[i][j].setText(((Champion)game.getBoard()[i][j]).getName());
+						//need to add champion details in hover
+						
+
+					}
+					else
+					{
+						
+						boardJbutton[i][j].setText("cover , current health pionts:" +((Cover)game.getBoard()[i][j]).getCurrentHP() );
+						
+					}
+					
+				}
+				
+			}
+		}
+		
+	}
+
+	private void attack(int response) {
+		// TODO Auto-generated method stub
+		  switch(response) {
+	       case(0): try {
+				game.attack(Direction.RIGHT);
+			} catch (NotEnoughResourcesException j) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, " NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
+
+			} catch (ChampionDisarmedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, " ChampionDisarmed","", JOptionPane.ERROR_MESSAGE);
+			}
+	       break ;
+	       case(1): try {
+				game.attack(Direction.LEFT);
+			} catch (NotEnoughResourcesException j) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, " NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
+
+			} catch (ChampionDisarmedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, " ChampionDisarmed","", JOptionPane.ERROR_MESSAGE);
+			}	       break ;
+
+	       case(2): try {
+				game.attack(Direction.UP);
+			} catch (NotEnoughResourcesException j) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, " NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
+
+			} catch (ChampionDisarmedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, " ChampionDisarmed","", JOptionPane.ERROR_MESSAGE);
+			}	       break ;
+
+	       case(3): try {
+				game.attack(Direction.DOWN);
+			} catch (NotEnoughResourcesException j) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, " NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
+
+			} catch (ChampionDisarmedException e1) {
+				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, " ChampionDisarmed","", JOptionPane.ERROR_MESSAGE);
+			}	       break ;
+
+		  default: //user closed the window without choosing
+			  while(response==-1) {
+		    		String[] options = new String[] {"Right", "left", "up", "down"};
+ 
+				  response = JOptionPane.showOptionDialog(null, "you didn't choose the direction of the attack, please choose the direction of the attack", "attack",
+				            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+				            null, options, options[0]);
+			  }
+		         attack(response);  
+                 break ;
+		  }
+		  
 	
+	}
+
+
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -246,5 +361,23 @@ default: break ;
 		// TODO Auto-generated method stub
 		
 	}
+public static void main(String[] args) {
+//	while(true) {
+	String[] options = new String[] {"Right", "left", "up"};
+	ArrayList<String> o = new ArrayList<>() ;
+	o.add("r");
+	o.add("l");
+	o.add("u");
+	o.add("d");
+
+    int response = JOptionPane.showOptionDialog(null,  "you didn't choose the direction of the attack, please choose the direction of the attack", "Title",
+        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+        null, options, options[0]);
+System.out.println(response);}
+
+
+
+
+
 
 }
