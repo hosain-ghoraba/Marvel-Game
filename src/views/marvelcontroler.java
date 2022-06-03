@@ -2,17 +2,25 @@ package views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import engine.Game;
 import engine.Player;
+import exceptions.LeaderAbilityAlreadyUsedException;
+import exceptions.LeaderNotCurrentException;
+import exceptions.NotEnoughResourcesException;
+import exceptions.UnallowedMovementException;
 import model.world.Champion;
 import model.world.Cover;
+import model.world.Direction;
 
-public class marvelcontroler implements ActionListener {
+public class marvelcontroler implements ActionListener ,KeyListener{
 private gamewindow w ;
 	private JButton [][] boardJbutton ;
 	private Game game;
@@ -22,6 +30,8 @@ private gamewindow w ;
 		
 		boardJbutton = new JButton [5][5] ;
 		w =new gamewindow(game,game.getFirstPlayer(),game.getSecondPlayer());
+		w.addKeyListener(this);
+		w.gamePanel.addKeyListener(this);
 		for (int i=0;i<5;i++)
 		{
 			for (int j=0;j<5;j++)
@@ -87,6 +97,108 @@ private gamewindow w ;
 	public void actionPerformed(ActionEvent e) {
 	
 		
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+System.out.println(e.getKeyChar());
+		switch(e.getKeyChar()) {
+	case(KeyEvent.VK_RIGHT) :
+		try {
+			game.move(Direction.RIGHT);
+	       		boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
+	       		boardJbutton[game.getCurrentChampion().getLocation().x+1][game.getCurrentChampion().getLocation().y].setText("");
+		
+		}
+	   catch (UnallowedMovementException z) {
+		   
+			JOptionPane.showMessageDialog(null, "  cannot to move to a non empty place","", JOptionPane.ERROR_MESSAGE);
+
+		   
+	   } catch (NotEnoughResourcesException e1) {
+			JOptionPane.showMessageDialog(null, "  NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
+
+	} 
+	break;
+	case(KeyEvent.VK_LEFT) :
+		try {
+			game.move(Direction.LEFT);
+	       		boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
+	       		boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
+		
+		}
+	   catch (UnallowedMovementException z) {
+		   
+			JOptionPane.showMessageDialog(null, "  cannot to move to a non empty place","", JOptionPane.ERROR_MESSAGE);
+
+		   
+	   } catch (NotEnoughResourcesException e1) {
+			JOptionPane.showMessageDialog(null, "  NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
+
+	} 
+	break;
+	case(KeyEvent.VK_UP) :
+		try {
+			game.move(Direction.UP);
+	       		boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
+	       		boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y+1].setText("");
+		
+		}
+	   catch (UnallowedMovementException z) {
+		   
+			JOptionPane.showMessageDialog(null, "  cannot to move to a non empty place","", JOptionPane.ERROR_MESSAGE);
+
+		   
+	   } catch (NotEnoughResourcesException e1) {
+			JOptionPane.showMessageDialog(null, "  NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
+
+	} 
+	break;
+	case(KeyEvent.VK_DOWN) :
+		try {
+			game.move(Direction.DOWN);
+	       		boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
+	       		boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y-1].setText("");
+		
+		}
+	   catch (UnallowedMovementException z) {
+		   
+			JOptionPane.showMessageDialog(null, "  cannot to move to a non empty place","", JOptionPane.ERROR_MESSAGE);
+
+		   
+	   } catch (NotEnoughResourcesException e1) {
+			JOptionPane.showMessageDialog(null, "  NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
+
+	} 
+	break;
+    	case('w'):   //leader ability 
+		try {
+			game.useLeaderAbility();
+		}
+	catch(LeaderAbilityAlreadyUsedException x) {
+		JOptionPane.showMessageDialog(null, "  LeaderAbilityAlreadyUsed","", JOptionPane.ERROR_MESSAGE);
+
+		
+	} catch (LeaderNotCurrentException e1) {
+		// TODO Auto-generated catch block
+		JOptionPane.showMessageDialog(null, "  LeaderNotCurrent","", JOptionPane.ERROR_MESSAGE);
+	}
+default: break ;
+}
+	
+}
+	
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
