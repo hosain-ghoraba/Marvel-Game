@@ -71,7 +71,28 @@ public Object clone() throws CloneNotSupportedException {
 	return super.clone();
 }
 
+// new in M3
+public String toString () {
+	
+	String result = "";
+	result += "Name : " + name + '\n';
+	result += "Type : " + getClass().getSimpleName() + '\n';
+	result += "area of effect : " + castArea + '\n';
+	result += "cast range : " + castRange + '\n';
+	result += "mana cost : " + manaCost + '\n';
+	result += "required action points : " + requiredActionPoints + '\n';
+	result += "base cooldown : " + baseCooldown + '\n';
+	result += "current cooldown : " + currentCooldown + '\n';
+    
+	return result;
+}
 
+public static void main(String[] args) {
+	
+	Ability a = new DamagingAbility("na", 0, 0, 0, AreaOfEffect.DIRECTIONAL, 0, 0);
+	System.out.println(a);
+	
+}
 
 
 }

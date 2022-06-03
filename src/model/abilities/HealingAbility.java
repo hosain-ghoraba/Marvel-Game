@@ -33,6 +33,8 @@ public void execute(ArrayList<Damageable> targets) {
 	
 }
 
-
+public String toString() {
+	return super.toString() + "heal amount : " + healAmount ;
+}
 
 }

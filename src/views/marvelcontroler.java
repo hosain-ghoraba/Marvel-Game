@@ -11,11 +11,12 @@ import exceptions.LeaderAbilityAlreadyUsedException;
 import exceptions.LeaderNotCurrentException;
 import exceptions.NotEnoughResourcesException;
 import exceptions.UnallowedMovementException;
+import model.abilities.Ability;
 import model.world.Champion;
 import model.world.Cover;
 import model.world.Direction;
 
-public class marvelcontroler implements ActionListener ,KeyListener{
+public class marvelcontroler implements GameListener,ActionListener ,KeyListener{
 
 	private gamewindow w ;
 	private JButton [][] boardJbutton ;
@@ -193,6 +194,55 @@ default: break ;
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	
+	
+	
+	
+	
+	
+	public void onMove(Direction d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onAttake(Direction d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onUseLeaderAbility() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onCastAbility(Ability a, Direction d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onCastAbility(Ability a, int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onCastAbility(Ability a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onEndTurn() {
 		// TODO Auto-generated method stub
 		
 	}

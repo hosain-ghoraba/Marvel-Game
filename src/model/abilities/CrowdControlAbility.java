@@ -3,8 +3,10 @@ package model.abilities;
 import java.util.ArrayList;
 
 import model.effects.Effect;
+import model.effects.Root;
 import model.world.Champion;
 import model.world.Damageable;
+import model.world.Direction;
 
 public class CrowdControlAbility extends Ability{
 
@@ -35,6 +37,13 @@ public void execute(ArrayList<Damageable> targets) throws CloneNotSupportedExcep
 	}
 }
 
-
+public String toString() {
+	return super.toString() + "effect : " + effect.toString() ;
+}
+public static void main(String[] args) {
+	Effect e = new Root(4);
+	Ability a = new CrowdControlAbility("coco", 0, 0, 0, AreaOfEffect.DIRECTIONAL, 0, e);
+	System.out.println(a);
+}
 
 }

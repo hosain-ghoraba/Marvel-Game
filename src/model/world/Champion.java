@@ -138,8 +138,33 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
     return  this.name.compareTo(other.name) ;      	
 	}
 
-	  
+public String toString() {
+	String result = "";
+	
+	result += "name : " + name + '\n';
+	result += "type : " + getClass().getSimpleName() + '\n' ;
+	result += "current HP : " + currentHP + '\n';
+	result += "current Mana : " + mana + '\n';
+	result += "current action points : " + currentActionPoints+ '\n';
+	result += "attack damage : " + attackDamage + '\n';
+	result += "attack range : " + attackRange + '\n'; 
+	
+    
+	// abilities and effects are in 2 separate buttons below each remaining champion button
 
+//	result += "Abilities : \n";
+//	for(Ability a : abilities)
+//		result += a.toString() + '\n';
+//	result += "Effects : \n";
+//	for(Effect e : appliedEffects)
+//		result += e.toString() + '\n';
+
+	return result;
+}
+public static void main(String[] args) {
+	Champion c = new Hero(null, 0, 0, 0, 0, 0, 0);
+	System.out.println(c);
+}
 }
 		
 	

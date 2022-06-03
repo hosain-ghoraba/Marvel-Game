@@ -45,13 +45,16 @@ public class PriorityQueue {
    public int size() {
       return nItems;
    }
+   
+   // new in M3
    public ArrayList<Object> turnorderall(){
 		
-		  ArrayList<Object> x =new ArrayList<>() ;
-		  for(int i=0 ;i<nItems;i++) {
-			  x.add(elements[i]);
-		  }
-		  return x ;
+		  ArrayList<Object> result = new ArrayList<>() ;
+		  for(Object element : elements) 
+			  result.add(element);		  
+		  return result ;
 	  }
+
    
+
 }

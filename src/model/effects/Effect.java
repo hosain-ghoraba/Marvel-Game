@@ -49,6 +49,9 @@ public abstract class Effect implements Cloneable,Comparable {
 	public abstract void apply(Champion c) throws CloneNotSupportedException ; 	
 	public abstract void remove(Champion c); 
 	
-		
+public String toString() {
+	
+   return  name + " , duration : " + duration;
+}
 
 }

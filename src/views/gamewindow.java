@@ -28,44 +28,39 @@ public class gamewindow extends JFrame implements ActionListener {
 	JPanel gamePanel ;	 
 	
 public gamewindow(Game game,Player pl1,Player pl2) {
-		this.game =new Game(pl1,pl2) ;
-		this.setVisible(true);
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Marvel - Ultimate War");
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setLayout(null);
+		//check this method functionalitty
+		this.game = game;
 		this.pl1=pl1;
 		this.pl2=pl2 ;
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
-		this.setLayout(null);
-		//check this method functionalitty
-	    
-	//	this.setResizable(false);
+		//	this.setResizable(false);
+		
 		ImageIcon logo = new ImageIcon("logo.png");
-	
-		this.setIconImage(logo.getImage());
+		setIconImage(logo.getImage());
 		
-		playersdetails = new JTextArea();
-	
-		
-        playersdetails.setBounds(this.getWidth()-255,0,255,(getHeight()/2)-50 );
+		playersdetails = new JTextArea();		
+        playersdetails.setBounds(this.getWidth()-255,0,255,(this.getHeight()/2)-50 );
 		playersdetails.setEditable(false);
 		playersdetails.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		add(playersdetails);
-updateplayersdata();
-cur_champ_details =new JTextArea();
+        updateplayersdata();
         
-
-cur_champ_details.setEditable(false);
-cur_champ_details.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-
-
-cur_champ_details.setBounds(this.getWidth()-255,(getHeight()/2)-50, 255, (this.getHeight()/2)+50);
-
-add(cur_champ_details);
-update_curchamp_datails();
-gamePanel =new JPanel();
-gamePanel.setLayout(new GridLayout(5,5,0,0));
-gamePanel.setBounds(0,0,this.getWidth()-255,this.getHeight());
-gamePanel.setVisible(true);
+        cur_champ_details = new JTextArea();      
+		cur_champ_details.setEditable(false);
+		cur_champ_details.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));			
+		cur_champ_details.setBounds(this.getWidth()-255,(getHeight()/2)-50, 255, (this.getHeight()/2)+50);		
+		add(cur_champ_details);
+		update_curchamp_datails();
+		
+		gamePanel =new JPanel();
+		gamePanel.setLayout(new GridLayout(5,5,0,0));
+		gamePanel.setBounds(0,0,this.getWidth()-255,this.getHeight());
+		gamePanel.setVisible(true);
 /*
 JButton zero_zero = new JButton ("1");
 JButton zero_one = new JButton ("2");
@@ -140,8 +135,8 @@ gamePanel.add(four_four);
 
 */
 add(gamePanel);
-this.revalidate();
-this.repaint();
+		revalidate();
+		repaint();
 	}
 
 public void update_curchamp_datails() {
