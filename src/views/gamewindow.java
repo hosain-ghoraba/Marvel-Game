@@ -5,9 +5,12 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import engine.Game;
@@ -20,28 +23,70 @@ import model.abilities.HealingAbility;
 import model.effects.Effect;
 
 public class gamewindow extends JFrame implements ActionListener {
+	JPanel battlefield;
 	JTextArea cur_champ_details ;
 	JTextArea playersdetails ;
 	Player pl1 ;
 	Player pl2 ;
 	Game game ;
-	JPanel gamePanel ;	 
+	JPanel gamePanel ;
 	
+//////// below is the hierarchy of most the components of the game Window (how they are put inside each other)	
+	JPanel boardPanel;
+    JPanel infoPanel;
+		   JPanel pl1_panel;
+			    JTextArea pl1_info;
+			    JLabel rem_champs_head1;
+			    JPanel rem_champs_pl1;
+				       Box pl1_box1;
+				           JButton pl1_box1_champ;
+				           JButton pl1_box1_abilities;
+				           JButton pl1_box1_effects;
+			    	   Box pl1_box2;
+				    	   JButton pl1_box2_champ;
+				           JButton pl1_box2_abilities;
+				           JButton pl1_box2_effects;
+			    	   Box pl1_box3;
+				    	   JButton pl1_box3_champ;
+				           JButton pl1_box3_abilities;
+				           JButton pl1_box3_effects;
+			             
+		   JPanel pl2_panel;
+			    JTextArea pl2_info;
+			    JLabel rem_champs_head2;
+			    JPanel rem_champs_pl2;
+			    	   Box pl2_box1;
+				    	   JButton pl2_box1_champ;
+				           JButton pl2_box1_abilities;
+				           JButton pl2_box1_effects;
+			    	   Box pl2_box2;
+				    	   JButton pl2_box2_champ;
+				           JButton pl2_box2_abilities;
+				           JButton pl2_box2_effects;
+			    	   Box pl2_box3;
+				    	   JButton pl2_box3_champ;
+				           JButton pl2_box3_abilities;
+				           JButton pl2_box3_effects;
+			    		
+		   JTextArea orders;
+		   JPanel curr_champ_panel;
+///////////////////////////////////////////////////	
+		   
 public gamewindow(Game game,Player pl1,Player pl2) {
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Marvel - Ultimate War");
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setLayout(null);
+		setResizable(false);		
+		ImageIcon logo = new ImageIcon("logo.png");
+		setIconImage(logo.getImage());
+		
 		//check this method functionalitty
 		this.game = game;
 		this.pl1=pl1;
 		this.pl2=pl2 ;
 		
-		//	this.setResizable(false);
 		
-		ImageIcon logo = new ImageIcon("logo.png");
-		setIconImage(logo.getImage());
 		
 		playersdetails = new JTextArea();		
         playersdetails.setBounds(this.getWidth()-255,0,255,(this.getHeight()/2)-50 );
