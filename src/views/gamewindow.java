@@ -1,25 +1,18 @@
 package views;
 import model.world.*;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.concurrent.locks.Condition;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-
 import engine.Game;
 import engine.Player;
-
 import model.world.Champion;
-import model.*;
 import model.abilities.Ability;
 import model.abilities.CrowdControlAbility;
 import model.abilities.DamagingAbility;
@@ -31,10 +24,10 @@ public class gamewindow extends JFrame implements ActionListener {
 	JTextArea playersdetails ;
 	Player pl1 ;
 	Player pl2 ;
-	 Game game ;
-	 JPanel gamePanel ;	 
+	Game game ;
+	JPanel gamePanel ;	 
 	
-	public gamewindow(Game game,Player pl1,Player pl2) {
+public gamewindow(Game game,Player pl1,Player pl2) {
 		this.game =new Game(pl1,pl2) ;
 		this.setVisible(true);
 		this.pl1=pl1;
@@ -150,7 +143,8 @@ add(gamePanel);
 this.revalidate();
 this.repaint();
 	}
-	public void update_curchamp_datails() {
+
+public void update_curchamp_datails() {
 		Champion c = game.getCurrentChampion();
 	//*	Their name.
 		//Their type.
@@ -208,8 +202,6 @@ The healAmount/ damageAmount/ effect. (Depending on ability type).
     cur_champ_details.setText(s);
 		
 	}
-	//eeewww
-	
 public void updateplayersdata(){
 		String s = pl1.getName() +" : "+"\n" + "remaining champions :";
 		for(Champion x : pl1.getTeam()) {
@@ -235,7 +227,6 @@ public void updateplayersdata(){
 			z+="\n"+"  LeaderAbility  used";
 playersdetails.setText(s +"\n"+z);
 }
-
 public void add_button(JButton x) {
 	gamePanel.add(x);
 	
@@ -244,4 +235,6 @@ public void actionPerformed(ActionEvent e) {
 	// TODO Auto-generated method stub
 	
 }
+
+
 }

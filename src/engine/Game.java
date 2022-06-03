@@ -419,13 +419,13 @@ import model.world.Villain;
 	public void checkAbilityResources (Champion c , Ability a) throws NotEnoughResourcesException, AbilityUseException 
 		 {
 			 if(a.getCurrentCooldown() != 0) 			
-				 throw new AbilityUseException();		
+				 throw new AbilityUseException("you can't cast the ability now, ability cooldown is still " + a.getCurrentCooldown() + " !" );		
 			 
 			 if (c.getCurrentActionPoints() < a.getRequiredActionPoints())
-	 			 throw new NotEnoughResourcesException ();
+	 			 throw new NotEnoughResourcesException ("Not enough action points , you need " + a.getRequiredActionPoints() + " action points " + " but you have only " + c.getCurrentActionPoints() + " !" );
 			 
 			 if (c.getMana() < a.getManaCost())
-				 throw new NotEnoughResourcesException ();	
+				 throw new NotEnoughResourcesException ("Not enough Mana , you need " + a.getManaCost() + " but you have only " + c.getMana() + " !" );	
 		 }
 	public void apply_ability_cost (Champion c,Ability a)
 		 {
@@ -509,9 +509,9 @@ import model.world.Villain;
 	 {	 
 		 Champion currentChamp = getCurrentChampion() ;	 
 		 if(currentChamp.getCondition() == Condition.ROOTED) 
-			 throw new UnallowedMovementException();
+			 throw new UnallowedMovementException("you can't move while being rooted !");
 	     if(currentChamp.getCurrentActionPoints() < 1)
-	    	 throw new NotEnoughResourcesException();
+	    	 throw new NotEnoughResourcesException("you need at least 1 action points to move , but you have none !");
 	     
 	     int old_x = currentChamp.getLocation().x;
 	     int old_y = currentChamp.getLocation().y;
@@ -527,7 +527,7 @@ import model.world.Villain;
 		 }
 		 	 
 		 if( ! boardLocationIsvalidAndEmpty(new_x, new_y) )
-		     throw new UnallowedMovementException();
+		     throw new UnallowedMovementException("you can't move outside the board or to a non-empty cell !");
 		 
 		 board[old_x][old_y] = null;
 		 board[new_x][new_y] = currentChamp ;  
@@ -538,9 +538,9 @@ import model.world.Villain;
 		 
 		 Champion attaker =  getCurrentChampion();
 		 if(doesEffectExist(attaker.getAppliedEffects(), "Disarm"))
-			 throw new ChampionDisarmedException();
+			 throw new ChampionDisarmedException("you can't attake while being disarmed !");
 		 if(attaker.getCurrentActionPoints() < 2)
-			 throw new NotEnoughResourcesException();
+			 throw new NotEnoughResourcesException("you need at least 2 action points to attake , but you don't have them !");
 		 
          ArrayList<Damageable> all_targets_in_range = getAllDamageablesInGivenRange(direction, attaker.getAttackRange()); 
          
@@ -590,7 +590,7 @@ import model.world.Villain;
 	 {
     	 Champion attaker = getCurrentChampion();
 		 if(doesEffectExist(attaker.getAppliedEffects(),"Silence"))
-			 throw new AbilityUseException();	
+			 throw new AbilityUseException("you can't cast any ability while being silenced !");	
 		 
 		 checkAbilityResources(attaker, casted_ability);
 		 
@@ -599,7 +599,7 @@ import model.world.Villain;
 		 if(casted_ability.getCastArea() == AreaOfEffect.SELFTARGET) 
 		 {
 			 if(casted_ability instanceof DamagingAbility || (casted_ability instanceof CrowdControlAbility && ((CrowdControlAbility)casted_ability).getEffect().getType()==EffectType.DEBUFF)) 
-				 throw new AbilityUseException();
+				 throw new AbilityUseException(" you can't harm your self !");
 	         targets.add(attaker);
 
 		 }
@@ -680,7 +680,7 @@ import model.world.Villain;
 	 {
          Champion attaker = getCurrentChampion();
 		 if(doesEffectExist(attaker.getAppliedEffects(),"Silence"))
-			 throw new AbilityUseException();			 
+			 throw new AbilityUseException("you can't cast any ability while being silenced !");			 
 		 checkAbilityResources(attaker, casted_ability);
 		 
 		 ArrayList<Damageable> damageablesInRange = getAllDamageablesInGivenRange(d, casted_ability.getCastRange()) ;
@@ -736,17 +736,19 @@ import model.world.Villain;
     	Champion attaker = getCurrentChampion();
    	
     	if(doesEffectExist(attaker.getAppliedEffects(),"Silence"))
-		      throw new AbilityUseException();
+		      throw new AbilityUseException("you can't cast any ability while being silenced !");
 	  
 		 checkAbilityResources(attaker, casted_ability);
 		 
+		 if( x > 4 || x < 0 || y > 4 || y < 0)
+			 throw new InvalidTargetException("you must enter a location inside the board !") ; 
 		 if(! checkPointExistAndOccupied(x, y))
-			  throw new InvalidTargetException() ; // or throw AbilityUseException ? 
+			  throw new InvalidTargetException("you can't cast the ability on an empty cell ! ") ;  
                
 		 Damageable target = (Damageable) board[x][y] ;
 		 
 		 if( casted_ability.getCastRange() < calcDistance(attaker, target))
-			 throw new AbilityUseException () ;
+			 throw new AbilityUseException (" target out of range ! " + "target is " + calcDistance(attaker, target) + " away from you , but the ability range is " + casted_ability.getCastRange() + " !") ;
 		 
 	     ArrayList <Damageable> targets = new ArrayList<Damageable>();
 			 if ( casted_ability instanceof DamagingAbility )
@@ -757,7 +759,7 @@ import model.world.Villain;
 					 {
 						  Champion current_target_champ = (Champion) target;
 	                      if( isFriend(current_target_champ) )
-	                	      throw new InvalidTargetException();
+	                	      throw new InvalidTargetException("you can't cast a harmful ability on an ally !");
 	                  
 						  if( !doesEffectExist(current_target_champ.getAppliedEffects(), "Shield") )						
 	                     		targets.add(target);						
@@ -773,12 +775,12 @@ import model.world.Villain;
 					 if (target instanceof Champion && isFriend((Champion) target))				
 						targets.add(target);
 					 else
-					    throw new InvalidTargetException() ;
+					    throw new InvalidTargetException(" you can only heal your allies !") ;
  
 			 else // it is crowdControlAbility
 			 {				 
 				 if(target instanceof Cover ) 
-					throw new InvalidTargetException() ;
+					throw new InvalidTargetException("crowed control abilities can't be cast on covers !") ;
 				 
 				 Champion current_target_champ = (Champion) target;
  
@@ -786,8 +788,10 @@ import model.world.Villain;
 				 boolean b2 =  !isFriend( current_target_champ) && ((CrowdControlAbility)casted_ability).getEffect().getType() == EffectType.DEBUFF ; 
 			     if(b1 || b2)						 
 				 	 targets.add(target);									 
+			     else if (!isFriend( current_target_champ) && ((CrowdControlAbility)casted_ability).getEffect().getType() == EffectType.BUFF)
+			    	 throw new InvalidTargetException("you can't cast a good ability on an enemy !") ;
 			     else 
-			     	throw new InvalidTargetException() ;
+			     	throw new InvalidTargetException("you can't cast a bad ability on an ally !") ;
 			 }
 			 if(! targets.isEmpty())
 			 { 
