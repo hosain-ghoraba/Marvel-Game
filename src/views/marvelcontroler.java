@@ -4,14 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-
 import engine.Game;
-import engine.Player;
 import exceptions.LeaderAbilityAlreadyUsedException;
 import exceptions.LeaderNotCurrentException;
 import exceptions.NotEnoughResourcesException;
@@ -21,13 +16,13 @@ import model.world.Cover;
 import model.world.Direction;
 
 public class marvelcontroler implements ActionListener ,KeyListener{
-private gamewindow w ;
+
+	private gamewindow w ;
 	private JButton [][] boardJbutton ;
 	private Game game;
-	public marvelcontroler (Game game , Player pl1 , Player pl2)
+	public marvelcontroler (Game game)
 	{
-		this.game=new Game(pl1, pl2);
-		
+		this.game = game;		
 		boardJbutton = new JButton [5][5] ;
 		w =new gamewindow(game,game.getFirstPlayer(),game.getSecondPlayer());
 		w.addKeyListener(this);

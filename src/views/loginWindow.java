@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -16,19 +15,20 @@ import engine.Player;
 public class loginWindow extends JFrame implements ActionListener  {
 	JTextField textField_Palyer1 ;
 	JTextField textField_Palyer2 ;
-//	chooseChampions
+
 	public loginWindow ()
 	{   
-		//JFrame window
-		this.setTitle("Marvel: Ultimate War");
-		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 
-     	this.setSize(700,525);
-		this.setIconImage(getIconImage());
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Marvel: Ultimate War");
+		setExtendedState(JFrame.MAXIMIZED_BOTH); // what does this do ? (hosain) 
+		this.setSize(700,525);
+		this.setResizable(false);
 		
-	 	this.setResizable(false);
+		this.setIconImage(getIconImage()); // what does this do ? where is the icon image?
+
+		
 		ImageIcon logo = new ImageIcon("logo.png");
 		this.setIconImage(logo.getImage());				
 		//panel
@@ -82,13 +82,9 @@ public class loginWindow extends JFrame implements ActionListener  {
 	    Enter.setFocusable(false);
 	    
 	    loginJlabel.add(Enter);
-
 	    
-	  
-
-		this.validate();;
-		this.repaint();
-		String s = "sdf";
+		validate();
+		repaint();
 		
 	}
    public static void main(String[] args) {
@@ -144,24 +140,22 @@ public void actionPerformed(ActionEvent e)  {
 	}
 	
 	
-	
-	
-		
 	Player player1 = new Player(textField_Palyer1.getText());
 	Player player2 = new Player(textField_Palyer2.getText());
 	Game game = new Game(player1, player2);
-	try {
-		game.loadAbilities("Abilities.csv");
-		game.loadChampions("Champions.csv");
+	try 
+	{
+		Game.loadAbilities("Abilities.csv");
+		Game.loadChampions("Champions.csv");
 
 	} catch (IOException e1) {
 		
-		System.out.println("balabizoo 2l l3ba byza");
+		System.out.println("error loading champions or abilities");
 	}
 
-	this.dispose();
+	dispose();
 	
-	new chooseChampions(game, player1, player2);
+	new chooseChampions(game,player1, player2);
 	
 	
 }
