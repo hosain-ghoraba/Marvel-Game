@@ -881,8 +881,46 @@ import model.world.Villain;
 	    for(Champion champ : secondPlayer.getTeam())  
 	    	    turnOrder.insert(champ);
      }
- 
- 
+    
+    public  String showChampInfo(Champion c) {
+    	String result = "";
+    	
+    	
+    	
+    	result += "name : " + c.getName() + '\n';
+    	if(firstPlayer.getLeader() == c || secondPlayer.getLeader() == c)
+    		result += "leader : YES \n";
+    	else
+    		result += "leader : NO \n";
+    		
+    	result += "type : " + c.getClass().getSimpleName() + '\n' ;
+    	result += "current HP : " + c.getCurrentHP() + '\n';
+    	result += "current Mana : " + c.getMana() + '\n';
+    	result += "current action points : " + c.getCurrentActionPoints()+ '\n';
+    	result += "attack damage : " + c.getAttackDamage() + '\n';
+    	result += "attack range : " + c.getAttackRange() + '\n'; 
+    	
+        
+    	// abilities and effects are in 2 separate buttons below each remaining champion button
+
+//    	result += "Abilities : \n";
+//    	for(Ability a : abilities)
+//    		result += a.toString() + '\n';
+//    	result += "Effects : \n";
+//    	for(Effect e : appliedEffects)
+//    		result += e.toString() + '\n';
+
+    	return result;
+    }
+    public static String StringToHTML (String input) {
+    	String output = "<html>";
+    	String[] arr = input.split("\\n");
+    	for(String line : arr)
+    		output += line + "<br>"; 
+    	output += "</html>";
+    	return output;
+    	
+    }
  
  }
 

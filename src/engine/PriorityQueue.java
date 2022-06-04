@@ -1,6 +1,7 @@
 package engine;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PriorityQueue {
  
@@ -51,7 +52,9 @@ public class PriorityQueue {
 		
 		  ArrayList<Object> result = new ArrayList<>() ;
 		  for(Object element : elements) 
-			  result.add(element);		  
+			  result.add(element);	
+		  Collections.reverse(result);
+		  
 		  return result ;
 	  }
 

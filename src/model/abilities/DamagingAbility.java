@@ -37,7 +37,7 @@ public void execute(ArrayList<Damageable> targets) {
 	
 }
 public String toString() {
-	return super.toString() + "damage amount : " + damageAmount ;
+	return super.toString() + "damage amount : " + damageAmount + '\n';
 }
 
 }

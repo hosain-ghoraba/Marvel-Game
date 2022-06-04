@@ -87,7 +87,7 @@ public gamewindow(Game game,Player pl1,Player pl2) {
 		this.pl2=pl2 ;
 		
 		
-		
+		this.setLayout(null);
 		playersdetails = new JTextArea();		
         playersdetails.setBounds(this.getWidth()-255,0,255,(this.getHeight()/2)-50 );
 		playersdetails.setEditable(false);

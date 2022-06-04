@@ -55,7 +55,8 @@ public class chooseleaderPlayer2 extends JFrame implements ActionListener {
 	            
         dispose();
         
-        new marvelcontroler(new Game(pl1,pl2));
+        new viewDraft(new Game(pl1,pl2));
+        //new marvelcontroler(new Game(pl1,pl2));
         //new gamewindow(game,game.getFirstPlayer(),game.getSecondPlayer());
 	}
 }
