@@ -180,6 +180,8 @@ System.out.println(e.getKeyChar());
     	case('w'):   //leader ability 
 		try {
 			game.useLeaderAbility();
+			  w.updateplayersdata();
+	            updateboard(); 
 		}
 	catch(LeaderAbilityAlreadyUsedException x) {
 		JOptionPane.showMessageDialog(null, "  LeaderAbilityAlreadyUsed","", JOptionPane.ERROR_MESSAGE);
@@ -225,7 +227,8 @@ break ;
     		            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
     		            null, options2, options2[0]);
     			castabilt(opt.get(response2));
-    		
+    			w.updateplayersdata();
+   		     updateboard();
     	    
     	    
     	    

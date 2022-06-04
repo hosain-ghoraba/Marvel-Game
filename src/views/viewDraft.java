@@ -59,6 +59,8 @@ public viewDraft(Game game) {
 		       JTextArea pl1_info = new JTextArea();
 		       
 		       pl1_info.setEditable(false);
+		       
+		       //updateplayersdata
 		       String info1 = "                          player 1 \n";
 		       info1 += "Name : " + game.getFirstPlayer().getName() + "\n";
 		       if(game.isFirstLeaderAbilityUsed())
