@@ -56,7 +56,7 @@ public class marvelcontroler implements GameListener,ActionListener ,KeyListener
 				else {
 				Champion c =(Champion) z;
 				x.setText(c.getName());
-					
+				  	
 				}
 			
 			}
