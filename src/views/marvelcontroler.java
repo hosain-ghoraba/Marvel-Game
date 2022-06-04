@@ -11,12 +11,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import engine.Game;
+import exceptions.AbilityUseException;
 import exceptions.ChampionDisarmedException;
 import exceptions.LeaderAbilityAlreadyUsedException;
 import exceptions.LeaderNotCurrentException;
 import exceptions.NotEnoughResourcesException;
 import exceptions.UnallowedMovementException;
 import model.abilities.Ability;
+import model.abilities.AreaOfEffect;
 import model.world.Champion;
 import model.world.Cover;
 import model.world.Direction;
@@ -26,8 +28,9 @@ public class marvelcontroler implements GameListener,ActionListener ,KeyListener
 	private gamewindow w ;
 	private JButton [][] boardJbutton ;
 	private Game game;
+	Boolean isabilitycasted ;
 	public marvelcontroler (Game game)
-	{
+	{isabilitycasted =false ;
 		this.game = game;		
 		boardJbutton = new JButton [5][5] ;
 		w =new gamewindow(game,game.getFirstPlayer(),game.getSecondPlayer());
@@ -39,6 +42,7 @@ public class marvelcontroler implements GameListener,ActionListener ,KeyListener
 			{
 			
 				JButton x = new JButton ();
+				
 			x.addActionListener(this);
 			boardJbutton[i][j]=x;
 			if(game.getBoard()[i][j]!=null) {
@@ -94,7 +98,9 @@ public class marvelcontroler implements GameListener,ActionListener ,KeyListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	
+	if(isabilitycasted==false) return ;
+	JButton z = (JButton) e.getSource();
+	//remaining code goes here 
 		
 		
 	}
@@ -203,13 +209,146 @@ System.out.println(e.getKeyChar());
     	         //need to check if game is over
 break ;
     	case ('c'): //casting an ability 
-              		
+             ArrayList<Ability> opt = new ArrayList<>() ;
+    	    for(Ability z : game.getCurrentChampion().getAbilities()) {
+    	    	if (z.getCurrentCooldown()==0)
+    	    		opt.add(z);
+    	    	
+    	    }
+    		String[] options2 = new String[opt.size()];
+    		 for(int i =0;i<opt.size();i++) {
+    			 
+    			 options2[i]= opt.get(i).getName();
+    			 
+    		 }
+    		  int response2 = JOptionPane.showOptionDialog(null, "which ability do you want to cast", "ability",
+    		            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+    		            null, options2, options2[0]);
+    			castabilt(opt.get(response2));
+    		
+    	    
+    	    
+    	    
+    	    
+    	    
     		          		
     	
 default: break ;
 }
 	
 }
+	private void castabilt(Ability a)  {
+		// TODO Auto-generated method stub
+		if(a.getCastArea()==AreaOfEffect.SELFTARGET ||a.getCastArea()==AreaOfEffect.TEAMTARGET   ||a.getCastArea()==AreaOfEffect.TEAMTARGET) {
+			try
+		{game.castAbility(a);}
+		catch(NotEnoughResourcesException e) {
+			JOptionPane.showMessageDialog(null, "  champion does not have enough resources","", JOptionPane.ERROR_MESSAGE);
+
+			
+		} catch (AbilityUseException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, " you have an effect that doesn't let you use ability","", JOptionPane.ERROR_MESSAGE);
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}}
+		
+		else if(a.getCastArea()==AreaOfEffect.DIRECTIONAL) {
+    		String[] options = new String[] {"Right", "left", "up", "down"};
+
+			int response = JOptionPane.showOptionDialog(null, "choose the direction of the ability", "ability",
+			            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+			            null, options, options[0]);
+	while(response==-1) {
+			switch(response) {
+		case(0):
+			try{game.castAbility(a, Direction.RIGHT);}
+		catch(NotEnoughResourcesException e)
+		{
+			JOptionPane.showMessageDialog(null, "  champion does not have enough resources","", JOptionPane.ERROR_MESSAGE);
+
+			
+		} catch (AbilityUseException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, " you have an effect that doesn't let you use ability","", JOptionPane.ERROR_MESSAGE);
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		break ;
+		case(1):
+			try{game.castAbility(a, Direction.LEFT);}
+		catch(NotEnoughResourcesException e)
+		{
+			JOptionPane.showMessageDialog(null, "  champion does not have enough resources","", JOptionPane.ERROR_MESSAGE);
+
+			
+		} catch (AbilityUseException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, " you have an effect that doesn't let you use ability","", JOptionPane.ERROR_MESSAGE);
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		break ;
+		case(2):
+			try{game.castAbility(a, Direction.UP);}
+		catch(NotEnoughResourcesException e)
+		{
+			JOptionPane.showMessageDialog(null, "  champion does not have enough resources","", JOptionPane.ERROR_MESSAGE);
+
+			
+		} catch (AbilityUseException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, " you have an effect that doesn't let you use ability","", JOptionPane.ERROR_MESSAGE);
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		break ;
+		case(3):
+			try{game.castAbility(a, Direction.DOWN);}
+		catch(NotEnoughResourcesException e)
+		{
+			JOptionPane.showMessageDialog(null, "  champion does not have enough resources","", JOptionPane.ERROR_MESSAGE);
+
+			
+		} catch (AbilityUseException e) {
+			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, " you have an effect that doesn't let you use ability","", JOptionPane.ERROR_MESSAGE);
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		break ;
+		 default: //user closed the window without choosing
+			  while(response==-1) {
+		    		
+
+				  response = JOptionPane.showOptionDialog(null, "you didn't choose the direction of the ability, please choose the direction of the ability", "ability",
+				            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+				            null, options, options[0]);
+				  break ;
+			  }}
+			
+	
+	
+	}}
+		
+		else {
+			isabilitycasted =true ;
+			JOptionPane.showMessageDialog(null, " please choose who do you want to cast this ability on","", JOptionPane.INFORMATION_MESSAGE);
+			
+			
+		}
+		
+		
+		
+	}
+
+
+
 	public void updateboard() {
 		for(int i=0 ;i<5;i++) {
 			for(int j=0;j<5;j++) {
