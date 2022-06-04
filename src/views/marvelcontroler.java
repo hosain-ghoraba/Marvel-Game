@@ -30,10 +30,11 @@ public class marvelcontroler implements GameListener,ActionListener ,KeyListener
 	private Game game;
 	Boolean isabilitycasted ;
 	public marvelcontroler (Game game)
-	{isabilitycasted =false ;
+	{
+		isabilitycasted =false ;
 		this.game = game;		
 		boardJbutton = new JButton [5][5] ;
-		w =new gamewindow(game,game.getFirstPlayer(),game.getSecondPlayer());
+		w =new gamewindow(game);
 		w.addKeyListener(this);
 		w.gamePanel.addKeyListener(this);
 		for (int i=0;i<5;i++)
