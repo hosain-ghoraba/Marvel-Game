@@ -35,6 +35,8 @@ private JTextArea txtchamp;
 		setSize(500,500);
 		ImageIcon logo = new ImageIcon("logo.png");
 		setIconImage(logo.getImage());
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+
 		this.game = game;
 		this.pl1 = pl1 ; 
 		this.pl2 = pl2 ;
