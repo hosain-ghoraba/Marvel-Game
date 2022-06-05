@@ -37,6 +37,8 @@ public class marvelcontroler implements GameListener,ActionListener ,KeyListener
 		w =new gamewindow(game);
 		w.addKeyListener(this);
 		w.gamePanel.addKeyListener(this);
+w.setFocusable(true);
+w.gamePanel.setFocusable(true);
 		for (int i=0;i<5;i++)
 		{
 			for (int j=0;j<5;j++)
@@ -181,8 +183,10 @@ System.out.println(e.getKeyChar());
     	case('w'):   //leader ability 
 		try {
 			game.useLeaderAbility();
-			  w.updateplayersdata();
+			//  w.updateplayersdata();
 	            updateboard(); 
+	            w.give_updated_infoPanel(game);
+		
 		}
 	catch(LeaderAbilityAlreadyUsedException x) {
 		JOptionPane.showMessageDialog(null, "  LeaderAbilityAlreadyUsed","", JOptionPane.ERROR_MESSAGE);
@@ -199,16 +203,22 @@ System.out.println(e.getKeyChar());
             JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
             null, options, options[0]);
          attack(response);  
-         w.updateplayersdata();
-            updateboard();  //need to update the board 
+      //   w.updateplayersdata();
+            updateboard();
+            w.give_updated_infoPanel(game);
+
+            //need to update the board 
          //need to check if game is over
          break ;
     	case('e'): //end turn 
     	
     			game.endTurn();
-    			w.update_curchamp_datails();
-    			w.updateplayersdata();
-    		     updateboard();   //need to update the board
+    		//	w.update_curchamp_datails();
+    		//	w.updateplayersdata();
+    		     updateboard(); 
+ 	            w.give_updated_infoPanel(game);
+
+    		     //need to update the board
     	         //need to check if game is over
 break ;
     	case ('c'): //casting an ability 
@@ -228,9 +238,10 @@ break ;
     		            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
     		            null, options2, options2[0]);
     			castabilt(opt.get(response2));
-    			w.updateplayersdata();
+    	//		w.updateplayersdata();
    		     updateboard();
-    	    
+	            w.give_updated_infoPanel(game);
+
     	    
     	    
     	    
@@ -453,7 +464,8 @@ default: break ;
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+		System.out.println(e.getKeyChar());
+
 	}
 
 
