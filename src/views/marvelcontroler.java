@@ -37,6 +37,7 @@ public class marvelcontroler implements GameListener,ActionListener ,KeyListener
 		w =new gamewindow(game);
 		w.addKeyListener(this);
 		w.gamePanel.addKeyListener(this);
+		
 		for (int i=0;i<5;i++)
 		{
 			for (int j=0;j<5;j++)
@@ -181,7 +182,7 @@ System.out.println(e.getKeyChar());
     	case('w'):   //leader ability 
 		try {
 			game.useLeaderAbility();
-			  w.updateplayersdata();
+			//  w.updateplayersdata();
 	            updateboard(); 
 		}
 	catch(LeaderAbilityAlreadyUsedException x) {
@@ -199,15 +200,15 @@ System.out.println(e.getKeyChar());
             JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
             null, options, options[0]);
          attack(response);  
-         w.updateplayersdata();
+      //   w.updateplayersdata();
             updateboard();  //need to update the board 
          //need to check if game is over
          break ;
     	case('e'): //end turn 
     	
     			game.endTurn();
-    			w.update_curchamp_datails();
-    			w.updateplayersdata();
+    		//	w.update_curchamp_datails();
+    		//	w.updateplayersdata();
     		     updateboard();   //need to update the board
     	         //need to check if game is over
 break ;
@@ -228,7 +229,7 @@ break ;
     		            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
     		            null, options2, options2[0]);
     			castabilt(opt.get(response2));
-    			w.updateplayersdata();
+    	//		w.updateplayersdata();
    		     updateboard();
     	    
     	    
