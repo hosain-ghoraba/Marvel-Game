@@ -25,6 +25,7 @@ import model.abilities.Ability;
 import model.abilities.AreaOfEffect;
 import model.world.Champion;
 import model.world.Cover;
+import model.world.Damageable;
 import model.world.Direction;
 
 public class marvelcontroler implements GameListener,ActionListener ,KeyListener{
@@ -32,10 +33,12 @@ public class marvelcontroler implements GameListener,ActionListener ,KeyListener
 	private gamewindow w ;
 	private JButton [][] boardJbutton ;
 	private Game game;
-	Boolean isabilitycasted ;
+	Boolean issingletargerabilitycasted ;
+	Ability singletargerability ;
+	
 	public marvelcontroler (Game game)
 	{
-		isabilitycasted =false ;
+		issingletargerabilitycasted =false ;
 		this.game = game;		
 		boardJbutton = new JButton [5][5] ;
 		w =new gamewindow(game);
@@ -100,16 +103,37 @@ w.gamePanel.setFocusable(true);
 */
 
 	}
+	 public int[] getindex (JButton x ) {
+		 for(int i = 0;i<5;i++) {
+			 for(int j = 0;j<5;j++)
+				 if(boardJbutton[i][j]!=null ) {
+					 if(boardJbutton[i][j]==x){
+						 return new int [] {i,j} ;
+					 }
+				 }
+			 
+		 }
+	 return null ;
 	 
+	 }
 	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	if(isabilitycasted==false) return ;
+	if(issingletargerabilitycasted==false) return ;
 	JButton z = (JButton) e.getSource();
 	//remaining code goes here 
-		
-		
+	int[] b =getindex(z) ;
+	try {
+	game.castAbility(singletargerability , ((Damageable )game.getBoard()[b[0]][b[1]]).getLocation().x,  ((Damageable )game.getBoard()[b[0]][b[1]]).getLocation().y);
+	}
+	catch(GameActionException f) {
+		JOptionPane.showMessageDialog(null, f.getMessage(),"", JOptionPane.ERROR_MESSAGE);
+	
+	} catch (CloneNotSupportedException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
 	}
 
 	@Override
@@ -200,7 +224,8 @@ w.gamePanel.setFocusable(true);
 	}}
 		
 		else {
-			isabilitycasted =true ;
+			issingletargerabilitycasted =true ;
+			singletargerability = a ;
 			JOptionPane.showMessageDialog(null, " please choose who do you want to cast this ability on","", JOptionPane.INFORMATION_MESSAGE);
 			
 			
