@@ -11,9 +11,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import engine.Game;
 import exceptions.AbilityUseException;
 import exceptions.ChampionDisarmedException;
+import exceptions.GameActionException;
 import exceptions.LeaderAbilityAlreadyUsedException;
 import exceptions.LeaderNotCurrentException;
 import exceptions.NotEnoughResourcesException;
@@ -40,7 +43,7 @@ public class marvelcontroler implements GameListener,ActionListener ,KeyListener
 		w.gamePanel.addKeyListener(this);
 w.setFocusable(true);
 w.gamePanel.setFocusable(true);
-		for (int i=0;i<5;i++)
+		for (int i=4;i>=0;i--)
 		{
 			for (int j=0;j<5;j++)
 			{
@@ -59,7 +62,7 @@ w.gamePanel.setFocusable(true);
 				}
 				else {
 				Champion c =(Champion) z;
-				x.setText(c.getName());
+				x.setText(c.getName() +" current healthpoints: "+c.getCurrentHP());
 				  	
 				}
 			
@@ -111,148 +114,9 @@ w.gamePanel.setFocusable(true);
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-System.out.println(e.getKeyChar());
-		switch(e.getKeyChar()) {
-	case('k') ://KeyEvent.VK_KP_RIGHT
-		try {
-			game.move(Direction.RIGHT);
-	       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
-	       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
-			updateboard();
+//System.out.println(e.getKeyCode());
+	
 
-		}
-	   catch (UnallowedMovementException z) {
-		   
-			JOptionPane.showMessageDialog(null, "  cannot to move to a non empty place","", JOptionPane.ERROR_MESSAGE);
-
-		   
-	   } catch (NotEnoughResourcesException e1) {
-			JOptionPane.showMessageDialog(null, "  NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
-	} 
-	break;
-	case('h') :
-		try {
-			game.move(Direction.LEFT);
-	       	//	boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
-	       		//boardJbutton[game.getCurrentChampion().getLocation().x+1][game.getCurrentChampion().getLocation().y].setText("");
-			updateboard();
-
-		}
-	   catch (UnallowedMovementException z) {
-		   
-			JOptionPane.showMessageDialog(null, "  cannot to move to a non empty place","", JOptionPane.ERROR_MESSAGE);
-
-		   
-	   } catch (NotEnoughResourcesException e1) {
-			JOptionPane.showMessageDialog(null, "  NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
-
-	} 
-	break;
-	case('u') :
-		try {
-			game.move(Direction.UP);
-	       	//	boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
-	       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y-1].setText("");
-		updateboard();
-		}
-	   catch (UnallowedMovementException z) {
-		   
-			JOptionPane.showMessageDialog(null, "  cannot to move to a non empty place","", JOptionPane.ERROR_MESSAGE);
-
-		   
-	   } catch (NotEnoughResourcesException e1) {
-			JOptionPane.showMessageDialog(null, "  NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
-
-	} 
-	break;
-	case('j') :
-		try {
-			game.move(Direction.DOWN);
-	       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
-	       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y+1].setText("");
-			updateboard();
-		}
-	   catch (UnallowedMovementException z) {
-		   
-			JOptionPane.showMessageDialog(null, "  cannot to move to a non empty place","", JOptionPane.ERROR_MESSAGE);
-
-		   
-	   } catch (NotEnoughResourcesException e1) {
-			JOptionPane.showMessageDialog(null, "  NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
-
-	} 
-	break;
-    	case('w'):   //leader ability 
-		try {
-			game.useLeaderAbility();
-			//  w.updateplayersdata();
-	            updateboard(); 
-	            w.give_updated_infoPanel(game);
-		
-		}
-	catch(LeaderAbilityAlreadyUsedException x) {
-		JOptionPane.showMessageDialog(null, "  LeaderAbilityAlreadyUsed","", JOptionPane.ERROR_MESSAGE);
-
-		
-	} catch (LeaderNotCurrentException e1) {
-		// TODO Auto-generated catch block
-		JOptionPane.showMessageDialog(null, "  LeaderNotCurrent","", JOptionPane.ERROR_MESSAGE);
-	}
-    	break;
-    	case('a')://attack
-    		String[] options = new String[] {"Right", "left", "up", "down"};
-        int response = JOptionPane.showOptionDialog(null, "choose the direction of the attack", "attack",
-            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-            null, options, options[0]);
-         attack(response);  
-      //   w.updateplayersdata();
-            updateboard();
-            w.give_updated_infoPanel(game);
-
-            //need to update the board 
-         //need to check if game is over
-         break ;
-    	case('e'): //end turn 
-    	
-    			game.endTurn();
-    		//	w.update_curchamp_datails();
-    		//	w.updateplayersdata();
-    		     updateboard();
-    		    w.remove(w.infoPanel); 	        
-    		    w.add(w.give_updated_infoPanel(game),BorderLayout.EAST);
-
-    		     //need to update the board
-    	         //need to check if game is over
-break ;
-    	case ('c'): //casting an ability 
-             ArrayList<Ability> opt = new ArrayList<>() ;
-    	    for(Ability z : game.getCurrentChampion().getAbilities()) {
-    	    	if (z.getCurrentCooldown()==0)
-    	    		opt.add(z);
-    	    	
-    	    }
-    		String[] options2 = new String[opt.size()];
-    		 for(int i =0;i<opt.size();i++) {
-    			 
-    			 options2[i]= opt.get(i).getName();
-    			 
-    		 }
-    		  int response2 = JOptionPane.showOptionDialog(null, "which ability do you want to cast", "ability",
-    		            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-    		            null, options2, options2[0]);
-    			castabilt(opt.get(response2));
-    	//		w.updateplayersdata();
-   		     updateboard();
-	            w.give_updated_infoPanel(game);
-
-    	    
-    	    
-    	    
-    	    
-    		          		
-    	
-default: break ;
-}
 	
 }
 	private void castabilt(Ability a)  {
@@ -260,13 +124,10 @@ default: break ;
 		if(a.getCastArea()==AreaOfEffect.SELFTARGET ||a.getCastArea()==AreaOfEffect.TEAMTARGET   ||a.getCastArea()==AreaOfEffect.TEAMTARGET) {
 			try
 		{game.castAbility(a);}
-		catch(NotEnoughResourcesException e) {
-			JOptionPane.showMessageDialog(null, "  champion does not have enough resources","", JOptionPane.ERROR_MESSAGE);
+		catch(GameActionException  e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"", JOptionPane.ERROR_MESSAGE);
 
 			
-		} catch (AbilityUseException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, " you have an effect that doesn't let you use ability","", JOptionPane.ERROR_MESSAGE);
 		} catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -282,14 +143,10 @@ default: break ;
 			switch(response) {
 		case(0):
 			try{game.castAbility(a, Direction.RIGHT);}
-		catch(NotEnoughResourcesException e)
-		{
-			JOptionPane.showMessageDialog(null, "  champion does not have enough resources","", JOptionPane.ERROR_MESSAGE);
+		catch(GameActionException  e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"", JOptionPane.ERROR_MESSAGE);
 
 			
-		} catch (AbilityUseException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, " you have an effect that doesn't let you use ability","", JOptionPane.ERROR_MESSAGE);
 		} catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -297,14 +154,10 @@ default: break ;
 		break ;
 		case(1):
 			try{game.castAbility(a, Direction.LEFT);}
-		catch(NotEnoughResourcesException e)
-		{
-			JOptionPane.showMessageDialog(null, "  champion does not have enough resources","", JOptionPane.ERROR_MESSAGE);
+		catch(GameActionException  e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"", JOptionPane.ERROR_MESSAGE);
 
 			
-		} catch (AbilityUseException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, " you have an effect that doesn't let you use ability","", JOptionPane.ERROR_MESSAGE);
 		} catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -312,14 +165,10 @@ default: break ;
 		break ;
 		case(2):
 			try{game.castAbility(a, Direction.UP);}
-		catch(NotEnoughResourcesException e)
-		{
-			JOptionPane.showMessageDialog(null, "  champion does not have enough resources","", JOptionPane.ERROR_MESSAGE);
+		catch(GameActionException  e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"", JOptionPane.ERROR_MESSAGE);
 
 			
-		} catch (AbilityUseException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, " you have an effect that doesn't let you use ability","", JOptionPane.ERROR_MESSAGE);
 		} catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -327,28 +176,24 @@ default: break ;
 		break ;
 		case(3):
 			try{game.castAbility(a, Direction.DOWN);}
-		catch(NotEnoughResourcesException e)
-		{
-			JOptionPane.showMessageDialog(null, "  champion does not have enough resources","", JOptionPane.ERROR_MESSAGE);
+		catch(GameActionException  e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(),"", JOptionPane.ERROR_MESSAGE);
 
 			
-		} catch (AbilityUseException e) {
-			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, " you have an effect that doesn't let you use ability","", JOptionPane.ERROR_MESSAGE);
 		} catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		break ;
 		 default: //user closed the window without choosing
-			  while(response==-1) {
+			 
 		    		
 
 				  response = JOptionPane.showOptionDialog(null, "you didn't choose the direction of the ability, please choose the direction of the ability", "ability",
 				            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
 				            null, options, options[0]);
 				  break ;
-			  }}
+			  }
 			
 	
 	
@@ -368,14 +213,14 @@ default: break ;
 
 
 	public void updateboard() {
-		for(int i=0 ;i<5;i++) {
+		for(int i=4 ;i>=0;i--) {
 			for(int j=0;j<5;j++) {
 				if(game.getBoard()[i][j]==null)
 					boardJbutton[i][j].setText("")
 					;
 				else {
 					if(game.getBoard()[i][j] instanceof Champion) {
-						boardJbutton[i][j].setText(((Champion)game.getBoard()[i][j]).getName());
+						boardJbutton[i][j].setText(((Champion)game.getBoard()[i][j]).getName()+  "  current health points:"+ ((Champion)game.getBoard()[i][j]).getCurrentHP());
 						//need to add champion details in hover
 						
 
@@ -399,47 +244,35 @@ default: break ;
 		  switch(response) {
 	       case(0): try {
 				game.attack(Direction.RIGHT);
-			} catch (NotEnoughResourcesException j) {
+			} catch (GameActionException  j) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, " NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, j.getMessage(),"", JOptionPane.ERROR_MESSAGE);
 
-			} catch (ChampionDisarmedException e1) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, " ChampionDisarmed","", JOptionPane.ERROR_MESSAGE);
-			}
+			} 
 	       break ;
 	       case(1): try {
 				game.attack(Direction.LEFT);
-			} catch (NotEnoughResourcesException j) {
+			} catch (GameActionException  j) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, " NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, j.getMessage(),"", JOptionPane.ERROR_MESSAGE);
 
-			} catch (ChampionDisarmedException e1) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, " ChampionDisarmed","", JOptionPane.ERROR_MESSAGE);
-			}	       break ;
+			} 	       break ;
 
 	       case(2): try {
 				game.attack(Direction.UP);
-			} catch (NotEnoughResourcesException j) {
+			}catch (GameActionException  j) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, " NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, j.getMessage(),"", JOptionPane.ERROR_MESSAGE);
 
-			} catch (ChampionDisarmedException e1) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, " ChampionDisarmed","", JOptionPane.ERROR_MESSAGE);
-			}	       break ;
+			} 	       break ;
 
 	       case(3): try {
 				game.attack(Direction.DOWN);
-			} catch (NotEnoughResourcesException j) {
+			} catch (GameActionException  j) {
 				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, " NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, j.getMessage(),"", JOptionPane.ERROR_MESSAGE);
 
-			} catch (ChampionDisarmedException e1) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, " ChampionDisarmed","", JOptionPane.ERROR_MESSAGE);
-			}	       break ;
+			} 	       break ;
 
 		  default: //user closed the window without choosing
 			  while(response==-1) {
@@ -461,13 +294,175 @@ default: break ;
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+//		System.out.println(e.getExtendedKeyCode());
+		System.out.println(e.getKeyCode());
+		switch(e.getKeyCode()) {
+		case(37) :
+			try {
+				game.move(Direction.LEFT);
+		       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
+		       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
+				updateboard();
+				 JPanel z=  w.give_updated_infoPanel(game);
+					w.remove(w.infoPanel);
+					w.add(z,BorderLayout.EAST);
+w.revalidate();
+w.repaint();
+			}
+		   catch (GameActionException z) {
+			   
+				JOptionPane.showMessageDialog(null, z.getMessage(),"", JOptionPane.ERROR_MESSAGE);
+
+			   
+		   }  
+		break;
+		case(39) :
+			try {
+				game.move(Direction.RIGHT);
+		       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
+		       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
+				updateboard();
+				 JPanel z=  w.give_updated_infoPanel(game);
+					w.remove(w.infoPanel);
+					w.add(z,BorderLayout.EAST);
+w.revalidate();
+w.repaint();
+			}
+		   catch (GameActionException z) {
+			   
+				JOptionPane.showMessageDialog(null, z.getMessage(),"", JOptionPane.ERROR_MESSAGE);
+
+			   
+		   }  
+		break;
+
+		case(38) :
+			try {
+				game.move(Direction.UP );
+		       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
+		       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
+				updateboard();
+				 JPanel z=  w.give_updated_infoPanel(game);
+					w.remove(w.infoPanel);
+					w.add(z,BorderLayout.EAST);
+w.revalidate();
+w.repaint();
+			}
+		   catch (GameActionException z) {
+			   
+				JOptionPane.showMessageDialog(null, z.getMessage(),"", JOptionPane.ERROR_MESSAGE);
+
+			   
+		   }  
+		break;
+		case(40) :	try {
+			game.move(Direction.DOWN );
+       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
+       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
+		updateboard();
+		 JPanel z=  w.give_updated_infoPanel(game);
+			w.remove(w.infoPanel);
+			w.add(z,BorderLayout.EAST);
+			w.revalidate();
+			w.repaint();
+	}
+   catch (GameActionException z) {
+	   
+		JOptionPane.showMessageDialog(null, z.getMessage(),"", JOptionPane.ERROR_MESSAGE);
+
+	   
+   }  
+break;
+	}
+	
+		switch(e.getKeyChar()) {
 		
+    	case('w'):   //leader ability 
+		try {
+			game.useLeaderAbility();
+			//  w.updateplayersdata();
+	            updateboard(); 
+	            JPanel z=  w.give_updated_infoPanel(game);
+		w.remove(w.infoPanel);
+		w.add(z,BorderLayout.EAST);
+		w.revalidate();
+		w.repaint();
+		
+		}
+	catch(GameActionException  x) {
+		JOptionPane.showMessageDialog(null, x.getMessage(),"", JOptionPane.ERROR_MESSAGE);
+
+		
+	} 
+    	break;
+    	case('a')://attack
+    		String[] options = new String[] {"Right", "left", "up", "down"};
+        int response = JOptionPane.showOptionDialog(null, "choose the direction of the attack", "attack",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+            null, options, options[0]);
+         attack(response);  
+      //   w.updateplayersdata();
+            updateboard();
+//            w.give_updated_infoPanel(game);
+            JPanel z=  w.give_updated_infoPanel(game);
+    		w.remove(w.infoPanel);
+    		w.add(z,BorderLayout.EAST);
+    		w.revalidate();
+    		w.repaint();
+            //need to update the board 
+         //need to check if game is over
+         break ;
+    	case('e'): //end turn 
+    	
+    			game.endTurn();
+    		//	w.update_curchamp_datails();
+    		//	w.updateplayersdata();
+    		     updateboard();
+    		    w.remove(w.infoPanel); 	        
+    		    w.add(w.give_updated_infoPanel(game),BorderLayout.EAST);
+    		    w.revalidate();
+    			w.repaint();
+    		     //need to update the board
+    	         //need to check if game is over
+break ;
+    	case ('c'): //casting an ability 
+             ArrayList<Ability> opt = new ArrayList<>() ;
+    	    for(Ability h : game.getCurrentChampion().getAbilities()) {
+    	    	if (h.getCurrentCooldown()==0)
+    	    		opt.add(h);
+    	    	
+    	    }
+    		String[] options2 = new String[opt.size()];
+    		 for(int i =0;i<opt.size();i++) {
+    			 
+    			 options2[i]= opt.get(i).getName();
+    			 
+    		 }
+    		  int response2 = JOptionPane.showOptionDialog(null, "which ability do you want to cast", "ability",
+    		            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+    		            null, options2, options2[0]);
+    			castabilt(opt.get(response2));
+    	//		w.updateplayersdata();
+   		     updateboard();
+   		  w.remove(w.infoPanel); 	        
+		    w.add(w.give_updated_infoPanel(game),BorderLayout.EAST);
+
+		    w.revalidate();
+			w.repaint();
+    	    
+    	    
+    	    
+    		          		
+    	
+default: break ;
+}
+	
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println(e.getKeyChar());
+		//System.out.println(e.getKeyChar());
 
 	}
 
