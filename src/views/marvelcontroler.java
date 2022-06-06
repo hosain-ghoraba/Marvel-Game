@@ -113,12 +113,13 @@ w.gamePanel.setFocusable(true);
 	public void keyTyped(KeyEvent e) {
 System.out.println(e.getKeyChar());
 		switch(e.getKeyChar()) {
-	case(KeyEvent.VK_RIGHT) :
+	case('k') ://KeyEvent.VK_KP_RIGHT
 		try {
 			game.move(Direction.RIGHT);
-	       		boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
-	       		boardJbutton[game.getCurrentChampion().getLocation().x+1][game.getCurrentChampion().getLocation().y].setText("");
-		
+	       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
+	       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
+			updateboard();
+
 		}
 	   catch (UnallowedMovementException z) {
 		   
@@ -127,15 +128,15 @@ System.out.println(e.getKeyChar());
 		   
 	   } catch (NotEnoughResourcesException e1) {
 			JOptionPane.showMessageDialog(null, "  NotEnoughResources","", JOptionPane.ERROR_MESSAGE);
-
 	} 
 	break;
-	case(KeyEvent.VK_LEFT) :
+	case('h') :
 		try {
 			game.move(Direction.LEFT);
-	       		boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
-	       		boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
-		
+	       	//	boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
+	       		//boardJbutton[game.getCurrentChampion().getLocation().x+1][game.getCurrentChampion().getLocation().y].setText("");
+			updateboard();
+
 		}
 	   catch (UnallowedMovementException z) {
 		   
@@ -147,12 +148,12 @@ System.out.println(e.getKeyChar());
 
 	} 
 	break;
-	case(KeyEvent.VK_UP) :
+	case('u') :
 		try {
 			game.move(Direction.UP);
-	       		boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
-	       		boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y+1].setText("");
-		
+	       	//	boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
+	       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y-1].setText("");
+		updateboard();
 		}
 	   catch (UnallowedMovementException z) {
 		   
@@ -164,12 +165,12 @@ System.out.println(e.getKeyChar());
 
 	} 
 	break;
-	case(KeyEvent.VK_DOWN) :
+	case('j') :
 		try {
 			game.move(Direction.DOWN);
-	       		boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
-	       		boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y-1].setText("");
-		
+	       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
+	       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y+1].setText("");
+			updateboard();
 		}
 	   catch (UnallowedMovementException z) {
 		   
