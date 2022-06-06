@@ -1,5 +1,6 @@
 package views;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -215,8 +216,9 @@ System.out.println(e.getKeyChar());
     			game.endTurn();
     		//	w.update_curchamp_datails();
     		//	w.updateplayersdata();
-    		     updateboard(); 
- 	            w.give_updated_infoPanel(game);
+    		     updateboard();
+    		    w.remove(w.infoPanel); 	        
+    		    w.add(w.give_updated_infoPanel(game),BorderLayout.EAST);
 
     		     //need to update the board
     	         //need to check if game is over
@@ -518,21 +520,10 @@ default: break ;
 	}
    public static void main(String[] args) {
 //	while(true) {
-	String[] options = new String[] {"Right", "left", "up"};
-	ArrayList<String> o = new ArrayList<>() ;
-	o.add("r");
-	o.add("l");
-	o.add("u");
-	o.add("d");
-
-    int response = JOptionPane.showOptionDialog(null,  "you didn't choose the direction of the attack, please choose the direction of the attack", "Title",
-        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-        null, options, options[0]);
-System.out.println(response);}
+new loginWindow()
+;
 
 
 
-
-
-
+}
 }
