@@ -121,6 +121,7 @@ w.gamePanel.setFocusable(true);
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	if(issingletargerabilitycasted==false) return ;
+	issingletargerabilitycasted =false ;
 	JButton z = (JButton) e.getSource();
 	//remaining code goes here 
 	int[] b =getindex(z) ;
