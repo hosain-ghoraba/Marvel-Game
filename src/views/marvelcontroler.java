@@ -146,7 +146,7 @@ w.gamePanel.setFocusable(true);
 }
 	private void castabilt(Ability a)  {
 		// TODO Auto-generated method stub
-		if(a.getCastArea()==AreaOfEffect.SELFTARGET ||a.getCastArea()==AreaOfEffect.TEAMTARGET   ||a.getCastArea()==AreaOfEffect.TEAMTARGET) {
+		if(a.getCastArea()==AreaOfEffect.SELFTARGET ||a.getCastArea()==AreaOfEffect.TEAMTARGET   ||a.getCastArea()==AreaOfEffect.SURROUND) {
 			try
 		{game.castAbility(a);}
 		catch(GameActionException  e) {
