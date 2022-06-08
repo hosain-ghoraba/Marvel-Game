@@ -35,11 +35,8 @@ public class marvelcontroler implements ActionListener ,KeyListener{
 
 
 	private gamewindow view ;
-
-	private gamewindow w ;
-
-	private JButton [][] boardJbutton ;
 	private Game game;
+	private JButton [][] boardJbutton ;
 	Boolean isSingleTargerAbilityCasted ;
 	Ability singleTargetAbility ;
 	
@@ -266,29 +263,22 @@ p.add(x);
 	}
 */
 		}
-			
-			
-			
-		
-		
-		public int[] getindex (JButton x ) {
-		 for(int i = 0;i<5;i++) {
-			 for(int j = 0;j<5;j++)
-				 if(boardJbutton[i][j]!=null ) {
-					 if(boardJbutton[i][j]==x){
+
+		public int[] getindex (JButton btn ) {
+		 for(int i = 0 ; i < 5 ; i++) 
+			 for(int j = 0 ; j < 5 ; j++)
+				 if(boardJbutton[i][j] != null ) 
+					 if(boardJbutton[i][j] == btn)
 						 return new int [] {i,j} ;
-					 }
-				 }
-			 
-		 }
-	 return null ;
+        
+		 return null ;
 	 
 	 }
 	
 
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) {
     
 	if(isSingleTargerAbilityCasted == false) 
 		return ;
@@ -307,28 +297,16 @@ p.add(x);
 	} catch (CloneNotSupportedException e1) {
 		e1.printStackTrace();
 	}
-w.revalidate();
-w.repaint();
+view.revalidate();
+view.repaint();
 	//q.setVisible(false);
 	//w.setVisible(true);
 	
 	
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-//System.out.println(e.getKeyCode());
-	
+		public void keyPressed(KeyEvent e) {
 
-	
-}
-	
-	
-
-
-
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 //		System.out.println(e.getExtendedKeyCode());
 		System.out.println(e.getKeyCode());
 		switch(e.getKeyCode()) {
@@ -357,11 +335,11 @@ view.repaint();
 		       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
 		       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
 				updateboard();
-				 JPanel z=  view.give_updated_infoPanel(game);
-					view.remove(view.infoPanel);
-					view.add(z,BorderLayout.EAST);
-view.revalidate();
-view.repaint();
+				JPanel z=  view.give_updated_infoPanel(game);
+				view.remove(view.infoPanel);
+				view.add(z,BorderLayout.EAST);
+				view.revalidate();
+				view.repaint();	
 			}
 		   catch (GameActionException z) {
 			   
@@ -495,19 +473,22 @@ default: break ;
 	
 	}
 	
-	public void keyReleased(KeyEvent e) {
+	@Override
+		public void keyTyped(KeyEvent e) {
+//System.out.println(e.getKeyCode());
+
+
+
+}
+		public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		//System.out.println(e.getKeyChar());
 
 	}
 	
 
-   public static void main(String[] args) {
-//	while(true) {
-new loginWindow()
-;
-
-
+    public static void main(String[] args) {	
+    	new loginWindow();
 
 }
 }
