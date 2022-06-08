@@ -805,12 +805,12 @@ import model.world.Villain;
 	 {	  
 		 Champion attaker = getCurrentChampion();
 		 if( attaker != getCurrentPlayer().getLeader() )
-		     throw new LeaderNotCurrentException();
+		     throw new LeaderNotCurrentException("the current champion is not the leader !");
 		 
 		 boolean b1 = firstLeaderAbilityUsed && firstPlayer == getCurrentPlayer() ;// checks if firstLeaderAbility is used and the firstPlayer is indeed the one who is playing now
 		 boolean b2 = secondLeaderAbilityUsed && secondPlayer == getCurrentPlayer() ;// checks if secondLeaderAbility is used and the secondPlayer is indeed the one who is playing now
 		 if( b1 || b2)    
-			 throw new LeaderAbilityAlreadyUsedException();
+			 throw new LeaderAbilityAlreadyUsedException("you already used your leader ability");
 		 
 		 ArrayList<Champion> targets = new ArrayList<Champion>();
 		 

@@ -65,8 +65,8 @@ public JPanel give_updated_infoPanel (Game game) {
 	    ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE); // prevents all toolpits from disappearing after a while of appearing
 
 	    JPanel infoPanel = new JPanel();
-	infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-    infoPanel.add(new JLabel("\n")); // space
+	    infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+	    infoPanel.add(new JLabel("\n")); // space
 	       
 	       /////////////////// first player info ( text area )
 	       JTextArea pl1_info = new JTextArea();		       

@@ -48,7 +48,7 @@ public class chooseleaderPlayer2 extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton clicked = (JButton)e.getSource() ;
-        String nameX = clicked.getName();
+        String nameX = clicked.getText();
         for (Champion champ : pl2.getTeam())       
         	if (champ.getName().equals(nameX))    	
          		pl2.setLeader(champ);
