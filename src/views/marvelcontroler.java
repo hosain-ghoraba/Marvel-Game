@@ -77,6 +77,7 @@ public class marvelcontroler implements ActionListener {
 
 						Object z = game.getBoard()[i][j];
 						String btnText = "";
+						// why null should it be z.text()== null (hosain)!
 						if(z == null)
 						{
 							btn.setBackground(null);
@@ -221,6 +222,10 @@ public class marvelcontroler implements ActionListener {
     	    	
     	    }
     		String[] options2 = new String[opt.size()];
+    		if (opt.size()==0)
+    		{
+    			return;
+    		}
     		 for(int i = 0 ; i < opt.size() ; i++)     			 
     			 options2[i]= opt.get(i).getName();   			   		 
     		 int response2 = JOptionPane.showOptionDialog(null, "which ability do you want to cast", "ability",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options2, options2[0]);

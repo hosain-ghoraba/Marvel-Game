@@ -23,6 +23,7 @@ import javax.swing.ToolTipManager;
 
 import engine.Game;
 import engine.Player;
+import engine.PriorityQueue;
 import model.world.Champion;
 import model.abilities.Ability;
 import model.abilities.CrowdControlAbility;
@@ -37,6 +38,7 @@ public class gamewindow extends JFrame implements ActionListener {
     JPanel actionsPanel;
 
     Game game ;
+    
 
 		   
 public gamewindow(Game game) {
@@ -53,7 +55,7 @@ public gamewindow(Game game) {
 		boardPanel.setLayout(new GridLayout(5,5,0,0));
 		boardPanel.setBorder(BorderFactory.createEmptyBorder(0, 40, 0,20 )); 
 		boardPanel.setVisible(true);
-
+        infoPanel=new JPanel();
         infoPanel = give_updated_infoPanel(game);
         infoPanel.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
         infoPanel.setVisible(true);
@@ -70,7 +72,7 @@ public gamewindow(Game game) {
         actionsPanel.add(new JButton("end turn"));
         actionsPanel.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
         actionsPanel.setVisible(true);
-        
+
 
 
 		add(boardPanel,BorderLayout.CENTER);
@@ -84,9 +86,10 @@ public gamewindow(Game game) {
 
 public JPanel give_updated_infoPanel (Game game) {
 	
+	       infoPanel.removeAll();
 	    ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE); // prevents all toolpits from disappearing after a while of appearing
 
-	    JPanel infoPanel = new JPanel();
+
 	    infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 	    infoPanel.add(new JLabel("\n")); // space
 	       
@@ -207,15 +210,34 @@ public JPanel give_updated_infoPanel (Game game) {
 		  
 	      JTextArea turnsArea = new JTextArea();
 	      String ordersText = "";
-	      for(Object o : game.getTurnOrder().turnorderall())		      
-	    	  ordersText += ((Champion)o).getName() + '\n';
+	     // for(Object o : game.getTurnOrder().turnorderall())		      
+	    //	  ordersText += ((Champion)o).getName() + '\n';
+	    //  System.out.println(ordersText);
+	     
+	      int x = game.getTurnOrder().size();
+	      PriorityQueue temp = new PriorityQueue(x);
+	      while (!game.getTurnOrder().isEmpty())
+	      {
+	    	  ordersText += ((Champion)(game.getTurnOrder().peekMin())).getName()+ '\n';
+	    	  temp.insert(game.getTurnOrder().remove());
+	      }
+	      while (!temp.isEmpty())
+	      {
+	    	  game.getTurnOrder().insert(temp.remove());
+	      }
+	      
 	      turnsArea.setText(ordersText);
 	      turnsArea.setFont(new Font("Dialog",ABORT,16));
 	      turnsArea.setEditable(false);
 	      infoPanel.add(turnsArea);
-	      
+	      infoPanel.revalidate();
+	      infoPanel.repaint();
+	      turnsArea.revalidate();
+	      turnsArea.repaint();
+	      this.revalidate();
+	      this.repaint();
 	      infoPanel.add(new JLabel("\n")); // space
-	      infoPanel.add(new JLabel("\n")); // space
+	    //  infoPanel.add(new JLabel("\n")); // space
 	      
 	      ///////////////////////////////////////////////////// current Champion details
 	      JTextArea currChampTitle = new JTextArea("               current champion :"); // fourth green bar	      

@@ -3,6 +3,8 @@ package engine;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import model.world.Champion;
+
 public class PriorityQueue {
  
    private Comparable[] elements;
@@ -48,16 +50,17 @@ public class PriorityQueue {
    }
    
    // new in M3
-   public ArrayList<Object> turnorderall(){
+  /* public ArrayList<Object> turnorderall(){
 		
 		  ArrayList<Object> result = new ArrayList<>() ;
 		  for(Object element : elements) 
 			  result.add(element);	
+		  
 		  Collections.reverse(result);
 		  
 		  return result ;
 	  }
 
-   
+   */
 
 }
