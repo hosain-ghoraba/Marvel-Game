@@ -1,6 +1,8 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -17,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import engine.Game;
+import engine.Player;
 import exceptions.AbilityUseException;
 import exceptions.ChampionDisarmedException;
 import exceptions.GameActionException;
@@ -26,12 +29,13 @@ import exceptions.NotEnoughResourcesException;
 import exceptions.UnallowedMovementException;
 import model.abilities.Ability;
 import model.abilities.AreaOfEffect;
+import model.abilities.DamagingAbility;
 import model.world.Champion;
 import model.world.Cover;
 import model.world.Damageable;
 import model.world.Direction;
 
-public class marvelcontroler implements ActionListener ,KeyListener{
+public class marvelcontroler implements ActionListener {
 
 
 	private gamewindow view ;
@@ -42,81 +46,88 @@ public class marvelcontroler implements ActionListener ,KeyListener{
 	
 	 public marvelcontroler (Game game)
 	{
-		isSingleTargerAbilityCasted = false ;
-		this.game = game;		
-		System.out.println(game.getFirstPlayer().getLeader().getName());
-		
-		boardJbutton = new JButton [5][5] ;
-		view = new gamewindow(game);
-		view.addKeyListener(this);
-		view.gamePanel.addKeyListener(this);
-		view.setFocusable(true);
-		view.gamePanel.setFocusable(true);
-		for (int i=4;i>=0;i--)
+		 this.game = game;			
+		 view = new gamewindow(game);
+		 boardJbutton = new JButton [5][5] ;
+    	 isSingleTargerAbilityCasted = false ;
+
+		for (int i = 4 ; i >= 0 ; i--)
 		{
-			for (int j=0;j<5;j++)
-			{
-			
-				JButton x = new JButton ();
-				
-			x.addActionListener(this);
-			boardJbutton[i][j]=x;
-			if(game.getBoard()[i][j]!=null) {
-				Object z =game.getBoard()[i][j];
-				if(z instanceof Cover) {
-				Cover c = (Cover)z ;
-					
-					x.setText("cover "+ " current healthpoints: "+c.getCurrentHP() );	
-				
-				}
-				else {
-				Champion c =(Champion) z;
-				x.setText(c.getName() +" current healthpoints: "+c.getCurrentHP());
-				  	
-				}
-			
-			}
-			view.add_button(x);
+			for (int j = 0 ; j < 5 ; j++)
+			{			
+				JButton btn = new JButton ();				
+				btn.addActionListener(this);
+				boardJbutton[i][j] = btn;
+				view.add_button(btn);
 		
-			
 			}
 		}
+		updateboard();
+		for(Component comp : view.actionsPanel.getComponents())
+			((JButton)comp).addActionListener(this);
+        
 
 	}
 	
-
-		public void updateboard() {
+        
+	 	public void updateboard() {
 			for(int i=4 ;i>=0;i--) {
 				for(int j=0;j<5;j++) {
-					if(game.getBoard()[i][j]==null)
-						boardJbutton[i][j].setText("")
-						;
-					else {
-						if(game.getBoard()[i][j] instanceof Champion) {
-							boardJbutton[i][j].setText(((Champion)game.getBoard()[i][j]).getName()+  "  current health points:"+ ((Champion)game.getBoard()[i][j]).getCurrentHP());
-							//need to add champion details in hover
-							
+					JButton btn = boardJbutton[i][j];
 
-						}
-						else
+						Object z = game.getBoard()[i][j];
+						String btnText = "";
+						if(z == null)
 						{
+							btn.setBackground(null);
+						}
+						else if(z instanceof Cover) 
+						{
+							Cover c = (Cover) z ;
+							btnText += "cover \n" + "HP : " + c.getCurrentHP();
+							btn.setBackground(Color.orange);
+					
+						}
+						else 
+						{
+							Champion c = (Champion) z;
+							btnText += "holder player : ";
+							if(game.getFirstPlayer().getTeam().contains(c))
+							{
+								btnText += game.getFirstPlayer().getName() + '\n';
+								btn.setBackground(Color.cyan);
+							}
+							else
+							{
+								btnText += game.getSecondPlayer().getName() + '\n';
+								btn.setBackground(Color.pink);
+							}
 							
-							boardJbutton[i][j].setText("cover , current health pionts:" +((Cover)game.getBoard()[i][j]).getCurrentHP() );
-							
+							btnText += c.getName() + '\n' + "HP : " + c.getCurrentHP() ;
+							if(c == game.getCurrentChampion() )
+								btn.setBackground(Color.green);
+						    
+					
 						}
 						
+						btn.setText(Game.StringToHTML(btnText));
+					    
+				
+					
 					}
 					
 				}
-			}
+			
 			
 		}
         public void updateInfoPanel() {
-        	view.infoPanel.setVisible(false);
+
         	view.infoPanel = view.give_updated_infoPanel(game);
+  
         }
 		
-		private void attack(int response) {
+		
+        private void attack(int response) throws NotEnoughResourcesException, ChampionDisarmedException  {
 			
 			Direction attakeDirection = null;			
 			switch(response) 
@@ -142,352 +153,149 @@ public class marvelcontroler implements ActionListener ,KeyListener{
 			}
 			
 			}
-			
-			try
-			{
-				game.attack(attakeDirection);
-			}
-			catch (GameActionException e) 
-			{
-				JOptionPane.showMessageDialog(null, e.getMessage() ,"", JOptionPane.ERROR_MESSAGE);	
-			}
+
+			game.attack(attakeDirection);
+
 
 			
 			
 }
 		
-		private void castabilt(Ability a)  {
+        public void onAttake() throws NotEnoughResourcesException, ChampionDisarmedException
+		{			
+			String[] options = new String[] {"Right", "left", "up", "down"};
+    		int response = JOptionPane.showOptionDialog(null, "choose the direction of the attack", "attack",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+            null, options, options[0]);
+    		attack(response);      
+            updateboard();
+            updateInfoPanel();
+    		view.revalidate();
+    		view.repaint();
+		}
+        
+    	private void castabilt(Ability a) throws AbilityUseException, NotEnoughResourcesException, CloneNotSupportedException  {
 			// TODO Auto-generated method stub
-			if(a.getCastArea()==AreaOfEffect.SELFTARGET ||a.getCastArea()==AreaOfEffect.TEAMTARGET   ||a.getCastArea()==AreaOfEffect.SURROUND) {
-				try
-			{game.castAbility(a);}
-			catch(GameActionException  e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(),"", JOptionPane.ERROR_MESSAGE);
+			if(a.getCastArea()==AreaOfEffect.SELFTARGET ||a.getCastArea()==AreaOfEffect.TEAMTARGET   ||a.getCastArea()==AreaOfEffect.SURROUND) 			
+				game.castAbility(a);
 
-				
-			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}}
-			
-			else if(a.getCastArea()==AreaOfEffect.DIRECTIONAL) {
+			else if(a.getCastArea()==AreaOfEffect.DIRECTIONAL) 
+			{
 	    		String[] options = new String[] {"Right", "left", "up", "down"};
-
-				int response = JOptionPane.showOptionDialog(null, "choose the direction of the ability", "ability",
-				            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-				            null, options, options[0]);
-		while(response==-1) {
-				switch(response) {
-			case(0):
-				try{game.castAbility(a, Direction.RIGHT);}
-			catch(GameActionException  e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-
+				int response = JOptionPane.showOptionDialog(null, "choose the direction of the ability", "ability",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
+				switch(response) 
+				{
 				
-			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-			break ;
-			case(1):
-				try{game.castAbility(a, Direction.LEFT);}
-			catch(GameActionException  e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-
-				
-			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-			break ;
-			case(2):
-				try{game.castAbility(a, Direction.UP);}
-			catch(GameActionException  e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-
-				
-			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-			break ;
-			case(3):
-				try{game.castAbility(a, Direction.DOWN);}
-			catch(GameActionException  e) {
-				JOptionPane.showMessageDialog(null, e.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-
-				
-			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-			break ;
-			 default: //user closed the window without choosing
-				 
-			    		
-
-					  response = JOptionPane.showOptionDialog(null, "you didn't choose the direction of the ability, please choose the direction of the ability", "ability",
-					            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-					            null, options, options[0]);
-					  break ;
-				  }
-				
-		
-		
-		}}
+				case(0): game.castAbility(a, Direction.RIGHT);break;					
+				case(1): game.castAbility(a, Direction.LEFT);break;					
+				case(2): game.castAbility(a, Direction.UP);break;					
+				case(3): game.castAbility(a, Direction.DOWN);break;
 			
-			else {
-				isSingleTargerAbilityCasted =true ;
+			    default: //user closed the window without choosing
+				 
+			    	{
+					while(response == - 1) 
+					  {
+					  response = JOptionPane.showOptionDialog(null, "you didn't choose the direction of the ability, please choose the direction of the ability", "ability",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
+					  break ;
+					  }
+			    	}
+			    
+				}
+				
+			}
+		
+			else 
+			{				
+				isSingleTargerAbilityCasted = true ;
 				singleTargetAbility = a ;
 				JOptionPane.showMessageDialog(null, " please choose who do you want to cast this ability on","", JOptionPane.INFORMATION_MESSAGE);
 			}	
-			/*	q =new JFrame() ;
-			q.setVisible(true);
-JLabel p =new JLabel();
-p.setLayout(new GridLayout(5, 5));;
-q.add(p);
-
-			w.setVisible(false);
- for (int i=4;i>=0;i--)
-	{
-		for (int j=0;j<5;j++)
-		{
-	JButton x =	boardJbutton[i][j];
-x.addActionListener(this);
-p.add(x);
 		}
-			
-	
-		
-		}
-	}
-*/
-		}
-
-		public int[] getindex (JButton btn ) {
-		 for(int i = 0 ; i < 5 ; i++) 
-			 for(int j = 0 ; j < 5 ; j++)
-				 if(boardJbutton[i][j] != null ) 
-					 if(boardJbutton[i][j] == btn)
-						 return new int [] {i,j} ;
-        
-		 return null ;
-	 
-	 }
-	
-
-
-	@Override
-		public void actionPerformed(ActionEvent e) {
-    
-	if(isSingleTargerAbilityCasted == false) 
-		return ;
-	isSingleTargerAbilityCasted = false ;
-	JButton clicked = (JButton) e.getSource();
-	//remaining code goes here 
-	int[] b = getindex(clicked) ;
-	try
-	{		
-		game.castAbility(singleTargetAbility , ((Damageable )game.getBoard()[b[0]][b[1]]).getLocation().x,  ((Damageable )game.getBoard()[b[0]][b[1]]).getLocation().y);
-	}
-	catch(GameActionException exp) 
-	{
-		JOptionPane.showMessageDialog(null, exp.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-	
-	} catch (CloneNotSupportedException e1) {
-		e1.printStackTrace();
-	}
-view.revalidate();
-view.repaint();
-	//q.setVisible(false);
-	//w.setVisible(true);
-	
-	
-	}
-
-		public void keyPressed(KeyEvent e) {
-
-//		System.out.println(e.getExtendedKeyCode());
-		System.out.println(e.getKeyCode());
-		switch(e.getKeyCode()) {
-		case(37) :
-			try {
-				game.move(Direction.LEFT);
-		       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
-		       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
-				updateboard();
-				 JPanel z=  view.give_updated_infoPanel(game);
-					view.remove(view.infoPanel);
-					view.add(z,BorderLayout.EAST);
-view.revalidate();
-view.repaint();
-			}
-		   catch (GameActionException z) {
-			   
-				JOptionPane.showMessageDialog(null, z.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-
-			   
-		   }  
-		break;
-		case(39) :
-			try {
-				game.move(Direction.RIGHT);
-		       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
-		       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
-				updateboard();
-				JPanel z=  view.give_updated_infoPanel(game);
-				view.remove(view.infoPanel);
-				view.add(z,BorderLayout.EAST);
-				view.revalidate();
-				view.repaint();	
-			}
-		   catch (GameActionException z) {
-			   
-				JOptionPane.showMessageDialog(null, z.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-
-			   
-		   }  
-		break;
-
-		case(38) :
-			try {
-				game.move(Direction.UP );
-		       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
-		       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
-				updateboard();
-				 JPanel z=  view.give_updated_infoPanel(game);
-					view.remove(view.infoPanel);
-					view.add(z,BorderLayout.EAST);
-view.revalidate();
-view.repaint();
-			}
-		   catch (GameActionException z) {
-			   
-				JOptionPane.showMessageDialog(null, z.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-
-			   
-		   }  
-		break;
-		case(40) :	try {
-			game.move(Direction.DOWN );
-       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
-       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
-		updateboard();
-		 JPanel z=  view.give_updated_infoPanel(game);
-			view.remove(view.infoPanel);
-			view.add(z,BorderLayout.EAST);
-			view.revalidate();
-			view.repaint();
-	}
-   catch (GameActionException z) {
-	   
-		JOptionPane.showMessageDialog(null, z.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-
-	   
-   }  
-break;
-	}
-		
-	
-		switch(e.getKeyChar()) {
-		
-    	case('w'):   //leader ability 
-		try {
-			game.useLeaderAbility();
-			//  w.updateplayersdata();
-	            updateboard(); 
-	            JPanel z=  view.give_updated_infoPanel(game);
-		view.remove(view.infoPanel);
-		view.add(z,BorderLayout.EAST);
-		view.revalidate();
-		view.repaint();
-		
-		}
-	catch(GameActionException  x) {
-		JOptionPane.showMessageDialog(null, x.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-
-		
-	} 
-    	break;
-    	case('a')://attack
-    		String[] options = new String[] {"Right", "left", "up", "down"};
-        int response = JOptionPane.showOptionDialog(null, "choose the direction of the attack", "attack",
-            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-            null, options, options[0]);
-         attack(response);  
-      //   w.updateplayersdata();
-            updateboard();
-//            w.give_updated_infoPanel(game);
-            JPanel z=  view.give_updated_infoPanel(game);
-    		view.remove(view.infoPanel);
-    		view.add(z,BorderLayout.EAST);
-    		view.revalidate();
-    		view.repaint();
-            //need to update the board 
-         //need to check if game is over
-         break ;
-    	case('e'): //end turn 
-    	
-    			game.endTurn();
-    		//	w.update_curchamp_datails();
-    		//	w.updateplayersdata();
-    		     updateboard();
-    		    view.remove(view.infoPanel); 	        
-    		    view.add(view.give_updated_infoPanel(game),BorderLayout.EAST);
-    		    view.revalidate();
-    			view.repaint();
-    		     //need to update the board
-    	         //need to check if game is over
-break ;
-    	case ('c'): //casting an ability 
-             ArrayList<Ability> opt = new ArrayList<>() ;
-    	    for(Ability h : game.getCurrentChampion().getAbilities()) {
-    	    	if (h.getCurrentCooldown()==0)
+        public void onCastAbility() throws AbilityUseException, NotEnoughResourcesException, CloneNotSupportedException {
+			ArrayList<Ability> opt = new ArrayList<>() ;
+    	    for(Ability h : game.getCurrentChampion().getAbilities())
+    	    {
+    	    	if (h.getCurrentCooldown() == 0)
     	    		opt.add(h);
     	    	
     	    }
     		String[] options2 = new String[opt.size()];
-    		 for(int i =0;i<opt.size();i++) {
-    			 
-    			 options2[i]= opt.get(i).getName();
-    			 
-    		 }
-    		  int response2 = JOptionPane.showOptionDialog(null, "which ability do you want to cast", "ability",
-    		            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-    		            null, options2, options2[0]);
-    			castabilt(opt.get(response2));
-    	//		w.updateplayersdata();
-   		     updateboard();
-   		  view.remove(view.infoPanel); 	        
-		    view.add(view.give_updated_infoPanel(game),BorderLayout.EAST);
-
-		    view.revalidate();
-			view.repaint();
-    	    
-    	    
-    	    
-    		          		
-    	
-default: break ;
+    		 for(int i = 0 ; i < opt.size() ; i++)     			 
+    			 options2[i]= opt.get(i).getName();   			   		 
+    		 int response2 = JOptionPane.showOptionDialog(null, "which ability do you want to cast", "ability",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options2, options2[0]);castabilt(opt.get(response2));
+             // ability casted ! (see end of upper line)
+		}
+  		
+		public int[] getindex (JButton btn ) {
+			 for(int i = 0 ; i < 5 ; i++) 
+				 for(int j = 0 ; j < 5 ; j++)
+					 if(boardJbutton[i][j] != null ) 
+						 if(boardJbutton[i][j] == btn)
+							 return new int [] {i,j} ;
+	        
+			 return null ;
+		 
+		 }
+		
+		
+		
+		public void actionPerformed(ActionEvent e) {
+			
+		JButton clicked = ((JButton)e.getSource());		
+		try
+		{
+			
+		switch (clicked.getText())
+		{
+		case "move up" : game.move(Direction.UP);break;
+		case "move down" : game.move(Direction.DOWN);break;
+		case "move right" : game.move(Direction.RIGHT);break;
+		case "move left" : game.move(Direction.LEFT);break;
+		case "attack" : onAttake();break;
+		case "use leader ability" : game.useLeaderAbility();break;
+		case "end turn" : game.endTurn();break;
+		case "cast ability" : onCastAbility();break; 
+		
+		default : // it is a click on the board (single target ability) ) 
+	      {
+			if(isSingleTargerAbilityCasted == false) 
+				return ;
+			isSingleTargerAbilityCasted = false ;
+			int[] b = getindex(clicked) ;				
+			game.castAbility(singleTargetAbility , b[0],b[1]);
+	
+		  }
+		}		
+		Player winner = game.checkGameOver();
+		if(winner != null)
+		{
+			JOptionPane.showMessageDialog(null, "Player " + winner.getName() + " is the winner !","", JOptionPane.ERROR_MESSAGE);
+			System.exit(0); // stop program
+			view.dispose(); // close window
+		}
+		    
+		updateboard();
+		updateInfoPanel();
+		view.revalidate();
+		view.repaint();
+		
+		}
+		catch(GameActionException exp)
+		{
+			JOptionPane.showMessageDialog(null, exp.getMessage(),"", JOptionPane.ERROR_MESSAGE);
+		}
+		catch(Exception general)
+		{
+			general.printStackTrace();
+		}
+		
+	
 }
-	
-	}
-	
-	@Override
-		public void keyTyped(KeyEvent e) {
-//System.out.println(e.getKeyCode());
 
 
 
-}
-		public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		//System.out.println(e.getKeyChar());
-
-	}
-	
-
-    public static void main(String[] args) {	
+		public static void main(String[] args) {	
     	new loginWindow();
 
 }

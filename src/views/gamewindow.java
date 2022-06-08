@@ -9,6 +9,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -30,8 +32,10 @@ import model.effects.Effect;
 
 public class gamewindow extends JFrame implements ActionListener {
 
-	JPanel gamePanel ;
+	JPanel boardPanel ;
     JPanel infoPanel;
+    JPanel actionsPanel;
+
     Game game ;
 
 		   
@@ -39,20 +43,38 @@ public gamewindow(Game game) {
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Marvel - Ultimate War");
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setResizable(false);		
+		setExtendedState(JFrame.MAXIMIZED_BOTH);	
 		ImageIcon logo = new ImageIcon("logo.png");
 		setIconImage(logo.getImage());
 		
 		this.game = game;
 		
-		gamePanel = new JPanel();
-		gamePanel.setLayout(new GridLayout(5,5,0,0));
-		gamePanel.setVisible(true);
+		boardPanel = new JPanel();
+		boardPanel.setLayout(new GridLayout(5,5,0,0));
+		boardPanel.setBorder(BorderFactory.createEmptyBorder(0, 40, 0,20 )); 
+		boardPanel.setVisible(true);
 
         infoPanel = give_updated_infoPanel(game);
+        infoPanel.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
+        infoPanel.setVisible(true);
         
-		add(gamePanel,BorderLayout.CENTER);
+        
+        actionsPanel = new JPanel(new GridLayout(0,1));
+        actionsPanel.add(new JButton("move up"));
+        actionsPanel.add(new JButton("move down"));
+        actionsPanel.add(new JButton("move right"));
+        actionsPanel.add(new JButton("move left"));
+        actionsPanel.add(new JButton("attack"));
+        actionsPanel.add(new JButton("cast ability"));
+        actionsPanel.add(new JButton("use leader ability"));
+        actionsPanel.add(new JButton("end turn"));
+        actionsPanel.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
+        actionsPanel.setVisible(true);
+        
+
+
+		add(boardPanel,BorderLayout.CENTER);
+		add(actionsPanel,BorderLayout.WEST);
 		add(infoPanel,BorderLayout.EAST);
         
 		revalidate();
@@ -249,13 +271,12 @@ public JPanel give_updated_infoPanel (Game game) {
 	      
 	      for(int i = 0 ; i < 20 ; i++) // to create a space (20 lines)
 	    	  infoPanel.add(new JLabel("\n")); 
-          
-
+                    
 	      return (infoPanel);
 
 }	
 public void add_button(JButton x) {
-	gamePanel.add(x);
+	boardPanel.add(x);
 	
 }
 public void actionPerformed(ActionEvent e) {
