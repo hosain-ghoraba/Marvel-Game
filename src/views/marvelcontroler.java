@@ -141,13 +141,13 @@ public class marvelcontroler implements ActionListener {
 			default: //user closed the window without choosing
 			{							
 				
-				while(response == -1) 
+			/*	while(response == -1) 
 				{
 					String[] options = new String[] {"Right", "left", "up", "down"};					
 					response = JOptionPane.showOptionDialog(null, "you didn't choose the direction of the attack, please choose the direction of the attack", "attack",
 					JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
 				}
-				attack(response);
+				attack(response);*/
 				return;
 				
 			}
@@ -192,9 +192,9 @@ public class marvelcontroler implements ActionListener {
 				case(3): game.castAbility(a, Direction.DOWN);break;
 			
 			    default: //user closed the window without choosing
-				 
-			    	{
-					while(response == - 1) 
+				   return ; }}
+			    	
+			/*		while(response == - 1) 
 					  {
 					  response = JOptionPane.showOptionDialog(null, "you didn't choose the direction of the ability, please choose the direction of the ability", "ability",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
 					  break ;
@@ -202,8 +202,8 @@ public class marvelcontroler implements ActionListener {
 			    	}
 			    
 				}
-				
-			}
+				*/
+			
 		
 			else 
 			{				
@@ -223,7 +223,10 @@ public class marvelcontroler implements ActionListener {
     		String[] options2 = new String[opt.size()];
     		 for(int i = 0 ; i < opt.size() ; i++)     			 
     			 options2[i]= opt.get(i).getName();   			   		 
-    		 int response2 = JOptionPane.showOptionDialog(null, "which ability do you want to cast", "ability",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options2, options2[0]);castabilt(opt.get(response2));
+    		 int response2 = JOptionPane.showOptionDialog(null, "which ability do you want to cast", "ability",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options2, options2[0]);
+    		 if(response2 == -1)
+    			 return ;
+    		 castabilt(opt.get(response2));
              // ability casted ! (see end of upper line)
 		}
   		

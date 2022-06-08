@@ -25,7 +25,6 @@ public class loginWindow extends JFrame implements ActionListener  {
 		setExtendedState(JFrame.MAXIMIZED_BOTH); // what does this do ? (hosain) 
 		this.setSize(700,525);
 		this.setResizable(false);
-		
 		this.setIconImage(getIconImage()); // what does this do ? where is the icon image?
 
 		
