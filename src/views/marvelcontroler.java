@@ -1,6 +1,8 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -29,7 +32,7 @@ import model.world.Damageable;
 import model.world.Direction;
 
 public class marvelcontroler implements ActionListener ,KeyListener{
-
+JFrame q ;
 	private gamewindow w ;
 	private JButton [][] boardJbutton ;
 	private Game game;
@@ -242,13 +245,33 @@ public class marvelcontroler implements ActionListener ,KeyListener{
 				issingletargerabilitycasted =true ;
 				singletargerability = a ;
 				JOptionPane.showMessageDialog(null, " please choose who do you want to cast this ability on","", JOptionPane.INFORMATION_MESSAGE);
-				
-				
-			}
-			
-			
-			
+			}	
+			/*	q =new JFrame() ;
+			q.setVisible(true);
+JLabel p =new JLabel();
+p.setLayout(new GridLayout(5, 5));;
+q.add(p);
+
+			w.setVisible(false);
+ for (int i=4;i>=0;i--)
+	{
+		for (int j=0;j<5;j++)
+		{
+	JButton x =	boardJbutton[i][j];
+x.addActionListener(this);
+p.add(x);
 		}
+			
+	
+		
+		}
+	}
+*/
+		}
+			
+			
+			
+		
 		
 		public int[] getindex (JButton x ) {
 		 for(int i = 0;i<5;i++) {
@@ -284,6 +307,12 @@ public class marvelcontroler implements ActionListener ,KeyListener{
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	}
+w.revalidate();
+w.repaint();
+	//q.setVisible(false);
+	//w.setVisible(true);
+	
+	
 	}
 
 	@Override
