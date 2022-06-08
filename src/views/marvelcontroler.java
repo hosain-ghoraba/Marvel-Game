@@ -30,22 +30,22 @@ import model.world.Direction;
 
 public class marvelcontroler implements ActionListener ,KeyListener{
 
-	private gamewindow w ;
+	private gamewindow view ;
 	private JButton [][] boardJbutton ;
 	private Game game;
-	Boolean issingletargerabilitycasted ;
-	Ability singletargerability ;
+	Boolean isSingleTargerAbilityCasted ;
+	Ability singleTargetAbility ;
 	
 	 public marvelcontroler (Game game)
 	{
-		issingletargerabilitycasted =false ;
+		isSingleTargerAbilityCasted = false ;
 		this.game = game;		
 		boardJbutton = new JButton [5][5] ;
-		w =new gamewindow(game);
-		w.addKeyListener(this);
-		w.gamePanel.addKeyListener(this);
-		w.setFocusable(true);
-		w.gamePanel.setFocusable(true);
+		view = new gamewindow(game);
+		view.addKeyListener(this);
+		view.gamePanel.addKeyListener(this);
+		view.setFocusable(true);
+		view.gamePanel.setFocusable(true);
 		for (int i=4;i>=0;i--)
 		{
 			for (int j=0;j<5;j++)
@@ -70,7 +70,7 @@ public class marvelcontroler implements ActionListener ,KeyListener{
 				}
 			
 			}
-			w.add_button(x);
+			view.add_button(x);
 		
 			
 			}
@@ -105,56 +105,50 @@ public class marvelcontroler implements ActionListener ,KeyListener{
 			}
 			
 		}
-
+        public void updateInfoPanel() {
+        	view.infoPanel.setVisible(false);
+        	view.infoPanel = view.give_updated_infoPanel(game);
+        }
+		
 		private void attack(int response) {
-			// TODO Auto-generated method stub
-			switch(response) {
-			case(0): try {
-				game.attack(Direction.RIGHT);
-			} catch (GameActionException  j) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, j.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-				
-			} 
-			break ;
-			case(1): try {
-				game.attack(Direction.LEFT);
-			} catch (GameActionException  j) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, j.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-				
-			} 	       break ;
 			
-			case(2): try {
-				game.attack(Direction.UP);
-			}catch (GameActionException  j) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, j.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-				
-			} 	       break ;
+			Direction attakeDirection = null;			
+			switch(response) 
+			{
 			
-			case(3): try {
-				game.attack(Direction.DOWN);
-			} catch (GameActionException  j) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(null, j.getMessage(),"", JOptionPane.ERROR_MESSAGE);
-				
-			} 	       break ;
+			case(0): attakeDirection = Direction.RIGHT;  break;
+			case(1): attakeDirection = Direction.LEFT ; break;					
+			case(2): attakeDirection = Direction.UP ; break;                  			
+			case(3): attakeDirection = Direction.DOWN ; break;
 			
 			default: //user closed the window without choosing
-				while(response==-1) {
-					String[] options = new String[] {"Right", "left", "up", "down"};
-					
+			{							
+				
+				while(response == -1) 
+				{
+					String[] options = new String[] {"Right", "left", "up", "down"};					
 					response = JOptionPane.showOptionDialog(null, "you didn't choose the direction of the attack, please choose the direction of the attack", "attack",
-							JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-							null, options, options[0]);
+					JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
 				}
-				attack(response);  
-				break ;
+				attack(response);
+				return;
+				
 			}
 			
+			}
 			
-		}
+			try
+			{
+				game.attack(attakeDirection);
+			}
+			catch (GameActionException e) 
+			{
+				JOptionPane.showMessageDialog(null, e.getMessage() ,"", JOptionPane.ERROR_MESSAGE);	
+			}
+
+			
+			
+}
 		
 		private void castabilt(Ability a)  {
 			// TODO Auto-generated method stub
@@ -237,8 +231,8 @@ public class marvelcontroler implements ActionListener ,KeyListener{
 		}}
 			
 			else {
-				issingletargerabilitycasted =true ;
-				singletargerability = a ;
+				isSingleTargerAbilityCasted =true ;
+				singleTargetAbility = a ;
 				JOptionPane.showMessageDialog(null, " please choose who do you want to cast this ability on","", JOptionPane.INFORMATION_MESSAGE);
 				
 				
@@ -267,19 +261,21 @@ public class marvelcontroler implements ActionListener ,KeyListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
     
-	if(issingletargerabilitycasted==false) return ;
-	issingletargerabilitycasted =false ;
-	JButton z = (JButton) e.getSource();
+	if(isSingleTargerAbilityCasted == false) 
+		return ;
+	isSingleTargerAbilityCasted = false ;
+	JButton clicked = (JButton) e.getSource();
 	//remaining code goes here 
-	int[] b =getindex(z) ;
-	try {
-	game.castAbility(singletargerability , ((Damageable )game.getBoard()[b[0]][b[1]]).getLocation().x,  ((Damageable )game.getBoard()[b[0]][b[1]]).getLocation().y);
+	int[] b = getindex(clicked) ;
+	try
+	{		
+		game.castAbility(singleTargetAbility , ((Damageable )game.getBoard()[b[0]][b[1]]).getLocation().x,  ((Damageable )game.getBoard()[b[0]][b[1]]).getLocation().y);
 	}
-	catch(GameActionException f) {
-		JOptionPane.showMessageDialog(null, f.getMessage(),"", JOptionPane.ERROR_MESSAGE);
+	catch(GameActionException exp) 
+	{
+		JOptionPane.showMessageDialog(null, exp.getMessage(),"", JOptionPane.ERROR_MESSAGE);
 	
 	} catch (CloneNotSupportedException e1) {
-		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	}
 	}
@@ -296,11 +292,11 @@ public class marvelcontroler implements ActionListener ,KeyListener{
 		       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
 		       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
 				updateboard();
-				 JPanel z=  w.give_updated_infoPanel(game);
-					w.remove(w.infoPanel);
-					w.add(z,BorderLayout.EAST);
-w.revalidate();
-w.repaint();
+				 JPanel z=  view.give_updated_infoPanel(game);
+					view.remove(view.infoPanel);
+					view.add(z,BorderLayout.EAST);
+view.revalidate();
+view.repaint();
 			}
 		   catch (GameActionException z) {
 			   
@@ -315,11 +311,11 @@ w.repaint();
 		       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
 		       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
 				updateboard();
-				 JPanel z=  w.give_updated_infoPanel(game);
-					w.remove(w.infoPanel);
-					w.add(z,BorderLayout.EAST);
-w.revalidate();
-w.repaint();
+				 JPanel z=  view.give_updated_infoPanel(game);
+					view.remove(view.infoPanel);
+					view.add(z,BorderLayout.EAST);
+view.revalidate();
+view.repaint();
 			}
 		   catch (GameActionException z) {
 			   
@@ -335,11 +331,11 @@ w.repaint();
 		       		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
 		       		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
 				updateboard();
-				 JPanel z=  w.give_updated_infoPanel(game);
-					w.remove(w.infoPanel);
-					w.add(z,BorderLayout.EAST);
-w.revalidate();
-w.repaint();
+				 JPanel z=  view.give_updated_infoPanel(game);
+					view.remove(view.infoPanel);
+					view.add(z,BorderLayout.EAST);
+view.revalidate();
+view.repaint();
 			}
 		   catch (GameActionException z) {
 			   
@@ -353,11 +349,11 @@ w.repaint();
        		//boardJbutton[game.getCurrentChampion().getLocation().x][game.getCurrentChampion().getLocation().y].setText(game.getCurrentChampion().getName());
        		//boardJbutton[game.getCurrentChampion().getLocation().x-1][game.getCurrentChampion().getLocation().y].setText("");
 		updateboard();
-		 JPanel z=  w.give_updated_infoPanel(game);
-			w.remove(w.infoPanel);
-			w.add(z,BorderLayout.EAST);
-			w.revalidate();
-			w.repaint();
+		 JPanel z=  view.give_updated_infoPanel(game);
+			view.remove(view.infoPanel);
+			view.add(z,BorderLayout.EAST);
+			view.revalidate();
+			view.repaint();
 	}
    catch (GameActionException z) {
 	   
@@ -376,11 +372,11 @@ break;
 			game.useLeaderAbility();
 			//  w.updateplayersdata();
 	            updateboard(); 
-	            JPanel z=  w.give_updated_infoPanel(game);
-		w.remove(w.infoPanel);
-		w.add(z,BorderLayout.EAST);
-		w.revalidate();
-		w.repaint();
+	            JPanel z=  view.give_updated_infoPanel(game);
+		view.remove(view.infoPanel);
+		view.add(z,BorderLayout.EAST);
+		view.revalidate();
+		view.repaint();
 		
 		}
 	catch(GameActionException  x) {
@@ -398,11 +394,11 @@ break;
       //   w.updateplayersdata();
             updateboard();
 //            w.give_updated_infoPanel(game);
-            JPanel z=  w.give_updated_infoPanel(game);
-    		w.remove(w.infoPanel);
-    		w.add(z,BorderLayout.EAST);
-    		w.revalidate();
-    		w.repaint();
+            JPanel z=  view.give_updated_infoPanel(game);
+    		view.remove(view.infoPanel);
+    		view.add(z,BorderLayout.EAST);
+    		view.revalidate();
+    		view.repaint();
             //need to update the board 
          //need to check if game is over
          break ;
@@ -412,10 +408,10 @@ break;
     		//	w.update_curchamp_datails();
     		//	w.updateplayersdata();
     		     updateboard();
-    		    w.remove(w.infoPanel); 	        
-    		    w.add(w.give_updated_infoPanel(game),BorderLayout.EAST);
-    		    w.revalidate();
-    			w.repaint();
+    		    view.remove(view.infoPanel); 	        
+    		    view.add(view.give_updated_infoPanel(game),BorderLayout.EAST);
+    		    view.revalidate();
+    			view.repaint();
     		     //need to update the board
     	         //need to check if game is over
 break ;
@@ -438,11 +434,11 @@ break ;
     			castabilt(opt.get(response2));
     	//		w.updateplayersdata();
    		     updateboard();
-   		  w.remove(w.infoPanel); 	        
-		    w.add(w.give_updated_infoPanel(game),BorderLayout.EAST);
+   		  view.remove(view.infoPanel); 	        
+		    view.add(view.give_updated_infoPanel(game),BorderLayout.EAST);
 
-		    w.revalidate();
-			w.repaint();
+		    view.revalidate();
+			view.repaint();
     	    
     	    
     	    
