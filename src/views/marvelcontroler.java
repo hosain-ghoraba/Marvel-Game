@@ -1,6 +1,8 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -30,7 +33,11 @@ import model.world.Direction;
 
 public class marvelcontroler implements ActionListener ,KeyListener{
 
+
 	private gamewindow view ;
+
+	private gamewindow w ;
+
 	private JButton [][] boardJbutton ;
 	private Game game;
 	Boolean isSingleTargerAbilityCasted ;
@@ -40,6 +47,8 @@ public class marvelcontroler implements ActionListener ,KeyListener{
 	{
 		isSingleTargerAbilityCasted = false ;
 		this.game = game;		
+		System.out.println(game.getFirstPlayer().getLeader().getName());
+		
 		boardJbutton = new JButton [5][5] ;
 		view = new gamewindow(game);
 		view.addKeyListener(this);
@@ -234,13 +243,33 @@ public class marvelcontroler implements ActionListener ,KeyListener{
 				isSingleTargerAbilityCasted =true ;
 				singleTargetAbility = a ;
 				JOptionPane.showMessageDialog(null, " please choose who do you want to cast this ability on","", JOptionPane.INFORMATION_MESSAGE);
-				
-				
-			}
-			
-			
-			
+			}	
+			/*	q =new JFrame() ;
+			q.setVisible(true);
+JLabel p =new JLabel();
+p.setLayout(new GridLayout(5, 5));;
+q.add(p);
+
+			w.setVisible(false);
+ for (int i=4;i>=0;i--)
+	{
+		for (int j=0;j<5;j++)
+		{
+	JButton x =	boardJbutton[i][j];
+x.addActionListener(this);
+p.add(x);
 		}
+			
+	
+		
+		}
+	}
+*/
+		}
+			
+			
+			
+		
 		
 		public int[] getindex (JButton x ) {
 		 for(int i = 0;i<5;i++) {
@@ -278,9 +307,26 @@ public class marvelcontroler implements ActionListener ,KeyListener{
 	} catch (CloneNotSupportedException e1) {
 		e1.printStackTrace();
 	}
+w.revalidate();
+w.repaint();
+	//q.setVisible(false);
+	//w.setVisible(true);
+	
+	
 	}
 
 	@Override
+	public void keyTyped(KeyEvent e) {
+//System.out.println(e.getKeyCode());
+	
+
+	
+}
+	
+	
+
+
+
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 //		System.out.println(e.getExtendedKeyCode());
@@ -454,13 +500,7 @@ default: break ;
 		//System.out.println(e.getKeyChar());
 
 	}
-	public void keyTyped(KeyEvent e) {
-		//System.out.println(e.getKeyCode());
 	
-
-	
-}
-
 
    public static void main(String[] args) {
 //	while(true) {
