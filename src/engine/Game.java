@@ -841,41 +841,61 @@ import model.world.Villain;
 		 for(Champion target : targets)
 			 checkIfDeadAndActAccordingly(target);
 	 }
-    public void endTurn() 
-	 {	 	
-		 turnOrder.remove() ;			
-		 
-		 if(turnOrder.isEmpty())		 			 
-			 prepareChampionTurns();
-				 
-		//while loop to prepare Champions_needed_To_Update_their_Timers and skip knockedout ones
-		ArrayList<Champion> Champions_needed_To_Update_their_Timers = new ArrayList<Champion>();
-        while(! turnOrder.isEmpty() )
-        {
-        	Champion peeked = (Champion)(turnOrder.peekMin());	
-            if (peeked.getCondition() == Condition.INACTIVE)       	
-        		Champions_needed_To_Update_their_Timers.add((Champion)turnOrder.remove()); 
-        	else
-        	   {
-        		Champions_needed_To_Update_their_Timers.add(peeked);
-        	    break;
-        	   }        	
-        }
-        for(Champion champ : Champions_needed_To_Update_their_Timers) 
-        	 updateTimers(champ);
-        
-        if(turnOrder.isEmpty())        
-        	prepareChampionTurns();
-	               
-	 }
-    private void prepareChampionTurns()
-	 {	 	 	
-	    for(Champion champ : firstPlayer.getTeam())    
-	    	    turnOrder.insert(champ);
-	    
-	    for(Champion champ : secondPlayer.getTeam())  
-	    	    turnOrder.insert(champ);
-     }
+    public void endTurn() {
+		turnOrder.remove();
+		if (turnOrder.isEmpty())
+			prepareChampionTurns();
+		while (!turnOrder.isEmpty() && hasEffect((Champion) turnOrder.peekMin(), "Stun")) {
+			Champion current = (Champion) turnOrder.peekMin();
+			updateTimers1(current);
+			turnOrder.remove();
+		}
+		if (!turnOrder.isEmpty())
+		{
+		Champion current = (Champion) turnOrder.peekMin();
+		updateTimers1(current);
+		current.setCurrentActionPoints(current.getMaxActionPointsPerTurn());
+		}
+		else 
+		{
+			prepareChampionTurns();
+		}
+	}
+
+	private void updateTimers1(Champion current) {
+		int i = 0;
+		while (i < current.getAppliedEffects().size()) {
+			Effect e = current.getAppliedEffects().get(i);
+			e.setDuration(e.getDuration() - 1);
+			if (e.getDuration() == 0) {
+				current.getAppliedEffects().remove(e);
+				e.remove(current);
+
+			} else
+				i++;
+		}
+		for (Ability a : current.getAbilities()) {
+			if (a.getCurrentCooldown() > 0)
+				a.setCurrentCooldown(a.getCurrentCooldown() - 1);
+		}
+	}
+
+	private void prepareChampionTurns() {
+		for (Champion c : firstPlayer.getTeam())
+			turnOrder.insert(c);
+		for (Champion c : secondPlayer.getTeam())
+			turnOrder.insert(c);
+
+	}
+	
+	private boolean hasEffect(Champion currentChampion, String s) {
+		for (Effect e : currentChampion.getAppliedEffects()) {
+			if (e.getName().equals(s))
+				return true;
+		}
+		return false;
+	}
+
     
     public  String showChampInfo(Champion c) {
     	String result = "";
