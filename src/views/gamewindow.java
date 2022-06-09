@@ -1,17 +1,13 @@
 package views;
-import model.world.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,16 +18,11 @@ import javax.swing.JTextArea;
 import javax.swing.ToolTipManager;
 
 import engine.Game;
-import engine.Player;
-import engine.PriorityQueue;
 import model.world.Champion;
 import model.abilities.Ability;
-import model.abilities.CrowdControlAbility;
-import model.abilities.DamagingAbility;
-import model.abilities.HealingAbility;
 import model.effects.Effect;
 
-public class gamewindow extends JFrame implements ActionListener {
+public class gamewindow extends JFrame  {
 
 	JPanel boardPanel ;
     JPanel infoPanel;
@@ -53,9 +44,9 @@ public gamewindow(Game game) {
 		
 		boardPanel = new JPanel();
 		boardPanel.setLayout(new GridLayout(5,5,0,0));
-		boardPanel.setBorder(BorderFactory.createEmptyBorder(0, 40, 0,20 )); 
+		boardPanel.setBorder(BorderFactory.createEmptyBorder(0, 40, 0,40 )); 
 		boardPanel.setVisible(true);
-        infoPanel=new JPanel();
+        infoPanel= new JPanel();
         infoPanel = give_updated_infoPanel(game);
         infoPanel.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
         infoPanel.setVisible(true);
@@ -95,12 +86,14 @@ public JPanel give_updated_infoPanel (Game game) {
 	       
 	       /////////////////// first player info ( text area )
 	       JTextArea pl1_info = new JTextArea();		       
-	       String info1 = "                          player 1 \n";
+	       String info1 = "                         player 1 \n";
 	       info1 += "Name : " + game.getFirstPlayer().getName() + "\n";
+	       info1 += "leader : " + game.getFirstPlayer().getLeader().getName() + '\n';
 	       if(game.isFirstLeaderAbilityUsed())
-	            info1 += "leader ability used : " + "YES";
+	            info1 += "leader ability used : " + "YES \n";
 	       else 
-	    	   info1 += "leader ability used : " + "NO";
+	    	   info1 += "leader ability used : " + "NO \n";
+	     
 	       pl1_info.setText(info1);
 	       pl1_info.setEditable(false);
 	       pl1_info.setFont(new Font("Dialog",ABORT,16));
@@ -110,6 +103,7 @@ public JPanel give_updated_infoPanel (Game game) {
 	       
 	       ////////////// firstPlayer remaining champion title (first green bar)
 	       JTextArea firstPlayer_rem_champs_title = new JTextArea("     " + game.getFirstPlayer().getName() +  "'s remaining champions : ");
+	       firstPlayer_rem_champs_title.setEditable(false);
 	       firstPlayer_rem_champs_title.setBackground(Color.green);
 	       firstPlayer_rem_champs_title.setFont(new Font ("Dialog",Font.BOLD,15));
 	       firstPlayer_rem_champs_title.setOpaque(true);
@@ -149,12 +143,14 @@ public JPanel give_updated_infoPanel (Game game) {
            
            // secondPlayer info (text area)
            JTextArea pl2_info = new JTextArea();
-	       String info2 = "                          player 2 \n";
+	       String info2 = "                         player 2 \n";
 	       info2 += "Name : " + game.getSecondPlayer().getName() + "\n";
+	       info2 += "leader : " + game.getSecondPlayer().getLeader().getName() + '\n';
 	       if(game.isSecondLeaderAbilityUsed())
-	            info2 += "leader ability used : " + "YES";
+	            info2 += "leader ability used : " + "YES ";
 	       else 
-	    	   info2 += "leader ability used : " + "NO";
+	    	   info2 += "leader ability used : " + "NO ";
+	       
 	       pl2_info.setText(info2);
 	       
 	       pl2_info.setEditable(false);
@@ -165,6 +161,7 @@ public JPanel give_updated_infoPanel (Game game) {
 	       
            ////////////// secondPlayer remaining champion title (second green bar)
 	       JTextArea secondPlayer_rem_champs_title = new JTextArea("     " + game.getSecondPlayer().getName() +  "'s remaining champions : ");		      
+	       secondPlayer_rem_champs_title.setEditable(false);
 	       secondPlayer_rem_champs_title.setBackground(Color.green);
 	       secondPlayer_rem_champs_title.setFont(new Font ("Dialog",Font.BOLD,15));
 	       secondPlayer_rem_champs_title.setOpaque(true);		       
@@ -203,6 +200,7 @@ public JPanel give_updated_infoPanel (Game game) {
           
           /////////////////////////////////////////////////////// turnOrder details
           JTextArea turnsTitle =  new JTextArea("                         turns : "); // third green bar        
+          turnsTitle.setEditable(false);
           turnsTitle.setBackground(Color.green);
           turnsTitle.setFont(new Font ("Dialog",Font.BOLD,15));
           turnsTitle.setOpaque(true);              
@@ -210,21 +208,21 @@ public JPanel give_updated_infoPanel (Game game) {
 		  
 	      JTextArea turnsArea = new JTextArea();
 	      String ordersText = "";
-	     // for(Object o : game.getTurnOrder().turnorderall())		      
-	    //	  ordersText += ((Champion)o).getName() + '\n';
-	    //  System.out.println(ordersText);
+	      
+	      for(Object o : game.getTurnOrder().turnorderall()) //  turnOrderall modified to work correctly (hosain)	      
+	     	  ordersText += ((Champion)o).getName() + '\n';
 	     
-	      int x = game.getTurnOrder().size();
-	      PriorityQueue temp = new PriorityQueue(x);
-	      while (!game.getTurnOrder().isEmpty())
-	      {
-	    	  ordersText += ((Champion)(game.getTurnOrder().peekMin())).getName()+ '\n';
-	    	  temp.insert(game.getTurnOrder().remove());
-	      }
-	      while (!temp.isEmpty())
-	      {
-	    	  game.getTurnOrder().insert(temp.remove());
-	      }
+//	      int x = game.getTurnOrder().size();
+//	      PriorityQueue temp = new PriorityQueue(x);
+//	      while (!game.getTurnOrder().isEmpty())
+//	      {
+//	    	  ordersText += ((Champion)(game.getTurnOrder().peekMin())).getName()+ '\n';
+//	    	  temp.insert(game.getTurnOrder().remove());
+//	      }
+//	      while (!temp.isEmpty())
+//	      {
+//	    	  game.getTurnOrder().insert(temp.remove());
+//	      }
 	      
 	      turnsArea.setText(ordersText);
 	      turnsArea.setFont(new Font("Dialog",ABORT,16));
@@ -241,6 +239,7 @@ public JPanel give_updated_infoPanel (Game game) {
 	      
 	      ///////////////////////////////////////////////////// current Champion details
 	      JTextArea currChampTitle = new JTextArea("               current champion :"); // fourth green bar	      
+	      currChampTitle.setEditable(false);
 	      currChampTitle.setBackground(Color.green);
 	      currChampTitle.setFont(new Font ("Dialog",Font.BOLD,15));
 	      infoPanel.add(currChampTitle);		      
@@ -291,7 +290,7 @@ public JPanel give_updated_infoPanel (Game game) {
 	      currChampBox.add(currChampEffects);
 	      infoPanel.add(currChampBox);
 	      
-	      for(int i = 0 ; i < 20 ; i++) // to create a space (20 lines)
+	      for(int i = 0 ; i < 30 ; i++) // to create a space (20 lines)
 	    	  infoPanel.add(new JLabel("\n")); 
                     
 	      return (infoPanel);
@@ -299,10 +298,6 @@ public JPanel give_updated_infoPanel (Game game) {
 }	
 public void add_button(JButton x) {
 	boardPanel.add(x);
-	
-}
-public void actionPerformed(ActionEvent e) {
-	// TODO Auto-generated method stub
 	
 }
 

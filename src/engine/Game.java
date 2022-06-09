@@ -492,16 +492,10 @@ import model.world.Villain;
 	 }
 	public Player checkGameOver() {
 		 
-		 if(firstPlayer.getTeam().isEmpty())
-		 {
-			 System.out.println("Gave Over ! Player " + secondPlayer.getName() + " is the winner ! ");
-			 return secondPlayer;
-		 }
-		 if(secondPlayer.getTeam().isEmpty())
-		 {
-			 System.out.println("Gave Over ! Player " + firstPlayer.getName() + " is the winner ! ");
-			 return firstPlayer;
-		 }
+		 if(firstPlayer.getTeam().isEmpty())		 
+			 return secondPlayer;		 
+		 if(secondPlayer.getTeam().isEmpty())		 
+			 return firstPlayer;		 
 		 return null;
 		 
 	 }
@@ -526,9 +520,10 @@ import model.world.Villain;
 		 case LEFT : new_y -- ; break;		 
 		 }
 		 	 
-		 if( ! boardLocationIsvalidAndEmpty(new_x, new_y) )
-		     throw new UnallowedMovementException("you can't move outside the board or to a non-empty cell !");
-		 
+		 if(new_x > 4 || new_x < 0 || new_y > 4 || new_y < 0)
+			 throw new UnallowedMovementException("you can't move outside the board !");
+		 if( board[new_x][new_y] != null )		     
+			 throw new UnallowedMovementException("you can't move to a non-empty cell !");
 		 board[old_x][old_y] = null;
 		 board[new_x][new_y] = currentChamp ;  
 		 currentChamp.setLocation(new Point(new_x,new_y));

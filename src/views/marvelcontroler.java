@@ -1,38 +1,24 @@
 package views;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import engine.Game;
 import engine.Player;
 import exceptions.AbilityUseException;
 import exceptions.ChampionDisarmedException;
 import exceptions.GameActionException;
-import exceptions.LeaderAbilityAlreadyUsedException;
-import exceptions.LeaderNotCurrentException;
 import exceptions.NotEnoughResourcesException;
-import exceptions.UnallowedMovementException;
 import model.abilities.Ability;
 import model.abilities.AreaOfEffect;
-import model.abilities.DamagingAbility;
 import model.world.Champion;
 import model.world.Cover;
-import model.world.Damageable;
 import model.world.Direction;
 
 public class marvelcontroler implements ActionListener {
@@ -77,10 +63,9 @@ public class marvelcontroler implements ActionListener {
 
 						Object z = game.getBoard()[i][j];
 						String btnText = "";
-						// why null should it be z.text()== null (hosain)!
 						if(z == null)
-						{
-							btn.setBackground(null);
+						{							
+							btn.setBackground(Color.white);
 						}
 						else if(z instanceof Cover) 
 						{
@@ -92,7 +77,7 @@ public class marvelcontroler implements ActionListener {
 						else 
 						{
 							Champion c = (Champion) z;
-							btnText += "holder player : ";
+							btnText += " Player : ";
 							if(game.getFirstPlayer().getTeam().contains(c))
 							{
 								btnText += game.getFirstPlayer().getName() + '\n';
@@ -222,8 +207,9 @@ public class marvelcontroler implements ActionListener {
     	    	
     	    }
     		String[] options2 = new String[opt.size()];
-    		if (opt.size()==0)
+    		if (opt.size() == 0)
     		{
+    			JOptionPane.showMessageDialog(null, "none of your abilities is ready ot be cast now","", JOptionPane.INFORMATION_MESSAGE);
     			return;
     		}
     		 for(int i = 0 ; i < opt.size() ; i++)     			 
@@ -268,7 +254,10 @@ public class marvelcontroler implements ActionListener {
 		default : // it is a click on the board (single target ability) ) 
 	      {
 			if(isSingleTargerAbilityCasted == false) 
+			{
+				JOptionPane.showMessageDialog(null, "if you want to cast a single target ability on this square, try to click on the \"cast ability\" button first ! " ,"", JOptionPane.ERROR_MESSAGE);
 				return ;
+			}
 			isSingleTargerAbilityCasted = false ;
 			int[] b = getindex(clicked) ;				
 			game.castAbility(singleTargetAbility , b[0],b[1]);
@@ -278,7 +267,7 @@ public class marvelcontroler implements ActionListener {
 		Player winner = game.checkGameOver();
 		if(winner != null)
 		{
-			JOptionPane.showMessageDialog(null, "Player " + winner.getName() + " is the winner !","", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Player " + winner.getName() + " is the winner !","Game Over !", JOptionPane.ERROR_MESSAGE);
 			System.exit(0); // stop program
 			view.dispose(); // close window
 		}

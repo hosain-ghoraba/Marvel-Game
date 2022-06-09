@@ -51,7 +51,7 @@ public abstract class Effect implements Cloneable,Comparable {
 	
 public String toString() {
 	
-   return  name + " , duration : " + duration + '\n'+",type: "+ type;
+   return  name + " , duration : " + duration + " ,type: "+ type + '\n';
 }
 
 }

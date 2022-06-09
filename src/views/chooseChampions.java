@@ -52,9 +52,8 @@ private JTextArea txtchamp;
 		
 		
 		JPanel champs = new JPanel();
-		// set it to use the GridLayout with 3 columns in width
 		champs.setSize(new Dimension(350,500));
-		champs.setLayout(new GridLayout(0, 1));
+		champs.setLayout(new GridLayout(0,3));
 		// THE DIFFERENCE BETWEN (5,5) AND (1,5) !!!?
 		//champs.setLayout(new GridLayout(0, 5));
 		// add it in the center of the JFrame
@@ -65,8 +64,9 @@ private JTextArea txtchamp;
 		{
 			JButton btnchamp = new JButton();
 			btnchamp.addActionListener(this);
-            btnchamp.setText(champ.getName()+  "\n" +"max health points : "+ champ.getMaxHP()+ "\n"+ "mana : "+ champ.getMana()+"\n"+"max action points per turn " + champ.getMaxActionPointsPerTurn()+"\n"+ "speed : "+ champ.getSpeed()+"\n"+"attack range :"+ champ.getAttackRange()+"\n"+ "attack damage: "+champ.getAttackDamage()+" Abilities:  "+champ.getAbilities().get(0).getName()+champ.getAbilities().get(1).getName()+champ.getAbilities().get(2).getName());	
-	        champs.add(btnchamp) ;
+            //btnchamp.setText(champ.getName()+  "\n" +"max health points : "+ champ.getMaxHP()+ "\n"+ "mana : "+ champ.getMana()+"\n"+"max action points per turn " + champ.getMaxActionPointsPerTurn()+"\n"+ "speed : "+ champ.getSpeed()+"\n"+"attack range :"+ champ.getAttackRange()+"\n"+ "attack damage: "+champ.getAttackDamage()+" Abilities:  "+champ.getAbilities().get(0).getName()+champ.getAbilities().get(1).getName()+champ.getAbilities().get(2).getName());	
+	        btnchamp.setText(Game.StringToHTML(champ.toString()));
+            champs.add(btnchamp) ;
 	        
 			// and also add it to the ArrayList for later use
 			champsbuttons.add(btnchamp);	

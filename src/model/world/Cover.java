@@ -3,7 +3,6 @@ package model.world;
 import java.awt.Point;
 import java.util.Random;
 
-import engine.Game;
 
 public class Cover implements Damageable {
  

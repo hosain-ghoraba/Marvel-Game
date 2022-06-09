@@ -137,6 +137,21 @@ public abstract class Champion implements Comparable,Damageable,Cloneable {
 	if (speed < ((Champion)o).speed ) return 1;	
     return  this.name.compareTo(other.name) ;      	
 	}
+	
+	public String toString() {
+
+	    	String result = "";	    		    	
+	    	
+	    	result += "name : " + name + '\n';	    		
+	    	result += "type : " + getClass().getSimpleName() + '\n' ;
+	    	result += "max HP : " + maxHP + '\n';
+	    	result += "Mana : " + mana + '\n';
+	    	result += "max action points : " + maxActionPointsPerTurn + '\n';
+	    	result += "attack damage : " + attackDamage + '\n';
+	    	result += "attack range : " + attackRange + '\n'; 
+	    	
+	    	return result;
+	}
 
 
 public static void main(String[] args) {

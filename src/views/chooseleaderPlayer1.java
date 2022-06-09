@@ -59,7 +59,6 @@ public class chooseleaderPlayer1 extends JFrame implements ActionListener {
         	f =true ;
         	}
         }
- System.out.println(f);
         dispose();
         new chooseleaderPlayer2(pl1,pl2);
                
