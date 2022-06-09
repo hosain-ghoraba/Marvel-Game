@@ -238,6 +238,13 @@ public class marvelcontroler implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			
 		JButton clicked = ((JButton)e.getSource());		
+		
+		if(isSingleTargerAbilityCasted && ! btnInBoard(clicked) ) // for philosophers #) 
+		{
+			JOptionPane.showMessageDialog(null, "please focus ! you must click on a target in the board now to cast the ability on !" ,"", JOptionPane.ERROR_MESSAGE);
+		    return;
+		}
+		 
 		try
 		{
 			
@@ -291,7 +298,13 @@ public class marvelcontroler implements ActionListener {
 	
 }
 
-
+ public boolean btnInBoard(JButton btn) {
+	 for(int i = 0 ; i < 5 ; i++)
+		 for(int j = 0 ; j < 5 ; j++)
+			 if(boardJbutton[i][j] == btn)
+				 return true;
+	 return false;
+ }
 
 		public static void main(String[] args) {	
     	new loginWindow();
