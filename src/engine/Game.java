@@ -743,7 +743,7 @@ import model.world.Villain;
 		 Damageable target = (Damageable) board[x][y] ;
 		 
 		 if( casted_ability.getCastRange() < calcDistance(attaker, target))
-			 throw new AbilityUseException (" target out of range ! " + "target is " + calcDistance(attaker, target) + " away from you , but the ability range is " + casted_ability.getCastRange() + " !") ;
+			 throw new AbilityUseException (" target out of range ! " + "target is " + calcDistance(attaker, target) + " cells away from you , but the ability range is only " + casted_ability.getCastRange() + " cells !") ;
 		 
 	     ArrayList <Damageable> targets = new ArrayList<Damageable>();
 			 if ( casted_ability instanceof DamagingAbility )

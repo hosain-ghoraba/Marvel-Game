@@ -53,6 +53,7 @@ public gamewindow(Game game) {
         
         
         actionsPanel = new JPanel(new GridLayout(0,1));
+        
         actionsPanel.add(new JButton("move up"));
         actionsPanel.add(new JButton("move down"));
         actionsPanel.add(new JButton("move right"));
