@@ -39,7 +39,7 @@ import model.world.Direction;
 import model.world.Hero;
 import model.world.Villain;
 
- public class Game {
+ public class Game {//reitutoiuwer9oiwe
  private Player firstPlayer;
  private Player secondPlayer;
  private boolean firstLeaderAbilityUsed;
